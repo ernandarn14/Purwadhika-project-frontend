@@ -13,7 +13,8 @@ export default class Card extends React.Component {
                     <img src={gambar} style={{ width: "350px", height: "350px", objectFit: "contain" }} />
                     <br/><br/>
                     <h4>{judulResep}</h4>
-                    <div className="d-flex justify-content-around">
+                    <p>Oleh: </p>
+                    <div className="d-flex justify-content-around mt-3">
                         <div className="d-flex">
                             <i className="material-icons mr-2">&#xe192;</i>
                             <h6 style={{ color: "inherit" }}>{lamaMembuat} menit</h6>

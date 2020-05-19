@@ -19,7 +19,7 @@ class SignupAkun extends React.Component {
                 <input
                   type="text"
                   placeholder="Nama Pengguna"
-                  className="mt-5 form-control form-control-lg"
+                  className="mt-4 form-control form-control-lg"
                 />
               </div>
               <div className="d-flex justify-content-center">

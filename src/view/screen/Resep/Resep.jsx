@@ -60,7 +60,7 @@ class Resep extends React.Component {
         </div>
         <br />
         <br />
-        <div className="row d-flex flex-wrap justify-content-center">
+        <div className="row d-flex flex-wrap justify-content-center text-center">
           {this.listResep()}
         </div>
       </div>
