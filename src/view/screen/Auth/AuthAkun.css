@@ -1,0 +1,17 @@
+:root {
+    --accent-default: #ac7339;
+    --accent-dark: #86592d;
+    --accent-light: #d9b38c;
+  }
+
+Link, h6 {
+    color: var(--accent-dark)
+}
+
+h5{
+    color: inherit
+}
+
+.form-control{
+    width: 450px;
+}

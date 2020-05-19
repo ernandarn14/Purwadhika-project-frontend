@@ -1,0 +1,21 @@
+:root {
+  --accent-default: #ac7339;
+  --accent-dark: #86592d;
+  --accent-light: #d9b38c;
+}
+.resep-card {
+  padding: 16px;
+  /* border-radius: 8px; */
+  transition: all ease 150ms;
+  box-sizing: border-box;
+  width: 450px;
+  /* border: 1px solid black; */
+}
+.material-icons {
+  color: var(--accent-dark);
+}
+
+div,
+h6 {
+  color: inherit;
+}
