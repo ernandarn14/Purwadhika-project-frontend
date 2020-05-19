@@ -14,4 +14,10 @@ h5{
 
 .form-control{
     width: 450px;
+    /* padding: 11px 16px;
+    border: 1px solid lightgray;
+    font-size: 16px;
+    width: 60%;
+    outline: none;
+    border-radius: 25px; */
 }
