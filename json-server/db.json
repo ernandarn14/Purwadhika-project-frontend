@@ -1,0 +1,56 @@
+{
+  "pengguna": [
+    {
+      "username": "admin",
+      "password": "123",
+      "email": "admin@gmail.com",
+      "namaLengkap": "admin",
+      "role": "admin",
+      "noHP": "082666555",
+      "id": 1
+    },
+    {
+      "username": "nanda",
+      "password": "123",
+      "email": "nanda@gmail.com",
+      "namaLengkap": "nanda",
+      "role": "pengguna",
+      "noHP": "082666555",
+      "id": 2
+    },
+    {
+      "username": "coba",
+      "namaLengkap": "coba aja",
+      "email": "coba@gmail.com",
+      "password": "123",
+      "role": "pengguna",
+      "id": 3
+    },
+    {
+      "username": "test",
+      "namaLengkap": "test lagi",
+      "email": "test@gmail.com",
+      "password": "123",
+      "role": "pengguna",
+      "id": 4
+    }
+  ],
+  "resep": [
+    {
+      "idPengguna": 2,
+      "judul": "Cookies Coklat",
+      "kategori": "cookies",
+      "lamaMembuat": 10,
+      "jumlahPorsi": "3-4",
+      "gambar": "https://www.meals.com/imagesrecipes/30142lrg.jpg",
+      "id": 1
+    }
+  ],
+  "bahanResep": [
+    {
+      "idResep": 1,
+      "idUkuran": 1,
+      "id": 1
+    }
+  ]
+}

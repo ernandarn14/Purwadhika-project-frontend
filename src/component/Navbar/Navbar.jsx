@@ -1,12 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faShoppingCart } from "@fortawesome/free-solid-svg-icons/";
-// import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons/";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import "./Navbar.css";
-import Button from "../Button/Buttons.tsx";
+import Button from "../Button/Buttons";
+import { logoutHandler } from "../../redux/actions";
+import { connect } from "react-redux";
 
-export default class Navbar extends React.Component {
+class Navbar extends React.Component {
+  sigoutButtonHandler = () => {
+    this.props.onLogout()
+  }
+
+
   render() {
     return (
       <div className="d-flex flex-row justify-content-between align-items-center py-4 navbar-container">
@@ -44,24 +51,73 @@ export default class Navbar extends React.Component {
           <i className="fa fa-search icon"></i>
         </div>
         <div className="d-flex">
-          <Button type="outlined" className="mx-3">
-            <Link
-              to="/login"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              Masuk
-            </Link>
-          </Button>
-          <Button type="contained">
-            <Link
-              to="/signup"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              Daftar
-            </Link>
-          </Button>
+          {this.props.user.id ? (
+            <>
+             <FontAwesomeIcon icon={faUser} style={{ fontSize: 24 }} />
+                <p className="small ml-3 mr-4">{this.props.user.username}</p>
+              <Link
+                className="d-flex flex-row"
+                to=""
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <FontAwesomeIcon
+                  className="mr-2"
+                  icon={faShoppingCart}
+                  style={{ fontSize: 24 }}
+                />
+                {/* <CircleBg>
+                  <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
+                    {this.props.user.cartItems}
+                  </small>
+                </CircleBg> */}
+              </Link>
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/"
+              >
+                <Button
+                  onClick={this.sigoutButtonHandler}
+                  className="ml-3"
+                  type="outlined"
+                >
+                  Keluar
+              </Button>
+              </Link>
+            </>
+          ) : (
+              <>
+                <Button type="outlined" className="mx-3">
+                  <Link
+                    to="/login"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    Masuk
+                </Link>
+                </Button>
+                <Button type="contained">
+                  <Link
+                    to="/signup"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    Daftar
+                </Link>
+                </Button>
+              </>
+            )}
         </div>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+const mapDispacthToProps = {
+  onLogout: logoutHandler,
+};
+
+export default connect(mapStateToProps, mapDispacthToProps)(Navbar);

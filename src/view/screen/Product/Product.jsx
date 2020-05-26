@@ -1,5 +1,5 @@
 import React from 'react'
-import './Produk.css'
+import './Product.css'
 
 class Produk extends React.Component{
     render(){

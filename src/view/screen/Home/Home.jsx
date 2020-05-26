@@ -37,7 +37,7 @@ class Home extends React.Component {
     render() {
         return (
             <div className="d-flex justify-content-center flex-column align-items-center">
-                <div className="d-flex justify-content-center flex-column align-items-center header">
+                <div className="d-flex justify-content-center flex-column header text-center">
                     <h1>Solusi Resep Mudah, Cepat, dan Anti Gagal</h1>
                     <h3>Cocok untuk di setiap acara dan suasana</h3>
                 </div><br />

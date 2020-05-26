@@ -5,11 +5,12 @@
   }
 
 Link, h6 {
-    color: var(--accent-dark)
+    color: var(--accent-dark);
 }
 
+
 h5{
-    color: inherit
+    color: inherit;
 }
 
 .form-control{

@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom'
 export default class Card extends React.Component {
     render() {
         const { resep } = this.props
-        const { judulResep, jumlahBahan, jumlahPorsi, lamaMembuat, gambar } = resep
+        const { judulResep, jumlahPorsi, lamaMembuat, gambar } = resep
         const renderList = () => {
             return (
                 <>
-                    <img src={gambar} style={{ width: "350px", height: "350px", objectFit: "contain" }} />
+                    <img src={gambar} alt="" style={{ width: "350px", height: "350px", objectFit: "contain" }} />
                     <br/><br/>
                     <h4>{judulResep}</h4>
                     <p>Oleh: </p>

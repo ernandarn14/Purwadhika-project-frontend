@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react'
+import React from 'react'
 import './Button.css'
 
 const Button = ({type = "contained", children}) => {
