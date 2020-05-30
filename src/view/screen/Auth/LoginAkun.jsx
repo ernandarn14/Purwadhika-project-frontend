@@ -48,25 +48,30 @@ class LoginAkun extends React.Component {
       return <Redirect to="/" />
     }
     return (
-      <div className="d-flex flex-column text-center align-items-center">
+      <div className="container d-flex flex-column text-center align-items-center">
         <div className="row">
           <div className="col-12">
             <div className="mt-5">
-              <h2>Masuk</h2>
-              <h5 className="mt-4">Silahkan masuk dengan nama pengguna</h5>
+              <h3>Masuk</h3>
+              <h6 className="mt-4">Silahkan masuk dengan nama pengguna</h6>
               {this.props.user.errMsg ? (
                 <div className="alert alert-danger mt-3">
                   {this.props.user.errMsg}
                 </div>
               ) : null}
-              <input type="text" placeholder="Username" className="mt-4 form-control form-control-lg"
-                value={this.state.loginForm.username} onChange={(e) => this.inputHandler(e, "username", "loginForm")} />
-              <input
-                type="password"
-                placeholder="Password"
-                className="mt-3 form-control form-control-lg"
-                value={this.state.loginForm.password} onChange={(e) => this.inputHandler(e, "password", "loginForm")}
-              />
+              <div className="d-flex justify-content-center">
+                <input type="text" placeholder="Username" className="mt-4 form-control"
+                  value={this.state.loginForm.username} onChange={(e) => this.inputHandler(e, "username", "loginForm")} />
+              </div>
+              <div className="d-flex justify-content-center">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="mt-3 form-control"
+                  value={this.state.loginForm.password} onChange={(e) => this.inputHandler(e, "password", "loginForm")}
+                />
+              </div>
+
               <div className="d-flex justify-content-center">
                 <Button type="contained" className="mt-4" onClick={this.loginButtonHandler}>
                   Masuk

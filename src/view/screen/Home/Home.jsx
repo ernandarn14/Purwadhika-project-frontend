@@ -36,12 +36,12 @@ class Home extends React.Component {
     }
     render() {
         return (
-            <div className="d-flex justify-content-center flex-column align-items-center">
+            <div className="container d-flex justify-content-center flex-column align-items-center">
                 <div className="d-flex justify-content-center flex-column header text-center">
                     <h1>Solusi Resep Mudah, Cepat, dan Anti Gagal</h1>
                     <h3>Cocok untuk di setiap acara dan suasana</h3>
-                </div><br />
-                <div className="text-center">
+                </div>
+                <div className="text-center mt-5">
                     <h2 style={{color: "inherit"}}>Resep Paling Populer</h2><br />
                     <div className="row d-flex flex-wrap justify-content-center">
                         {this.listResep()}

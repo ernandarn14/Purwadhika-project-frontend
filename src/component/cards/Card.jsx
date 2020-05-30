@@ -10,18 +10,18 @@ export default class Card extends React.Component {
         const renderList = () => {
             return (
                 <>
-                    <img src={gambar} alt="" style={{ width: "350px", height: "350px", objectFit: "contain" }} />
-                    <br/><br/>
-                    <h4>{judulResep}</h4>
+                    <img src={gambar} alt="" style={{ width: "300px", height: "300px", objectFit: "contain" }} />
+                    <br/>
+                    <h6 style={{ color: "inherit" }} className="mt-2">{judulResep}</h6>
                     <p>Oleh: </p>
                     <div className="d-flex justify-content-around mt-3">
                         <div className="d-flex">
                             <i className="material-icons mr-2">&#xe192;</i>
-                            <h6 style={{ color: "inherit" }}>{lamaMembuat} menit</h6>
+                            <p style={{ color: "inherit" }}>{lamaMembuat} menit</p>
                         </div>
                         <div className="d-flex">
                             <i className="material-icons mr-2">&#xe556;</i>
-                            <h6 style={{ color: "inherit" }}>{jumlahPorsi} orang</h6>
+                            <p style={{ color: "inherit" }}>{jumlahPorsi} orang</p>
                         </div>
                         {/* <div className="d-flex">
                             <i className="material-icons mr-2">&#xe5d2;</i>

@@ -6,12 +6,12 @@
   }
 Link, .img-kategori{
     border-radius: 50%;
-    height: 150px;
-    width: 150px;
+    height: 130px;
+    width: 130px;
     object-fit: contain;
 }
 
-.kategori, h5{
+.kategori, h6{
     color: var(--accent-dark);
 }
 

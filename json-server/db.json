@@ -25,14 +25,6 @@
       "password": "123",
       "role": "pengguna",
       "id": 3
-    },
-    {
-      "username": "test",
-      "namaLengkap": "test lagi",
-      "email": "test@gmail.com",
-      "password": "123",
-      "role": "pengguna",
-      "id": 4
     }
   ],
   "resep": [
@@ -50,6 +42,14 @@
     {
       "idResep": 1,
       "idUkuran": 1,
+      "id": 1
+    }
+  ],
+  "tips": [
+    {
+      "gambar": "https://www.meals.com/imagesrecipes/30142lrg.jpg",
+      "judul":"Cookies Coklat",
+      "deskripsi": "lorem",
       "id": 1
     }
   ]

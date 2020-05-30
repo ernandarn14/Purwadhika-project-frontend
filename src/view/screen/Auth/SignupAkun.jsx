@@ -62,15 +62,15 @@ class SignupAkun extends React.Component {
       return <Redirect to="/" />
     }
     return (
-      <div className="d-flex flex-column text-center align-items-center">
+      <div className="container d-flex flex-column text-center align-items-center">
         <div className="row">
           <div className="col-12">
             <div className="mt-5">
-              <h2>Daftar Akun Baru</h2>
-              <h5 className="mt-4">
+              <h3>Daftar Akun Baru</h3>
+              <h6 className="mt-4">
                 Daftar untuk mendapatkan rekomendasi resep terbaru, membaca
                 artikel, dan membagikan pengalaman baking kamu.
-              </h5>
+              </h6>
               {this.props.user.errMsg ? (
                 <div className="alert alert-danger mt-3">
                   {this.props.user.errMsg}
@@ -80,7 +80,7 @@ class SignupAkun extends React.Component {
                 <input
                   type="text"
                   placeholder="Username" value={username}
-                  className="mt-4 form-control form-control-lg"
+                  className="mt-4 form-control"
                   onChange={(e) => this.inputHandler(e, "username", "signupForm")}
                 />
               </div>
@@ -88,7 +88,7 @@ class SignupAkun extends React.Component {
                 <input
                   type="text"
                   placeholder="Nama Lengkap" value={namaLengkap}
-                  className="mt-3 form-control form-control-lg"
+                  className="mt-3 form-control"
                   onChange={(e) => this.inputHandler(e, "namaLengkap", "signupForm")}
                 />
               </div>
@@ -96,7 +96,7 @@ class SignupAkun extends React.Component {
                 <input
                   type="text"
                   placeholder="Email" value={email}
-                  className="mt-3 form-control form-control-lg"
+                  className="mt-3 form-control"
                   onChange={(e) => this.inputHandler(e, "email", "signupForm")}
                 />
               </div>
@@ -104,7 +104,7 @@ class SignupAkun extends React.Component {
                 <input
                   type={tampilPassword ? "text" : "password"}
                   placeholder="Password" value={password}
-                  className="mt-3 form-control form-control-lg"
+                  className="mt-3 form-control"
                   onChange={(e) => this.inputHandler(e, "password", "signupForm")}
                 />
               </div>

@@ -7,8 +7,25 @@ import "./Navbar.css";
 import Button from "../Button/Buttons";
 import { logoutHandler } from "../../redux/actions";
 import { connect } from "react-redux";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownToggle,
+  DropdownMenu,
+} from "reactstrap";
 
 class Navbar extends React.Component {
+  state = {
+    dropdownOpen: false,
+  }
+
+  toggleDropdown = () => {
+    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+  };
+
+
+
+
   sigoutButtonHandler = () => {
     this.props.onLogout()
   }
@@ -19,7 +36,7 @@ class Navbar extends React.Component {
       <div className="d-flex flex-row justify-content-between align-items-center py-4 navbar-container">
         <div className="logo-navbar">
           <Link style={{ textDecoration: "none", color: "inherit" }} to="/">
-            <h2>KUEKU</h2>
+            <h3>KUEKU</h3>
           </Link>
         </div>
         <div className="menu-navbar d-flex justify-content-start mx-4">
@@ -27,20 +44,20 @@ class Navbar extends React.Component {
             to="/resep"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <h4 className="mx-4 font-weight-bold">Resep</h4>
+            <h5 className="mx-2 font-weight-bold">Resep</h5>
           </Link>
           <Link
             to="/produk"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <h4 className="mx-4 font-weight-bold">Produk</h4>
+            <h5 className="mx-2 font-weight-bold">Produk</h5>
           </Link>
           <Link to="/tips" style={{ textDecoration: "none", color: "inherit" }}>
-            <h4 className="mx-4 font-weight-bold">Tips dan Trik</h4>
+            <h5 className="mx-2 font-weight-bold">Tips dan Trik</h5>
           </Link>
         </div>
         <div
-          className="px-5 d-flex justify-content-end search"
+          className="d-flex justify-content-end ml-5 px-3 search"
           style={{ flex: 1 }}
         >
           <input
@@ -53,8 +70,66 @@ class Navbar extends React.Component {
         <div className="d-flex">
           {this.props.user.id ? (
             <>
-             <FontAwesomeIcon icon={faUser} style={{ fontSize: 24 }} />
-                <p className="small ml-3 mr-4">{this.props.user.username}</p>
+              <Dropdown toggle={this.toggleDropdown}
+                isOpen={this.state.dropdownOpen}>
+                <DropdownToggle tag="div" className="d-flex">
+                  <FontAwesomeIcon icon={faUser} style={{ fontSize: 24 }} />
+                  <p className="small ml-2 mr-4">{this.props.user.username}</p>
+                </DropdownToggle>
+                <DropdownMenu className="mt-2">
+                  {this.props.user.role === "admin" ? (
+                    <>
+                      <DropdownItem>
+                        <Link style={{ color: "inherit", textDecoration: "none" }}
+                          to="/admin/resep">
+                          Dashboard Resep
+                      </Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link style={{ color: "inherit", textDecoration: "none" }}
+                          to="/admin/tips">
+                          Dashboard Tips dan Trik
+                      </Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link style={{ color: "inherit", textDecoration: "none" }}
+                          to="/admin/pembayaran">
+                          Konfirmasi Pembelian
+                      </Link>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <Link style={{ color: "inherit", textDecoration: "none" }}
+                          to="/admin/laporan">
+                          Laporan
+                      </Link>
+                      </DropdownItem>
+                    </>
+                  ) : (
+                      <>
+                        <DropdownItem>
+                          <Link style={{ color: "inherit", textDecoration: "none" }}
+                            to="/resepku">
+                            Resep Saya
+                      </Link>
+                        </DropdownItem>
+                        <DropdownItem>
+                          <Link style={{ color: "inherit", textDecoration: "none" }}
+                            to="/rencana">
+                            Rencana Baking
+                      </Link>
+                        </DropdownItem>
+                        <DropdownItem>
+                          <Link style={{ color: "inherit", textDecoration: "none" }}
+                            to="/riwayat">
+                            Riwayat Pembelian
+                      </Link>
+                        </DropdownItem>
+                      </>
+                    )}
+                </DropdownMenu>
+
+              </Dropdown>
+
               <Link
                 className="d-flex flex-row"
                 to=""
@@ -65,6 +140,7 @@ class Navbar extends React.Component {
                   icon={faShoppingCart}
                   style={{ fontSize: 24 }}
                 />
+                <p className="small ml-2 mr-4" style={{ color: "#3C64B1", fontWeight: "bold" }}>0</p>
                 {/* <CircleBg>
                   <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
                     {this.props.user.cartItems}
@@ -78,7 +154,7 @@ class Navbar extends React.Component {
                 <Button
                   onClick={this.sigoutButtonHandler}
                   className="ml-3"
-                  type="outlined"
+                  type="textual"
                 >
                   Keluar
               </Button>
@@ -86,22 +162,21 @@ class Navbar extends React.Component {
             </>
           ) : (
               <>
-                <Button type="outlined" className="mx-3">
-                  <Link
-                    to="/login"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <Button type="outlined" className="mx-3">
                     Masuk
+                    </Button>
                 </Link>
-                </Button>
-                <Button type="contained">
-                  <Link
-                    to="/signup"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    Daftar
+                <Link
+                  to="/signup"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <Button type="contained">Daftar</Button>
+
                 </Link>
-                </Button>
               </>
             )}
         </div>
