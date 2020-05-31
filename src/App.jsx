@@ -20,6 +20,7 @@ import DashboardPayment from "./view/screen/AdminMenu/DashboardPayment";
 import History from "./view/screen/UserMenu/History";
 import MyResep from "./view/screen/UserMenu/MyResep";
 import Wishlist from "./view/screen/UserMenu/Wishlist";
+import TipsDetails from "./view/screen/TipsDetails/TipsDetails";
 
 const cookieObj = new Cookie();
 
@@ -69,6 +70,7 @@ class App extends React.Component {
         <Route exact path="/resep" component={Recipe} />
         <Route exact path="/produk" component={Product} />
         <Route exact path="/tips" component={Tips} />
+        <Route exact path="/tips/:tipsId" component={TipsDetails} />
         {this.renderAdminRoutes()}
         {this.renderProtectedRoutes()}
         <Route path="*" component={PageNotFound} />

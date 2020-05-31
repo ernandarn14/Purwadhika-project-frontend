@@ -1,0 +1,11 @@
+:root {
+    --accent-default: #ac7339;
+    --accent-dark: #86592d;
+    --accent-light: #d9b38c;
+    --gray-lightest: #f4f5f4;
+}
+  
+  .tips-details{
+    border-bottom: 1px solid var(--accent-default);
+    padding: 10px 13px 30px;
+}

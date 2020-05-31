@@ -10,7 +10,7 @@ export default class Card extends React.Component {
         const renderList = () => {
             return (
                 <>
-                    <img src={gambar} alt="" style={{ width: "300px", height: "300px", objectFit: "contain" }} />
+                    <img src={gambar} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                     <br/>
                     <h6 style={{ color: "inherit" }} className="mt-2">{judulResep}</h6>
                     <p>Oleh: </p>

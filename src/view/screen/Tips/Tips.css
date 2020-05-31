@@ -4,15 +4,17 @@
     --accent-light: #d9b38c;
   }
   
-  img{
+/* img{
     width: 35vw;
-    height: 30vh;
-}
+    height: 35vh;
+    object-fit: contain;
+} */
 
 .tips-card{
-    width: 80vw;
-    border: 1px solid var(--accent-light);
+    /* width: 50vw; */
+    /* border: 1px solid var(--accent-dark); */
     padding: 16px;
+    width: 300px;
 }
 
 

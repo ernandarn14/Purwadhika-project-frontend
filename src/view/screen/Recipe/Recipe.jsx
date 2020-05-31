@@ -40,7 +40,7 @@ class Resep extends React.Component {
   render() {
     return (
       <div className="container d-flex justify-content-center flex-column align-items-center py-4 mt-3">
-        <div className="d-flex align-items-center mx-4 kategori-filter">
+        <div className="d-flex align-items-center justify-content-center text-center mx-4 kategori-filter">
           <div className="row">
             <Link className="mx-4 kategori" style={{ textDecoration: "none" }}>
               <img src="https://www.meals.com/imagesrecipes/145800lrg.jpg" alt="" className="img-kategori" />

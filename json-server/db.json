@@ -47,10 +47,28 @@
   ],
   "tips": [
     {
-      "gambar": "https://www.meals.com/imagesrecipes/30142lrg.jpg",
-      "judul":"Cookies Coklat",
-      "deskripsi": "lorem",
+      "gambar": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
+      "judul": "Chocolate Crinkle-Top Cookies",
+      "deskripsi": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
       "id": 1
+    },
+    {
+      "gambar": "https://www.meals.com/imagesrecipes/147657lrg.jpg",
+      "judul": "Cookies Coklat",
+      "deskripsi": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
+      "id": 2
+    },
+    {
+      "gambar": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
+      "judul": "Tart ABC",
+      "deskripsi": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
+      "id": 3
+    },
+    {
+      "gambar": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
+      "judul": "Pastry Nanda",
+      "deskripsi": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
+      "id": 4
     }
   ]
 }
