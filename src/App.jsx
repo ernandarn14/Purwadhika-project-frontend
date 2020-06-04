@@ -14,13 +14,16 @@ import { connect } from "react-redux";
 import Cookie from "universal-cookie";
 import {cookieChecker, userKeepLogin} from "./redux/actions"
 import DashboardRecipe from "./view/screen/AdminMenu/DashboardRecipe";
-import DashboardTips from "./view/screen/AdminMenu/DashboardTips";
+import DashboardTips from "./view/screen/AdminMenu/DashboardTips/DashboardTips";
 import DashboardReport from "./view/screen/AdminMenu/DashboardReport";
 import DashboardPayment from "./view/screen/AdminMenu/DashboardPayment";
 import History from "./view/screen/UserMenu/History";
 import MyResep from "./view/screen/UserMenu/MyResep";
 import Wishlist from "./view/screen/UserMenu/Wishlist";
 import TipsDetails from "./view/screen/TipsDetails/TipsDetails";
+import DashboardProduk from "./view/screen/AdminMenu/DashboardProduk/DashboardProduk";
+import AddTips from "./view/screen/AdminMenu/DashboardTips/AddTips";
+import EditTips from "./view/screen/AdminMenu/DashboardTips/EditTips";
 
 const cookieObj = new Cookie();
 
@@ -39,7 +42,10 @@ class App extends React.Component {
       return (
         <>
           <Route exact path="/admin/resep" component={DashboardRecipe} />
+          <Route exact path="/admin/produk" component={DashboardProduk} />
           <Route exact path="/admin/tips" component={DashboardTips} />
+          <Route exact path="/admin/tips/tambah" component={AddTips} />
+          <Route exact path="/admin/tips/edit" component={EditTips} />
           <Route exact path="/admin/pembayaran" component={DashboardPayment} />
           <Route exact path="/admin/laporan" component={DashboardReport} />
         </>

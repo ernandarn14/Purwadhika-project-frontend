@@ -69,7 +69,7 @@ class Tips extends React.Component {
             )
         })
     }
-    
+
     tipsList = () => {
         return tipsData.map(val => {
             const { gambar, judul } = val
@@ -93,7 +93,8 @@ class Tips extends React.Component {
     }
     render() {
         return (
-            <div className="container mt-5">
+            <div className="container">
+                <h3 className="text-center my-5">Tips dan Trik</h3>
                 <div className="row d-flex flex-wrap justify-content-center">
                     {this.renderTipsData()}
                 </div>

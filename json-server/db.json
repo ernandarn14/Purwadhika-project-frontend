@@ -54,21 +54,50 @@
     },
     {
       "gambar": "https://www.meals.com/imagesrecipes/147657lrg.jpg",
+      "tglPosting": "",
       "judul": "Cookies Coklat",
       "deskripsi": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
       "id": 2
     },
     {
       "gambar": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
+      "tglPosting": "",
       "judul": "Tart ABC",
       "deskripsi": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
       "id": 3
     },
     {
-      "gambar": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
-      "judul": "Pastry Nanda",
-      "deskripsi": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
+      "gambar": "https://www.meals.com/imagesrecipes/144770lrg.jpg",
+      "judul": "Red Velvel Anti Gagal",
+      "tglPosting": "2020-06-03T08:46:34.149Z",
+      "deskripsi": "1. Coklat\n    menggunakan coklat premium\n2. Gula \n    bisa memakai gula pasir jika tidak ada brown sugar\n3.  Butter\n     Jangan mengganti butter dengan margarine karena hasilnya akan berbeda",
       "id": 4
+    }
+  ],
+  "produk": [
+    {
+      "namaProduk": "Tepung Beras Rose Brand",
+      "harga": 2300,
+      "kategori": "tepung",
+      "berat": "220",
+      "gambar": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/medium//87/MTA-4012277/rose_brand_rose_brand_tepung_beras_500_gr_full02.jpg?output-format=webp",
+      "id": 1
+    },
+    {
+      "namaProduk": "Tepung Beras Rose Brand",
+      "harga": 2300,
+      "kategori": "tepung",
+      "berat": "220",
+      "gambar": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/medium//87/MTA-4012277/rose_brand_rose_brand_tepung_beras_500_gr_full02.jpg?output-format=webp",
+      "id": 2
+    },
+    {
+      "namaProduk": "Pewarna Koepoe Warna Merah Cabe",
+      "harga": "5400",
+      "kategori": "Pewarna",
+      "berat": "30",
+      "gambar": "https://ecs7.tokopedia.net/img/cache/700/product-1/2017/3/14/15297204/15297204_9b26b492-d8bf-4fe3-bbd3-5904e22e961c_800_800.jpg",
+      "id": 3
     }
   ]
 }

@@ -18,6 +18,7 @@ class TipsDetails extends React.Component {
 
     componentDidMount() {
         this.getTipDataDetails()
+        this.getAllTipsData()
     }
 
     getTipDataDetails = () => {
@@ -32,7 +33,12 @@ class TipsDetails extends React.Component {
     }
 
     getAllTipsData = () => {
-        Axios.get(`${API_URL}/tips`)
+        Axios.get(`${API_URL}/tips`,
+        {
+            params: {
+                _limit: 3
+            }
+        })
             .then(res => {
                 this.setState({ tipsDataList: res.data })
             })
@@ -43,7 +49,6 @@ class TipsDetails extends React.Component {
 
     renderTipsData = () => {
         const { tipsDataList } = this.state
-        this.getAllTipsData()
         return tipsDataList.map(val => {
             const { gambar, judul } = val
             return (
@@ -59,6 +64,8 @@ class TipsDetails extends React.Component {
                                 Baca Selengkapnya
                                 </Button>
                         </Link>
+                        {/* {this.getAllTipsData}
+                        {this.getTipDataDetails()} */}
                     </div>
                 </>
             )
@@ -74,7 +81,7 @@ class TipsDetails extends React.Component {
                     <div className="col-12">
                         <div className="tips-details">
                             <div className="d-flex flex-column text-center align-items-center">
-                                <h2>{judul}</h2>
+                                <h3>{judul}</h3>
                                 <img src={gambar} alt="" style={{ width: "450px", height: "300px", objectFit: "contain" }} className="mt-2" />
                             </div>
                             <div className="d-flex mt-5 text-justify">
