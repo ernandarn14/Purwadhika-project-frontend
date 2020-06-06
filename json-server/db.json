@@ -31,18 +31,107 @@
     {
       "idPengguna": 2,
       "judul": "Cookies Coklat",
-      "kategori": "cookies",
+      "kategori": "Kue Kering",
       "lamaMembuat": 10,
       "jumlahPorsi": "3-4",
       "gambar": "https://www.meals.com/imagesrecipes/30142lrg.jpg",
+      "keterangan": "ini paling laris",
       "id": 1
     }
   ],
-  "bahanResep": [
+  "daftarBahan": [
+    {
+      "namaBahan": "Coklat Batang",
+      "id": 1
+    },
+    {
+      "namaBahan": "Tepung Serbaguna",
+      "id": 2
+    },
+    {
+      "namaBahan": "Soda kue",
+      "id": 3
+    },
+    {
+      "namaBahan": "Butter",
+      "id": 4
+    },
+    {
+      "namaBahan": "Telur",
+      "id": 5
+    },
+    {
+      "namaBahan": "Ekstrak Vanila",
+      "id": 6
+    }
+  ],
+  "refPengukuran": [
+    {
+      "keterangan": "Sendok Makan",
+      "id": 1
+    },
+    {
+      "keterangan": "Sendok Teh",
+      "id": 2
+    },
+    {
+      "keterangan": "Cangkir",
+      "id": 3
+    },
+    {
+      "keterangan": "Sendok Makan",
+      "id": 4
+    },
+    {
+      "keterangan": "Buah",
+      "id": 5
+    }
+  ],
+  "detailBahan": [
+    {
+      "idBahan": 1,
+      "idResep": 1,
+      "qty": 4,
+      "idPengukuran": 5,
+      "id": 1
+    },
+    {
+      "idBahan": 2,
+      "idResep": 1,
+      "qty": 2,
+      "idPengukuran": 3,
+      "id": 2
+    },
+    {
+      "idBahan": 3,
+      "idResep": 1,
+      "qty": 2,
+      "idPengukuran": 3,
+      "id": 3
+    },
+    {
+      "idBahan": 4,
+      "idResep": 1,
+      "qty": 3,
+      "idPengukuran": 5,
+      "id": 4
+    }
+  ],
+  "daftarLangkah": [
     {
       "idResep": 1,
-      "idUkuran": 1,
+      "namaLangkah": "Lelehkan semua coklat dengan butter dalam api sedang",
       "id": 1
+    },
+    {
+      "idResep": 1,
+      "namaLangkah": "Campur tepung, soda kue, dan garam. Setelah tercampur masukkan telur lalu aduk lagi dan masukkan coklat leleh sedikit demi sedikit",
+      "id":3
+    },
+    {
+      "idResep": 1,
+      "namaLangkah": "Lapisi loyang dengan kertas kue dan butter, masukkan adonan dalam loyang. Lalu panggang dalam oven selama 8 - 9 menit",
+      "id": 4
     }
   ],
   "tips": [

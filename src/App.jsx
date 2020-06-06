@@ -13,7 +13,7 @@ import SignupAkun from "./view/screen/Auth/SignupAkun";
 import { connect } from "react-redux";
 import Cookie from "universal-cookie";
 import {cookieChecker, userKeepLogin} from "./redux/actions"
-import DashboardRecipe from "./view/screen/AdminMenu/DashboardRecipe";
+import DashboardRecipe from "./view/screen/AdminMenu/DashboardRecipe/DashboardRecipe";
 import DashboardTips from "./view/screen/AdminMenu/DashboardTips/DashboardTips";
 import DashboardReport from "./view/screen/AdminMenu/DashboardReport";
 import DashboardPayment from "./view/screen/AdminMenu/DashboardPayment";
@@ -24,6 +24,7 @@ import TipsDetails from "./view/screen/TipsDetails/TipsDetails";
 import DashboardProduk from "./view/screen/AdminMenu/DashboardProduk/DashboardProduk";
 import AddTips from "./view/screen/AdminMenu/DashboardTips/AddTips";
 import EditTips from "./view/screen/AdminMenu/DashboardTips/EditTips";
+import RecipeDetails from "./view/screen/RecipeDetails/RecipeDetails";
 
 const cookieObj = new Cookie();
 
@@ -74,6 +75,7 @@ class App extends React.Component {
         <Route exact path="/login" component={LoginAkun} />
         <Route exact path="/signup" component={SignupAkun} />
         <Route exact path="/resep" component={Recipe} />
+        <Route exact path="/resep/:resepId" component={RecipeDetails} />
         <Route exact path="/produk" component={Product} />
         <Route exact path="/tips" component={Tips} />
         <Route exact path="/tips/:tipsId" component={TipsDetails} />
