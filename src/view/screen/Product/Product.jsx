@@ -30,19 +30,27 @@ class Produk extends React.Component {
             const { gambar, namaProduk, harga, berat } = val
             return (
                 <>
-                    <div className="product-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center">
+                    <div className="product-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center">
                         <img src={gambar} alt="" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
-                        <h5 className="mt-2">{namaProduk}</h5>
-                        <p>{berat}</p>
-                        <p>{harga}</p>
                         <Link
+                            to={`/produk/${val.id}`}
+                            style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                            <h5 className="mt-2">{namaProduk}</h5>
+                        </Link>
+                        <p>{berat}</p>
+                        <h6 className="mt-2"> {new Intl.NumberFormat("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                        }).format(harga)}</h6>
+                        {/* <Link
                             to=""
                             style={{ textDecoration: "none", color: "inherit" }}
                         >
                             <Button type="contained" className="mt-2">
                                 Tambah ke Keranjang
                                 </Button>
-                        </Link>
+                        </Link> */}
                     </div>
                 </>
             )

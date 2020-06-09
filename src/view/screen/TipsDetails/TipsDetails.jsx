@@ -76,7 +76,14 @@ class TipsDetails extends React.Component {
         const { tipsList } = this.state
         const { judul, gambar, deskripsi } = tipsList
         return (
-            <div className="container mt-5">
+            <div className="container my-5">
+                <div className="d-flex justify-content-start">
+                    <Link to="/tips" style={{ textDecoration: "none" }}>
+                        <Button type="textual">
+                            Kembali ke Halaman Tips dan Trik
+                                </Button>
+                    </Link>
+                </div>
                 <div className="row">
                     <div className="col-12">
                         <div className="tips-details">

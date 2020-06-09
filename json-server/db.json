@@ -126,7 +126,7 @@
     {
       "idResep": 1,
       "namaLangkah": "Campur tepung, soda kue, dan garam. Setelah tercampur masukkan telur lalu aduk lagi dan masukkan coklat leleh sedikit demi sedikit",
-      "id":3
+      "id": 3
     },
     {
       "idResep": 1,
@@ -167,26 +167,39 @@
     {
       "namaProduk": "Tepung Beras Rose Brand",
       "harga": 2300,
-      "kategori": "tepung",
-      "berat": "220",
+      "kategori": "Tepung",
+      "berat": "220 gr",
       "gambar": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/medium//87/MTA-4012277/rose_brand_rose_brand_tepung_beras_500_gr_full02.jpg?output-format=webp",
+      "keterangan": "aaaaaaaaaaaa",
       "id": 1
     },
     {
-      "namaProduk": "Tepung Beras Rose Brand",
-      "harga": 2300,
-      "kategori": "tepung",
-      "berat": "220",
-      "gambar": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/medium//87/MTA-4012277/rose_brand_rose_brand_tepung_beras_500_gr_full02.jpg?output-format=webp",
+      "namaProduk": "Pasta Koepoe Cocopandan",
+      "harga": 6500,
+      "kategori": "Perasa",
+      "berat": "30 ml",
+      "gambar": "https://cf.shopee.co.id/file/787a5c5008841d021a9e77c17491811d",
+      "keterangan": "aaaaaaaaaaaa",
       "id": 2
     },
     {
       "namaProduk": "Pewarna Koepoe Warna Merah Cabe",
       "harga": "5400",
       "kategori": "Pewarna",
-      "berat": "30",
+      "berat": "30 ml",
       "gambar": "https://ecs7.tokopedia.net/img/cache/700/product-1/2017/3/14/15297204/15297204_9b26b492-d8bf-4fe3-bbd3-5904e22e961c_800_800.jpg",
+      "keterangan": "aaaaaaaaaaa",
       "id": 3
     }
-  ]
+  ],
+  "keranjangBelanja": [
+    {
+      "idPengguna": 2,
+      "idProduk": 1,
+      "quantity": 2,
+      "id": 1
+    }
+  ],
+  "transaksi": [],
+  "detailTransaksi": []
 }

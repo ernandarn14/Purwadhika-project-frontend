@@ -25,6 +25,8 @@ import DashboardProduk from "./view/screen/AdminMenu/DashboardProduk/DashboardPr
 import AddTips from "./view/screen/AdminMenu/DashboardTips/AddTips";
 import EditTips from "./view/screen/AdminMenu/DashboardTips/EditTips";
 import RecipeDetails from "./view/screen/RecipeDetails/RecipeDetails";
+import ProductDetails from "./view/screen/ProductDetails/ProductDetails";
+import Cart from "./view/screen/Cart/Cart";
 
 const cookieObj = new Cookie();
 
@@ -61,6 +63,7 @@ class App extends React.Component {
           <Route exact path="/resepku" component={MyResep} />
           <Route exact path="/riwayat" component={History} />
           <Route exact path="/rencana" component={Wishlist} />
+          <Route exact path="/keranjang" component={Cart} />
         </>
       );
     }
@@ -77,6 +80,7 @@ class App extends React.Component {
         <Route exact path="/resep" component={Recipe} />
         <Route exact path="/resep/:resepId" component={RecipeDetails} />
         <Route exact path="/produk" component={Product} />
+        <Route exact path="/produk/:produkId" component={ProductDetails} />
         <Route exact path="/tips" component={Tips} />
         <Route exact path="/tips/:tipsId" component={TipsDetails} />
         {this.renderAdminRoutes()}

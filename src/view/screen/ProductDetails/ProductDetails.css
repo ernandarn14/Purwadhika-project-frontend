@@ -8,13 +8,3 @@
     --gray-dark: #737b7d;
     --black: #373f41;
 }
-
-p{
-    color: var(--gray-dark);
-}
-
-.product-card{
-    /* border: 1px solid black; */
-    width: 300px;
-    /* background-color: var(--gray-lightest); */
-}

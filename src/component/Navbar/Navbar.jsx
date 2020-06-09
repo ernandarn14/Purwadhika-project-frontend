@@ -73,7 +73,7 @@ class Navbar extends React.Component {
               <Dropdown toggle={this.toggleDropdown}
                 isOpen={this.state.dropdownOpen}>
                 <DropdownToggle tag="div" className="d-flex">
-                  <FontAwesomeIcon icon={faUser} style={{ fontSize: 24 }} />
+                  <FontAwesomeIcon icon={faUser} style={{ fontSize: 20 }} />
                   <p className="small ml-2 mr-4">{this.props.user.username}</p>
                 </DropdownToggle>
                 <DropdownMenu className="mt-2">
@@ -138,15 +138,15 @@ class Navbar extends React.Component {
 
               <Link
                 className="d-flex flex-row"
-                to=""
+                to="/keranjang"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 <FontAwesomeIcon
                   className="mr-2"
                   icon={faShoppingCart}
-                  style={{ fontSize: 24 }}
+                  style={{ fontSize: 20 }}
                 />
-                <p className="small ml-2 mr-4" style={{ color: "#3C64B1", fontWeight: "bold" }}>0</p>
+                <p className="small ml-1 mr-3" style={{ color: "#3C64B1", fontWeight: "bold" }}>0</p>
                 {/* <CircleBg>
                   <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
                     {this.props.user.cartItems}
