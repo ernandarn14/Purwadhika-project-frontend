@@ -1,38 +1,12 @@
 import React from "react";
 import "./Recipe.css";
-import logo from "../../../assets/images/logo/pie-image.jpg";
-import Card from "../../../component/cards/Card";
+// import logo from "../../../assets/images/logo/pie-image.jpg";
+import Card from "../../../component/Cards/Card";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
-import Button from "../../../component/Button/Buttons";
+// import Button from "../../../component/Button/Buttons";
 
-const resepList = [
-  {
-    judulResep: "Chocolate Crinkle-Top Cookies",
-    kategori: "Cookies",
-    lamaMembuat: 10,
-    jumlahBahan: 2,
-    jumlahPorsi: "3-4",
-    gambar: logo,
-  },
-  {
-    judulResep: "Butterscotch Rum Pound Cake",
-    kategori: "Cake",
-    lamaMembuat: 54,
-    jumlahBahan: 2,
-    jumlahPorsi: "3-4",
-    gambar: "https://www.meals.com/imagesrecipes/30142lrg.jpg",
-  },
-  {
-    judulResep: "Chocolate Crinkle-Top Cookies",
-    kategori: "Cookies",
-    lamaMembuat: 10,
-    jumlahBahan: 2,
-    jumlahPorsi: "3-4",
-    gambar: logo,
-  },
-];
 
 class Resep extends React.Component {
   state = {
@@ -40,14 +14,15 @@ class Resep extends React.Component {
   }
 
   getRecipeData = () => {
-    Axios.get(`${API_URL}/resep`
-      // , {
-      //   params: {
-      //     _expand: "pengguna"
-      //   }
-      // }
+    Axios.get(`${API_URL}/recipes`
+      , {
+        params: {
+          _expand: "user"
+        }
+      }
     )
       .then(res => {
+        console.log(res.data)
         this.setState({ recipeList: res.data })
       })
       .catch(err => {
@@ -71,31 +46,15 @@ class Resep extends React.Component {
             to={`/resep/${val.id}`}
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <Card resep={val} />
+            <Card recipe={val} 
+            // key={`resep-${val.id}`} 
+            />
           </Link>
           </div>
         </>
       )
     })
   }
-
-  listResep = () => {
-    return resepList.map((val) => {
-      return (
-        <>
-          <Card resep={val} />;
-          <Link
-            to={`/resep/${val.id}`}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <Button type="contained" className="mt-2">
-              Baca Selengkapnya
-            </Button>
-          </Link>
-        </>
-      )
-    });
-  };
 
 
   render() {
@@ -123,7 +82,6 @@ class Resep extends React.Component {
           </div>
         </div>
         <div className="row d-flex flex-wrap justify-content-center text-center mt-5">
-          {/* {this.listResep()} */}
           {this.renderRecipeList()}
         </div>
       </div>

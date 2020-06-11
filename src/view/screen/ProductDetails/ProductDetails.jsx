@@ -10,17 +10,17 @@ import swal from "sweetalert"
 class ProductDetails extends React.Component {
     state = {
         productDetailList: {
-            namaProduk: "",
-            harga: 0,
-            kategori: "",
-            berat: "",
-            gambar: "",
-            keterangan: ""
+            productName: "",
+            price: 0,
+            category: "",
+            netto: "",
+            image: "",
+            desc: ""
         }
     }
 
     getProductDetails = () => {
-        Axios.get(`${API_URL}/produk/${this.props.match.params.produkId}`)
+        Axios.get(`${API_URL}/products/${this.props.match.params.produkId}`)
             .then(res => {
                 this.setState({ productDetailList: res.data })
             })
@@ -38,7 +38,7 @@ class ProductDetails extends React.Component {
         Axios.get(`${API_URL}/keranjangBelanja`, {
             params: {
                 idPengguna: this.props.user.id,
-                idProduk: this.state.productDetailList.id
+                produkId: this.state.productDetailList.id
             }
         })
             .then(res => {
@@ -56,7 +56,7 @@ class ProductDetails extends React.Component {
                 } else {
                     Axios.post(`${API_URL}/keranjangBelanja`, {
                         idPengguna: this.props.user.id,
-                        idProduk: this.state.productDetailList.id,
+                        produkId: this.state.productDetailList.id,
                         quantity: 1
                     })
                     .then(res => {
@@ -74,7 +74,7 @@ class ProductDetails extends React.Component {
 
     render() {
         const { productDetailList } = this.state
-        const { namaProduk, harga, kategori, berat, gambar, keterangan } = productDetailList
+        const { productName, price, category, netto, image, desc } = productDetailList
         return (
             <div className="container">
                 <div className="d-flex justify-content-start py-4">
@@ -86,22 +86,22 @@ class ProductDetails extends React.Component {
                 </div>
                 <div className="row py-5">
                     <div className="col-5 text-right">
-                        <img src={gambar} alt="" style={{ width: "300px", height: "300px", objectFit: "contain" }} className="mt-2" />
+                        <img src={image} alt="" style={{ width: "300px", height: "300px", objectFit: "contain" }} className="mt-2" />
                     </div>
                     <div className="col-7 d-flex flex-column justify-content-center">
-                        <h4>{namaProduk}</h4>
+                        <h4>{productName}</h4>
                         <div className="d-flex">
-                            <h6>{kategori}</h6>
+                            <h6>{category}</h6>
                             <h6 className="mx-3">|</h6>
-                            <h6>{berat}</h6>
+                            <h6>{netto}</h6>
                         </div>
                         <h5 className="mt-3">
                             {new Intl.NumberFormat("id-ID", {
                                 style: "currency",
                                 currency: "IDR",
-                            }).format(harga)}
+                            }).format(price)}
                         </h5>
-                        <p>{keterangan}</p>
+                        <p>{desc}</p>
                         {/* <Link
                             to=""
                             style={{ textDecoration: "none", color: "inherit" }}

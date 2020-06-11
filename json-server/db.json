@@ -1,205 +1,221 @@
 {
-  "pengguna": [
+  "users": [
     {
       "username": "admin",
       "password": "123",
       "email": "admin@gmail.com",
-      "namaLengkap": "admin",
+      "fullName": "admin",
       "role": "admin",
-      "noHP": "082666555",
+      "handphoneNumber": "082666555",
       "id": 1
     },
     {
       "username": "nanda",
       "password": "123",
       "email": "nanda@gmail.com",
-      "namaLengkap": "nanda",
-      "role": "pengguna",
-      "noHP": "082666555",
+      "fullName": "Ernanda Rully",
+      "role": "user",
+      "handphoneNumber": "082666555",
       "id": 2
     },
     {
       "username": "coba",
-      "namaLengkap": "coba aja",
+      "fullName": "coba aja",
       "email": "coba@gmail.com",
       "password": "123",
-      "role": "pengguna",
+      "role": "user",
+      "handphoneNumber": "",
       "id": 3
+    },
+    {
+      "username": "test",
+      "fullName": "test baru",
+      "email": "resr@gmail.com",
+      "password": "password",
+      "role": "user",
+      "id": 4
     }
   ],
-  "resep": [
+  "recipes": [
     {
-      "idPengguna": 2,
-      "judul": "Cookies Coklat",
-      "kategori": "Kue Kering",
-      "lamaMembuat": 10,
-      "jumlahPorsi": "3-4",
-      "gambar": "https://www.meals.com/imagesrecipes/30142lrg.jpg",
-      "keterangan": "ini paling laris",
+      "userId": 2,
+      "recipeName": "Cookies Coklat",
+      "category": "Kue Kering",
+      "cookTime": 10,
+      "numbServings": "3-4",
+      "image": "https://www.meals.com/imagesrecipes/30142lrg.jpg",
+      "desc": "ini paling laris",
       "id": 1
     }
   ],
-  "daftarBahan": [
+  "ingredientLists": [
     {
-      "namaBahan": "Coklat Batang",
+      "ingredientName": "Coklat Batang",
       "id": 1
     },
     {
-      "namaBahan": "Tepung Serbaguna",
+      "ingredientName": "Tepung Serbaguna",
       "id": 2
     },
     {
-      "namaBahan": "Soda kue",
+      "ingredientName": "Soda kue",
       "id": 3
     },
     {
-      "namaBahan": "Butter",
+      "ingredientName": "Butter",
       "id": 4
     },
     {
-      "namaBahan": "Telur",
+      "ingredientName": "Telur",
       "id": 5
     },
     {
-      "namaBahan": "Ekstrak Vanila",
+      "ingredientName": "Ekstrak Vanila",
       "id": 6
     }
   ],
-  "refPengukuran": [
+  "measurementUnits": [
     {
-      "keterangan": "Sendok Makan",
+      "measurementName": "Sendok Makan",
       "id": 1
     },
     {
-      "keterangan": "Sendok Teh",
+      "measurementName": "Sendok Teh",
       "id": 2
     },
     {
-      "keterangan": "Cangkir",
+      "measurementName": "Cangkir",
       "id": 3
     },
     {
-      "keterangan": "Sendok Makan",
+      "measurementName": "Sendok Makan",
       "id": 4
     },
     {
-      "keterangan": "Buah",
+      "measurementName": "Buah",
       "id": 5
     }
   ],
-  "detailBahan": [
+  "ingredientDetails": [
     {
-      "idBahan": 1,
-      "idResep": 1,
-      "qty": 4,
-      "idPengukuran": 5,
+      "ingredientId": 1,
+      "recipeId": 1,
+      "quantity": 4,
+      "measurementId": 5,
       "id": 1
     },
     {
-      "idBahan": 2,
-      "idResep": 1,
-      "qty": 2,
-      "idPengukuran": 3,
+      "ingredientId": 2,
+      "recipeId": 1,
+      "quantity": 2,
+      "measurementId": 3,
       "id": 2
     },
     {
-      "idBahan": 3,
-      "idResep": 1,
-      "qty": 2,
-      "idPengukuran": 3,
+      "ingredientId": 3,
+      "recipeId": 1,
+      "quantity": 2,
+      "measurementId": 3,
       "id": 3
     },
     {
-      "idBahan": 4,
-      "idResep": 1,
-      "qty": 3,
-      "idPengukuran": 5,
+      "ingredientId": 4,
+      "recipeId": 1,
+      "quantity": 3,
+      "measurementId": 5,
       "id": 4
     }
   ],
-  "daftarLangkah": [
+  "instructionLists": [
     {
-      "idResep": 1,
-      "namaLangkah": "Lelehkan semua coklat dengan butter dalam api sedang",
+      "recipeId": 1,
+      "instructionName": "Lelehkan semua coklat dengan butter dalam api sedang",
       "id": 1
     },
     {
-      "idResep": 1,
-      "namaLangkah": "Campur tepung, soda kue, dan garam. Setelah tercampur masukkan telur lalu aduk lagi dan masukkan coklat leleh sedikit demi sedikit",
+      "recipeId": 1,
+      "instructionName": "Campur tepung, soda kue, dan garam. Setelah tercampur masukkan telur lalu aduk lagi dan masukkan coklat leleh sedikit demi sedikit",
       "id": 3
     },
     {
-      "idResep": 1,
-      "namaLangkah": "Lapisi loyang dengan kertas kue dan butter, masukkan adonan dalam loyang. Lalu panggang dalam oven selama 8 - 9 menit",
+      "recipeId": 1,
+      "instructionName": "Lapisi loyang dengan kertas kue dan butter, masukkan adonan dalam loyang. Lalu panggang dalam oven selama 8 - 9 menit",
       "id": 4
     }
   ],
   "tips": [
     {
-      "gambar": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
-      "judul": "Chocolate Crinkle-Top Cookies",
-      "deskripsi": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
+      "image": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
+      "uploadDate": "",
+      "tipsName": "Chocolate Crinkle-Top Cookies",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
       "id": 1
     },
     {
-      "gambar": "https://www.meals.com/imagesrecipes/147657lrg.jpg",
-      "tglPosting": "",
-      "judul": "Cookies Coklat",
-      "deskripsi": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
+      "image": "https://www.meals.com/imagesrecipes/147657lrg.jpg",
+      "uploadDate": "",
+      "tipsName": "Cookies Coklat",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
       "id": 2
     },
     {
-      "gambar": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
-      "tglPosting": "",
-      "judul": "Tart ABC",
-      "deskripsi": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
+      "image": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
+      "uploadDate": "",
+      "tipsName": "Tart ABC",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
       "id": 3
     },
     {
-      "gambar": "https://www.meals.com/imagesrecipes/144770lrg.jpg",
-      "judul": "Red Velvel Anti Gagal",
-      "tglPosting": "2020-06-03T08:46:34.149Z",
-      "deskripsi": "1. Coklat\n    menggunakan coklat premium\n2. Gula \n    bisa memakai gula pasir jika tidak ada brown sugar\n3.  Butter\n     Jangan mengganti butter dengan margarine karena hasilnya akan berbeda",
+      "image": "https://www.meals.com/imagesrecipes/144770lrg.jpg",
+      "tipsName": "Red Velvel Anti Gagal",
+      "uploadDate": "2020-06-03T08:46:34.149Z",
+      "desc": "1. Coklat\n    menggunakan coklat premium\n2. Gula \n    bisa memakai gula pasir jika tidak ada brown sugar\n3.  Butter\n     Jangan mengganti butter dengan margarine karena hasilnya akan berbeda",
       "id": 4
     }
   ],
-  "produk": [
+  "products": [
     {
-      "namaProduk": "Tepung Beras Rose Brand",
-      "harga": 2300,
-      "kategori": "Tepung",
-      "berat": "220 gr",
-      "gambar": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/medium//87/MTA-4012277/rose_brand_rose_brand_tepung_beras_500_gr_full02.jpg?output-format=webp",
-      "keterangan": "aaaaaaaaaaaa",
+      "productName": "Tepung Beras Rose Brand",
+      "price": 2300,
+      "category": "Tepung",
+      "netto": "220 gr",
+      "image": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/medium//87/MTA-4012277/rose_brand_rose_brand_tepung_beras_500_gr_full02.jpg?output-format=webp",
+      "desc": "aaaaaaaaaaaa",
       "id": 1
     },
     {
-      "namaProduk": "Pasta Koepoe Cocopandan",
-      "harga": 6500,
-      "kategori": "Perasa",
-      "berat": "30 ml",
-      "gambar": "https://cf.shopee.co.id/file/787a5c5008841d021a9e77c17491811d",
-      "keterangan": "aaaaaaaaaaaa",
+      "productName": "Pasta Koepoe Cocopandan",
+      "price": 6500,
+      "category": "Perasa",
+      "netto": "30 ml",
+      "image": "https://cf.shopee.co.id/file/787a5c5008841d021a9e77c17491811d",
+      "desc": "aaaaaaaaaaaa",
       "id": 2
     },
     {
-      "namaProduk": "Pewarna Koepoe Warna Merah Cabe",
-      "harga": "5400",
-      "kategori": "Pewarna",
-      "berat": "30 ml",
-      "gambar": "https://ecs7.tokopedia.net/img/cache/700/product-1/2017/3/14/15297204/15297204_9b26b492-d8bf-4fe3-bbd3-5904e22e961c_800_800.jpg",
-      "keterangan": "aaaaaaaaaaa",
+      "productName": "Pewarna Koepoe Warna Merah Cabe",
+      "price": "5400",
+      "category": "Pewarna",
+      "netto": "30 ml",
+      "image": "https://ecs7.tokopedia.net/img/cache/700/product-1/2017/3/14/15297204/15297204_9b26b492-d8bf-4fe3-bbd3-5904e22e961c_800_800.jpg",
+      "desc": "aaaaaaaaaaa",
       "id": 3
     }
   ],
-  "keranjangBelanja": [
+  "carts": [
     {
-      "idPengguna": 2,
-      "idProduk": 1,
+      "userId": 2,
+      "productId": 1,
       "quantity": 2,
       "id": 1
+    },
+    {
+      "userId": 2,
+      "productId": 3,
+      "quantity": 1,
+      "id": 2
     }
   ],
-  "transaksi": [],
-  "detailTransaksi": []
+  "transactions": [],
+  "transactionDetails": []
 }

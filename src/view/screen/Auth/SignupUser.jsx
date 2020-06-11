@@ -9,10 +9,10 @@ class SignupAkun extends React.Component {
   state = {
     signupForm: {
       username: "",
-      namaLengkap: "",
+      fullName: "",
       email: "",
       password: "",
-      tampilPassword: false
+      showPassword: false
     }
   }
 
@@ -27,10 +27,10 @@ class SignupAkun extends React.Component {
   }
 
   signupButtonHandler = () => {
-    const { username, namaLengkap, email, password } = this.state.signupForm
+    const { username, fullName, email, password } = this.state.signupForm
     let newUser = {
       username,
-      namaLengkap,
+      fullName,
       email,
       password
     }
@@ -46,7 +46,7 @@ class SignupAkun extends React.Component {
     this.setState({
       [form]: {
         ...this.state[form],
-        tampilPassword: checked,
+        showPassword: checked,
       },
     });
   };
@@ -57,7 +57,7 @@ class SignupAkun extends React.Component {
 
 
   render() {
-    const { username, namaLengkap, email, password, tampilPassword } = this.state.signupForm
+    const { username, fullName, email, password, showPassword } = this.state.signupForm
     if (this.props.user.id > 0) {
       return <Redirect to="/" />
     }
@@ -87,9 +87,9 @@ class SignupAkun extends React.Component {
               <div className="d-flex justify-content-center">
                 <input
                   type="text"
-                  placeholder="Nama Lengkap" value={namaLengkap}
+                  placeholder="Nama Lengkap" value={fullName}
                   className="mt-3 form-control"
-                  onChange={(e) => this.inputHandler(e, "namaLengkap", "signupForm")}
+                  onChange={(e) => this.inputHandler(e, "fullName", "signupForm")}
                 />
               </div>
               <div className="d-flex justify-content-center">
@@ -102,7 +102,7 @@ class SignupAkun extends React.Component {
               </div>
               <div className="d-flex justify-content-center">
                 <input
-                  type={tampilPassword ? "text" : "password"}
+                  type={showPassword ? "text" : "password"}
                   placeholder="Password" value={password}
                   className="mt-3 form-control"
                   onChange={(e) => this.inputHandler(e, "password", "signupForm")}
@@ -111,7 +111,7 @@ class SignupAkun extends React.Component {
               <input
                 type="checkbox"
                 className="mt-3"
-                name="tampilPassword"
+                name="showPassword"
                 onChange={(e) => this.checkboxHandler(e, "signupForm")}
               />{" "}
                   Tampilkan Password

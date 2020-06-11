@@ -1,37 +1,88 @@
 import React from 'react';
 import "./Home.css";
 import logo from "../../../assets/images/logo/pie-image.jpg"
-import Card from '../../../component/cards/Card';
+import Card from '../../../component/Cards/Card';
+import { Link } from "react-router-dom";
+import Axios from "axios";
+import { API_URL } from "../../../constants/API";
 
 const resepList = [{
-    judulResep: "Chocolate Crinkle-Top Cookies",
+    recipeName: "Chocolate Crinkle-Top Cookies",
     kategori: "Cookies",
-    lamaMembuat: 10,
+    cookTime: 10,
     jumlahBahan: 2,
-    jumlahPorsi: '3-4',
-    gambar: logo
+    numbServings: '3-4',
+    image: logo,
+    userId: 2,
 },
 {
-    judulResep: "Butterscotch Rum Pound Cake",
+    recipeName: "Butterscotch Rum Pound Cake",
     kategori: "Cake",
-    lamaMembuat: 54,
-    jumlahBahan: 2,
-    jumlahPorsi: '3-4',
-    gambar: 'https://www.meals.com/imagesrecipes/30142lrg.jpg'
+    cookTime: 54,
+    userId: 2,
+    numbServings: '3-4',
+    image: 'https://www.meals.com/imagesrecipes/30142lrg.jpg'
 },
 {
-    judulResep: "Chocolate Crinkle-Top Cookies",
+    recipeName: "Chocolate Crinkle-Top Cookies",
     kategori: "Cookies",
-    lamaMembuat: 10,
-    jumlahBahan: 2,
-    jumlahPorsi: '3-4',
-    gambar: logo
+    cookTime: 10,
+    userId: 2,
+    numbServings: '3-4',
+    image: logo
 }
 ]
 class Home extends React.Component {
+    state = {
+        recipeList: []
+      }
+
+      getRecipeData = () => {
+        Axios.get(`${API_URL}/recipes`
+          , {
+            params: {
+              _expand: "user"
+            }
+          }
+        )
+          .then(res => {
+            console.log(res.data)
+            this.setState({ recipeList: res.data })
+          })
+          .catch(err => {
+            console.log(err)
+            alert('Data Kosong')
+          })
+      }
+
+      componentDidMount() {
+        this.getRecipeData();
+      }
+    
+      renderRecipeList = () => {
+        const { recipeList } = this.state
+        return recipeList.map(val => {
+          // return <Card resep={val} />
+          return (
+            <>
+              <div className="d-flex flex-column justify-content-center">
+              <Link
+                to={`/resep/${val.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <Card recipe={val} 
+                // key={`resep-${val.id}`} 
+                />
+              </Link>
+              </div>
+            </>
+          )
+        })
+      }
+
     listResep = () => {
         return resepList.map(val => {
-            return <Card resep={val} />
+            return <Card recipe={val} />
         })
     }
     render() {
@@ -44,7 +95,7 @@ class Home extends React.Component {
                 <div className="text-center mt-5">
                     <h2 style={{color: "inherit"}}>Resep Paling Populer</h2><br />
                     <div className="row d-flex flex-wrap justify-content-center">
-                        {this.listResep()}
+                        {this.renderRecipeList()}
                     </div>
                 </div>
             </div>

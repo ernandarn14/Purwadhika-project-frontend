@@ -12,7 +12,7 @@ class DashboardRecipe extends React.Component {
     }
 
     getRecipeData = () => {
-        Axios.get(`${API_URL}/resep`)
+        Axios.get(`${API_URL}/recipes`)
             .then(res => {
                 this.setState({ recipeList: res.data })
             })
@@ -29,12 +29,12 @@ class DashboardRecipe extends React.Component {
     renderRecipeList = () => {
         const { recipeList } = this.state
         return recipeList.map(val => {
-            const { judul, kategori, id } = val
+            const { recipeName, category, id } = val
             return (
                 <tr>
-                    <td>{judul}</td>
+                    <td>{recipeName}</td>
                     <td>{id}</td>
-                    <td>{kategori}</td>
+                    <td>{category}</td>
                     <td>
                         <div className="d-flex align-items-center justify-content-center">
                             <Link to="" style={{ textDecoration: "none" }}>
@@ -60,7 +60,7 @@ class DashboardRecipe extends React.Component {
                         <h3 className="text-center my-5">Dashboard Resep</h3>
                         <Link to="" style={{ textDecoration: "none" }}>
                             <Button type="contained">
-                                Tambah Artikel Tips dan Trik
+                                Tambah Resep
                             </Button>
                         </Link>
                         <table className="recipe-table table table-bordered  mt-4">

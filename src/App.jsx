@@ -8,8 +8,8 @@ import Home from "./view/screen/Home/Home";
 import Recipe from "./view/screen/Recipe/Recipe";
 import Product from "./view/screen/Product/Product";
 import Tips from "./view/screen/Tips/Tips";
-import LoginAkun from "./view/screen/Auth/LoginAkun";
-import SignupAkun from "./view/screen/Auth/SignupAkun";
+import LoginAkun from "./view/screen/Auth/LoginUser";
+import SignupAkun from "./view/screen/Auth/SignupUser";
 import { connect } from "react-redux";
 import Cookie from "universal-cookie";
 import {cookieChecker, userKeepLogin} from "./redux/actions"

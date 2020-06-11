@@ -3,7 +3,7 @@ import './Product.css'
 import Axios from 'axios'
 import { API_URL } from '../../../constants/API'
 import { Link } from "react-router-dom";
-import Button from "../../../component/Button/Buttons";
+// import Button from "../../../component/Button/Buttons";
 
 class Produk extends React.Component {
     state = {
@@ -11,7 +11,7 @@ class Produk extends React.Component {
     }
 
     getProductData = () => {
-        Axios.get(`${API_URL}/produk`)
+        Axios.get(`${API_URL}/products`)
             .then(res => {
                 this.setState({ productList: res.data })
             })
@@ -27,23 +27,22 @@ class Produk extends React.Component {
     renderProductData = () => {
         const { productList } = this.state
         return productList.map(val => {
-            const { gambar, namaProduk, harga, berat } = val
+            const { image, productName, price, netto } = val
             return (
                 <>
                     <div className="product-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center">
-                        <img src={gambar} alt="" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
                         <Link
                             to={`/produk/${val.id}`}
                             style={{ textDecoration: "none", color: "inherit" }}
                         >
-                            <h5 className="mt-2">{namaProduk}</h5>
-                        </Link>
-                        <p>{berat}</p>
-                        <h6 className="mt-2"> {new Intl.NumberFormat("id-ID", {
-                            style: "currency",
-                            currency: "IDR",
-                        }).format(harga)}</h6>
-                        {/* <Link
+                            <img src={image} alt="" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
+                            <h5 className="mt-2">{productName}</h5>
+                            <p>{netto}</p>
+                            <h6 className="mt-2"> {new Intl.NumberFormat("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                            }).format(price)}</h6>
+                            {/* <Link
                             to=""
                             style={{ textDecoration: "none", color: "inherit" }}
                         >
@@ -51,6 +50,7 @@ class Produk extends React.Component {
                                 Tambah ke Keranjang
                                 </Button>
                         </Link> */}
+                        </Link>
                     </div>
                 </>
             )

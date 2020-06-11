@@ -12,11 +12,11 @@ class DashboardTips extends React.Component {
     state = {
         tipsDataList: [],
         editTipsForm: {
-            gambar: "",
-            judul: "",
-            tglPosting: "",
+            image: "",
+            tipsName: "",
+            uploadDate: "",
             tglEdit: new Date(),
-            deskripsi: "",
+            desc: "",
             id: 0
         }
     }
@@ -38,17 +38,17 @@ class DashboardTips extends React.Component {
     renderTipsData = () => {
         const { tipsDataList } = this.state
         return tipsDataList.map((val, idx) => {
-            const { judul, tglPosting } = val
+            const { tipsName, uploadDate } = val
             return (
                 <tr>
                     {/* <th scope="row">{val.id}</th> */}
                     {/* <td>
                         <div className="d-flex align-items-center justify-content-center">
-                            <img src={gambar} alt="" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
+                            <img src={image} alt="" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
                         </div>
                     </td> */}
-                    <td>{judul}</td>
-                    <td>{tglPosting}</td>
+                    <td>{tipsName}</td>
+                    <td>{uploadDate}</td>
                     <td>
                         <div className="d-flex align-items-center justify-content-center">
                         <Link to="/admin/tips/edit" style={{ textDecoration: "none" }}>

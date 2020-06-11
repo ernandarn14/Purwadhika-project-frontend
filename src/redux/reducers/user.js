@@ -10,7 +10,7 @@ const {
 const init_state = {
     id: 0,
     username: "",
-    namaLengkap: "",
+    fullName: "",
     role: "",
     errMsg: "",
     cookieChecked: false
@@ -19,11 +19,11 @@ const init_state = {
 export default (state = init_state, action) => {
     switch (action.type) {
         case ON_LOGIN_SUCCESS:
-            const { username, namaLengkap, role, id } = action.payload;
+            const { username, fullName, role, id } = action.payload;
             return {
                 ...state,
                 username,
-                namaLengkap,
+                fullName,
                 role,
                 id,
                 cookieChecked: true

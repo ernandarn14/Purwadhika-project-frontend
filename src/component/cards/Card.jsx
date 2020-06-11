@@ -5,23 +5,24 @@ import Button from '../Button/Button'
 
 export default class Card extends React.Component {
     render() {
-        const { resep } = this.props
-        const { judul, jumlahPorsi, lamaMembuat, gambar, idPengguna } = resep
+        const { recipe } = this.props
+        const { recipeName, numbServings, cookTime, image, user } = recipe
+        const { fullName } = user
         const renderList = () => {
             return (
                 <>
-                    <img src={gambar} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                    <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                     <br />
-                    <h6 style={{ color: "inherit" }} className="mt-2">{judul}</h6>
-                    <p>Oleh: {idPengguna}</p>
+                    <h6 style={{ color: "inherit" }} className="mt-2">{recipeName}</h6>
+                    <p>Oleh: {fullName}</p>
                     <div className="d-flex justify-content-around mt-3">
                         <div className="d-flex">
                             <i className="material-icons mr-2">&#xe192;</i>
-                            <p style={{ color: "inherit" }}>{lamaMembuat} menit</p>
+                            <p style={{ color: "inherit" }}>{cookTime} menit</p>
                         </div>
                         <div className="d-flex">
                             <i className="material-icons mr-2">&#xe556;</i>
-                            <p style={{ color: "inherit" }}>{jumlahPorsi} orang</p>
+                            <p style={{ color: "inherit" }}>{numbServings} orang</p>
                         </div>
                         {/* <div className="d-flex">
                             <i className="material-icons mr-2">&#xe5d2;</i>

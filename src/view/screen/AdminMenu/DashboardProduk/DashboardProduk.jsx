@@ -4,22 +4,23 @@ import Axios from "axios"
 import { API_URL } from "../../../../constants/API"
 import Button from "../../../../component/Button/Buttons";
 import swal from "sweetalert";
+import { priceFormatter } from "../../../../supports/helpers/PriceFormatter"
 
 class DashboardProduk extends React.Component {
     state = {
         productList: [],
         addForm: {
-            namaProduk: "",
-            harga: 0,
-            kategori: "Tepung",
-            berat: 0,
-            gambar: "",
+            productName: "",
+            price: 0,
+            category: "Tepung",
+            netto: 0,
+            image: "",
             id: 0
         }
     }
 
     getProductData = () => {
-        Axios.get(`${API_URL}/produk`)
+        Axios.get(`${API_URL}/products`)
             .then(res => {
                 this.setState({ productList: res.data })
             })
@@ -35,12 +36,12 @@ class DashboardProduk extends React.Component {
     renderProductData = () => {
         const { productList } = this.state
         return productList.map(val => {
-            const { namaProduk, harga, kategori } = val
+            const { productName, price, category } = val
             return (
                 <tr>
-                    <td>{namaProduk}</td>
-                    <td>{kategori}</td>
-                    <td>{harga}</td>
+                    <td>{productName}</td>
+                    <td>{category}</td>
+                    <td>{priceFormatter(price)}</td>
                 </tr>
             )
         })
@@ -62,11 +63,11 @@ class DashboardProduk extends React.Component {
                 swal("Sukses", "Data Produk Berhasil Ditambah!", "success")
                 this.setState({
                     addForm: {
-                        namaProduk: "",
-                        harga: 0,
-                        kategori: "Tepung",
-                        berat: 0,
-                        gambar: "",
+                        productName: "",
+                        price: 0,
+                        category: "Tepung",
+                        netto: 0,
+                        image: "",
                         id: 0
                     }
                 })
@@ -90,8 +91,8 @@ class DashboardProduk extends React.Component {
                             <thead>
                                 <tr>
                                     <th>Nama Produk</th>
-                                    <th>Harga</th>
                                     <th>Kategori</th>
+                                    <th>Harga</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,25 +106,25 @@ class DashboardProduk extends React.Component {
                             <div className="row">
                                 <div className="col-4">
                                     <input type="text" className="form-control"
-                                        value={this.state.addForm.namaProduk}
+                                        value={this.state.addForm.productName}
                                         placeholder="Nama Produk"
                                         onChange={(e) =>
-                                            this.inputHandler(e, "namaProduk", "addForm")
+                                            this.inputHandler(e, "productName", "addForm")
                                         }
                                     />
                                 </div>
                                 <div className="col-4">
                                     <input type="text" className="form-control"
-                                        value={this.state.addForm.harga}
-                                        placeholder="Harga"
-                                        onChange={(e) => this.inputHandler(e, "harga", "addForm")}
+                                        value={this.state.addForm.price}
+                                        placeholder="price"
+                                        onChange={(e) => this.inputHandler(e, "price", "addForm")}
                                     />
                                 </div>
                                 <div className="col-4">
                                     <select
-                                        value={this.state.addForm.kategori}
+                                        value={this.state.addForm.category}
                                         className="custom-text-input h-100 pl-3"
-                                        onChange={(e) => this.inputHandler(e, "kategori", "addForm")}
+                                        onChange={(e) => this.inputHandler(e, "category", "addForm")}
                                     >
                                         <option>Tepung</option>
                                         <option>Ragi</option>
@@ -140,7 +141,7 @@ class DashboardProduk extends React.Component {
                                 </div>
                                 <div className="col-4 mt-3">
                                     <input type="text" className="form-control"
-                                        value={this.state.addForm.berat}
+                                        value={this.state.addForm.netto}
                                         placeholder="Berat Produk"
                                         onChange={(e) => this.inputHandler(e, "berat", "addForm")}
                                     />

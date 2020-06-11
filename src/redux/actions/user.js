@@ -11,7 +11,7 @@ export const loginHandler = (users) => {
     return dispatch =>{
         const { username, password } = users;
 
-        Axios.get(`${API_URL}/pengguna`, {
+        Axios.get(`${API_URL}/users`, {
             params: {
                 username,
                 password
@@ -45,7 +45,7 @@ export const logoutHandler = () => {
 
 export const signupHandler = (users) => {
     return (dispatch) => {
-        Axios.get(`${API_URL}/pengguna`, {
+        Axios.get(`${API_URL}/users`, {
             params: {
                 username: users.username
             } 
@@ -57,13 +57,13 @@ export const signupHandler = (users) => {
                     payload: "Username sudah digunakan"
                 })
             } else {
-                Axios.post(`${API_URL}/pengguna`, { ...users, role: "pengguna" })
+                Axios.post(`${API_URL}/users`, { ...users, role: "user" })
                 .then(res => {
                     dispatch({
                         type: ON_SIGNUP_SUCCESS,
                         payload: res.data
                     })
-                    alert("berhasil")
+                    // alert("berhasil")
                 })
                 .catch(err => {
                     console.log(err)
@@ -78,7 +78,7 @@ export const signupHandler = (users) => {
 
 export const userKeepLogin = (users) => {
     return (dispatch) => {
-      Axios.get(`${API_URL}/pengguna`, {
+      Axios.get(`${API_URL}/users`, {
         params: {
           id: users.id,
         },
