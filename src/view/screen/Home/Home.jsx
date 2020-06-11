@@ -89,7 +89,7 @@ class Home extends React.Component {
         return (
             <div className="container d-flex justify-content-center flex-column align-items-center">
                 <div className="d-flex justify-content-center flex-column header text-center">
-                    <h1>Solusi Resep Mudah, Cepat, dan Anti Gagal</h1>
+                    <h2 style={{color: "inherit"}}>Solusi Resep Mudah, Cepat, dan Anti Gagal</h2>
                     <h3>Cocok untuk di setiap acara dan suasana</h3>
                 </div>
                 <div className="text-center mt-5">

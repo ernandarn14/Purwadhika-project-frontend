@@ -98,31 +98,31 @@
   ],
   "ingredientDetails": [
     {
-      "ingredientId": 1,
+      "ingredientListId": 1,
       "recipeId": 1,
       "quantity": 4,
-      "measurementId": 5,
+      "measurementUnitId": 5,
       "id": 1
     },
     {
-      "ingredientId": 2,
+      "ingredientListId": 2,
       "recipeId": 1,
       "quantity": 2,
-      "measurementId": 3,
+      "measurementUnitId": 3,
       "id": 2
     },
     {
-      "ingredientId": 3,
+      "ingredientListId": 3,
       "recipeId": 1,
       "quantity": 2,
-      "measurementId": 3,
+      "measurementUnitId": 3,
       "id": 3
     },
     {
-      "ingredientId": 4,
+      "ingredientListId": 4,
       "recipeId": 1,
       "quantity": 3,
-      "measurementId": 5,
+      "measurementUnitId": 5,
       "id": 4
     }
   ],
