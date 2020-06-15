@@ -59,13 +59,13 @@ class ProductDetails extends React.Component {
                         produkId: this.state.productDetailList.id,
                         quantity: 1
                     })
-                    .then(res => {
-                        swal('Sukses', 'Produk Berhasil Ditambah ke Keranjang Belanja', 'success')
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        swal('Gagal', 'Produk Gagal Ditambah ke Keranjang Belanja', 'success')
-                    })
+                        .then(res => {
+                            swal('Sukses', 'Produk Berhasil Ditambah ke Keranjang Belanja', 'success')
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            swal('Gagal', 'Produk Gagal Ditambah ke Keranjang Belanja', 'success')
+                        })
                 }
             })
     }
@@ -77,19 +77,20 @@ class ProductDetails extends React.Component {
         const { productName, price, category, netto, image, desc } = productDetailList
         return (
             <div className="container">
-                <div className="d-flex justify-content-start py-4">
+                <div className="d-flex justify-content-start mt-4">
                     <Link to="/produk" style={{ textDecoration: "none" }}>
                         <Button type="textual">
                             Kembali ke Halaman Produk
                                 </Button>
                     </Link>
                 </div>
-                <div className="row py-5">
-                    <div className="col-5 text-right">
+                <h4 className="text-center my-5">{productName}</h4>
+                <div className="row">
+                    <div className="col-6 text-right">
                         <img src={image} alt="" style={{ width: "300px", height: "300px", objectFit: "contain" }} className="mt-2" />
                     </div>
-                    <div className="col-7 d-flex flex-column justify-content-center">
-                        <h4>{productName}</h4>
+                    <div className="col-6 d-flex flex-column justify-content-center">
+                        {/* <h4>{productName}</h4> */}
                         <div className="d-flex">
                             <h6>{category}</h6>
                             <h6 className="mx-3">|</h6>
@@ -102,14 +103,12 @@ class ProductDetails extends React.Component {
                             }).format(price)}
                         </h5>
                         <p>{desc}</p>
-                        {/* <Link
-                            to=""
-                            style={{ textDecoration: "none", color: "inherit" }}
-                        > */}
-                            <Button type="contained" className="mt-2" onClick={this.addToCart}>
+                        <div className="d-flex justify-content-start mt-3">
+                            <Button type="outlined">Tambah ke Rencana</Button>
+                            <Button type="contained" className="ml-3" onClick={this.addToCart}>
                                 Tambah ke Keranjang
-                                </Button>
-                        {/* </Link> */}
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>

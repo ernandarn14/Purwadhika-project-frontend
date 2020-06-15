@@ -20,21 +20,17 @@
   
   .tips-table thead tr {
     border: 0px !important;
-    text-transform: uppercase;
   }
   
   .tips-table thead tr th {
     padding: 12px 0px;
-    color: black;
+    color: var(--gray-lightest);
     font-size: 18px;
-    background-color: var(--gray-divider);
+    background-color: var(--accent-default);
   }
 
   
   .tips-table {
-    /* width: 100vw; */
-    /* border: 1px solid var(--accent-dark); */
-    /* background-color: var(--gray-lightest); */
     border-radius: 4px;
     text-align: center;
 }

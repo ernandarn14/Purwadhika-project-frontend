@@ -34,11 +34,11 @@ class TipsDetails extends React.Component {
 
     getAllTipsData = () => {
         Axios.get(`${API_URL}/tips`,
-        {
-            params: {
-                _limit: 3
-            }
-        })
+            {
+                params: {
+                    _limit: 3
+                }
+            })
             .then(res => {
                 this.setState({ tipsDataList: res.data })
             })
@@ -53,16 +53,16 @@ class TipsDetails extends React.Component {
             const { image, tipsName } = val
             return (
                 <>
-                    <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center">
-                        <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
-                        <h5 className="mt-2">{tipsName}</h5>
+                    <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center">
                         <Link
                             to={`/tips/${val.id}`}
                             style={{ textDecoration: "none", color: "inherit" }}
                         >
-                            <Button type="contained" className="mt-2">
+                            <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                            <h5 className="mt-2">{tipsName}</h5>
+                            {/* <Button type="contained" className="mt-2">
                                 Baca Selengkapnya
-                                </Button>
+                                </Button> */}
                         </Link>
                         {/* {this.getAllTipsData}
                         {this.getTipDataDetails()} */}
@@ -76,8 +76,8 @@ class TipsDetails extends React.Component {
         const { tipsList } = this.state
         const { tipsName, image, desc } = tipsList
         return (
-            <div className="container my-5">
-                <div className="d-flex justify-content-start">
+            <div className="container">
+                <div className="d-flex justify-content-start mt-4">
                     <Link to="/tips" style={{ textDecoration: "none" }}>
                         <Button type="textual">
                             Kembali ke Halaman Tips dan Trik
@@ -88,7 +88,7 @@ class TipsDetails extends React.Component {
                     <div className="col-12">
                         <div className="tips-details">
                             <div className="d-flex flex-column text-center align-items-center">
-                                <h3>{tipsName}</h3>
+                                <h3 className="my-4">{tipsName}</h3>
                                 <img src={image} alt="" style={{ width: "450px", height: "300px", objectFit: "contain" }} className="mt-2" />
                             </div>
                             <div className="d-flex mt-5 text-justify">

@@ -11,27 +11,23 @@
 
 .recipe-table {
     width: 100%;
-    /* border: 1px solid var(--accent-dark); */
     border-radius: 4px;
     text-align: center;
 }
 
 .recipe-table thead tr th {
     padding: 12px 0px;
-    color: black;
+    color: var(--gray-lightest);
     font-size: 18px;
-    /* border: 1px solid var(--accent-dark); */
-    background-color: var(--gray-divider);
+    background-color: var(--accent-default);
 }
 
 .recipe-table thead tr {
     border: 0px !important;
-    text-transform: uppercase;
 }
 
 .recipe-table td {
     white-space: nowrap;
     vertical-align: middle;
     padding: 16px 0px;
-    /* border: 1px solid var(--accent-dark); */
 }

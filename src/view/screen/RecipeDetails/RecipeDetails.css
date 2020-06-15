@@ -11,3 +11,28 @@
 .text-header{
     color: var(--accent-dark);
 }
+.cookTime{
+    background-color: var(--gray-divider);
+    width: 60%;
+    padding: 10px;
+    height: 20%;
+}
+
+.numbServings{
+    background-color: var(--accent-light);
+    width: 60%;
+    padding: 10px;
+    height: 20%;
+}
+
+.desc{
+    background-color: var(--gray-divider);
+    width: 60%;
+    padding: 10px;
+    height: 55%;
+}
+
+.material-icons{
+    color: inherit;
+    text-align: right;
+}

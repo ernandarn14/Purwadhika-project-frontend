@@ -3,11 +3,13 @@ import './Product.css'
 import Axios from 'axios'
 import { API_URL } from '../../../constants/API'
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
 // import Button from "../../../component/Button/Buttons";
 
 class Produk extends React.Component {
     state = {
-        productList: []
+        productList: [],
+        categoryFilter: ""
     }
 
     getProductData = () => {
@@ -28,21 +30,23 @@ class Produk extends React.Component {
         const { productList } = this.state
         return productList.map(val => {
             const { image, productName, price, netto } = val
-            return (
-                <>
-                    <div className="product-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center">
-                        <Link
-                            to={`/produk/${val.id}`}
-                            style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                            <img src={image} alt="" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
-                            <h5 className="mt-2">{productName}</h5>
-                            <p>{netto}</p>
-                            <h6 className="mt-2"> {new Intl.NumberFormat("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                            }).format(price)}</h6>
-                            {/* <Link
+            if (productName.toLowerCase().includes(this.props.search.searchInput.toLowerCase()) &&
+            val.category.toLowerCase().includes(this.state.categoryFilter)) {
+                return (
+                    <>
+                        <div className="product-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center">
+                            <Link
+                                to={`/produk/${val.id}`}
+                                style={{ textDecoration: "none", color: "inherit" }}
+                            >
+                                <img src={image} alt="" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
+                                <h5 className="mt-2">{productName}</h5>
+                                <p>{netto}</p>
+                                <h6 className="mt-2"> {new Intl.NumberFormat("id-ID", {
+                                    style: "currency",
+                                    currency: "IDR",
+                                }).format(price)}</h6>
+                                {/* <Link
                             to=""
                             style={{ textDecoration: "none", color: "inherit" }}
                         >
@@ -50,10 +54,11 @@ class Produk extends React.Component {
                                 Tambah ke Keranjang
                                 </Button>
                         </Link> */}
-                        </Link>
-                    </div>
-                </>
-            )
+                            </Link>
+                        </div>
+                    </>
+                )
+            }
         })
     }
 
@@ -82,4 +87,12 @@ class Produk extends React.Component {
         )
     }
 }
-export default Produk
+
+const mapStateToProps = (state) => {
+    return {
+        search: state.search,
+    };
+};
+
+
+export default connect(mapStateToProps)(Produk)

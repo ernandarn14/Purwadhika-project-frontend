@@ -66,7 +66,7 @@ class MyResep extends React.Component {
                     <div className="col-12">
                         <h3 className="text-center my-5">Resep Saya</h3>
                         <Link to="" style={{ textDecoration: "none" }}>
-                            <Buttons type="contained">
+                            <Buttons type="outlined">
                                 Tambah Resep
                             </Buttons>
                         </Link>

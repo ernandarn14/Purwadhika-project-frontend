@@ -4,29 +4,7 @@ import { Link } from "react-router-dom";
 import Button from "../../../component/Button/Buttons";
 import Axios from 'axios';
 import { API_URL } from '../../../constants/API';
-
-const tipsData = [
-    {
-        image: "https://www.meals.com/imagesrecipes/30128lrg.jpg",
-        tipsName: "Chocolate Crinkle-Top Cookies",
-        deskripsi: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?"
-    },
-    {
-        image: "https://www.meals.com/imagesrecipes/147657lrg.jpg",
-        tipsName: "Chocolate Crinkle-Top Cookies",
-        deskripsi: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?"
-    },
-    {
-        image: "https://www.meals.com/imagesrecipes/30128lrg.jpg",
-        tipsName: "Chocolate Crinkle-Top Cookies",
-        deskripsi: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?"
-    },
-    {
-        image: "https://www.meals.com/imagesrecipes/147657lrg.jpg",
-        tipsName: "Chocolate Crinkle-Top Cookies",
-        deskripsi: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?"
-    }
-]
+import { connect } from 'react-redux';
 
 class Tips extends React.Component {
     state = {
@@ -51,46 +29,27 @@ class Tips extends React.Component {
         const { tipsDataList } = this.state
         return tipsDataList.map(val => {
             const { image, tipsName } = val
-            return (
-                <>
-                    <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center">
-                        <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
-                        <h5 className="mt-2">{tipsName}</h5>
-                        <Link
-                            to={`/tips/${val.id}`}
-                            style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                            <Button type="contained" className="mt-2">
-                                Baca Selengkapnya
-                                </Button>
-                        </Link>
-                    </div>
-                </>
-            )
+            if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
+                return (
+                    <>
+                        <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center">
+                            <Link
+                                to={`/tips/${val.id}`}
+                                style={{ textDecoration: "none", color: "inherit" }}
+                            >
+                                <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                                <h5 className="mt-2">{tipsName}</h5>
+                                {/* <Button type="contained" className="mt-2">
+                                    Baca Selengkapnya
+                                </Button> */}
+                            </Link>
+                        </div>
+                    </>
+                )
+            }
         })
     }
 
-    tipsList = () => {
-        return tipsData.map(val => {
-            const { image, tipsName } = val
-            return (
-                <>
-                    <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center">
-                        <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
-                        <h5 className="mt-2">{tipsName}</h5>
-                        <Link
-                            to=""
-                            style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                            <Button type="contained" className="mt-2">
-                                Baca Selengkapnya
-                                </Button>
-                        </Link>
-                    </div>
-                </>
-            )
-        })
-    }
     render() {
         return (
             <div className="container">
@@ -102,4 +61,11 @@ class Tips extends React.Component {
         )
     }
 }
-export default Tips
+
+const mapStateToProps = (state) => {
+    return {
+        search: state.search,
+    };
+};
+
+export default connect(mapStateToProps)(Tips)

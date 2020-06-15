@@ -29,7 +29,8 @@ export default class Card extends React.Component {
                             <h6>{jumlahBahan} bahan</h6>
                         </div> */}
                     </div><br />
-                    <div className="d-flex justify-content-center">
+                    <div className="d-flex justify-content-around">
+                        <Button type="outlined">Tambah ke Rencana</Button>
                         <Button type="contained" className="ml-3">Lihat Resep</Button>
                     </div>
                 </>

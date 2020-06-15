@@ -13,6 +13,7 @@ import {
   DropdownToggle,
   DropdownMenu,
 } from "reactstrap";
+import { navbarSearchHandler } from "../../redux/actions/search";
 
 class Navbar extends React.Component {
   state = {
@@ -62,6 +63,7 @@ class Navbar extends React.Component {
         >
           <input
             type="text"
+            onChange={this.props.onSearch}
             className="navbarSearch"
             placeholder="Ketik untuk mencari"
           />
@@ -121,7 +123,7 @@ class Navbar extends React.Component {
                         <DropdownItem>
                           <Link style={{ color: "inherit", textDecoration: "none" }}
                             to="/rencana">
-                            Rencana Baking
+                            Rencana Saya
                       </Link>
                         </DropdownItem>
                         <DropdownItem>
@@ -199,6 +201,7 @@ const mapStateToProps = (state) => {
 
 const mapDispacthToProps = {
   onLogout: logoutHandler,
+  onSearch: navbarSearchHandler
 };
 
 export default connect(mapStateToProps, mapDispacthToProps)(Navbar);

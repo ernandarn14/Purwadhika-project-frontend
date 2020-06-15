@@ -109,7 +109,7 @@ class DashboardTips extends React.Component {
                     <div className="col-12">
                         <h3 className="text-center my-5">Dashboard Tips dan Trik</h3>
                         <Link to="/admin/tips/tambah" style={{ textDecoration: "none" }}>
-                            <Button type="contained">
+                            <Button type="outlined">
                                 Tambah Artikel Tips dan Trik
                             </Button>
                         </Link>

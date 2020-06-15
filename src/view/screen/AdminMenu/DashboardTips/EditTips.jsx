@@ -5,7 +5,7 @@ import { API_URL } from "../../../../constants/API";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
 
-class EditTips extends React.Component{
+class EditTips extends React.Component {
     state = {
         editTipsForm: {
             gambar: "",
@@ -29,29 +29,29 @@ class EditTips extends React.Component{
 
     editTipsHandler = () => {
         Axios.put(`${API_URL}/tips/${this.state.editTipsForm.id}`, this.state.editTipsForm)
-        .then(res => {
-            console.log(res.data)
-            swal("Sukses", "Artikel Berhasil Diubah!", "success")
-        })
-        .catch(err => {
-            swal("Gagal", "Artikel Gagal Diubah!", "error")
-        })
+            .then(res => {
+                console.log(res.data)
+                swal("Sukses", "Artikel Berhasil Diubah!", "success")
+            })
+            .catch(err => {
+                swal("Gagal", "Artikel Gagal Diubah!", "error")
+            })
     }
 
-    render(){
+    render() {
         const { gambar, judul, deskripsi } = this.state.editTipsForm
-        return(
+        return (
             <div className="container">
-            <div className="row">
-                <div className="col-12">
-                <h3 className="text-center my-5">Edit Artikel</h3>
-                <div className="d-flex justify-content-start">
-                            <Link to="/admin/tips" style={{ textDecoration: "none" }}>
-                                <Button type="textual">
-                                    Kembali ke Dasboard Tips
+                <div className="row">
+                    <div className="d-flex justify-content-start mt-4">
+                        <Link to="/admin/tips" style={{ textDecoration: "none" }}>
+                            <Button type="textual">
+                                Kembali ke Dasboard Tips
                             </Button>
-                            </Link>
-                        </div>
+                        </Link>
+                    </div>
+                    <div className="col-12">
+                        <h3 className="text-center my-5">Edit Artikel</h3>
                         <div className="d-flex align-items-center justify-content-center mt-4">
                             <input type="text" className="form-control w-75"
                                 placeholder="Judul Artikel Tips dan Trik"
@@ -86,9 +86,9 @@ class EditTips extends React.Component{
                             </Button>
                             </Link>
                         </div>
+                    </div>
                 </div>
             </div>
-        </div>
         )
     }
 }

@@ -6,7 +6,7 @@ class Wishlist extends React.Component{
             <div className="container">
                 <div className="row">
                     <div className="col-12">
-                    <h3 className="text-center my-5">Rencana Resep</h3>
+                    <h3 className="text-center my-5">Rencana Saya</h3>
                     </div>
                 </div>
             </div>

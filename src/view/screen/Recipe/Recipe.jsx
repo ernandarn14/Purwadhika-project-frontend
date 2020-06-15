@@ -5,12 +5,14 @@ import Card from "../../../component/Cards/Card";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
+import { connect } from "react-redux";
 // import Button from "../../../component/Button/Buttons";
 
 
 class Resep extends React.Component {
   state = {
-    recipeList: []
+    recipeList: [],
+    categoryFilter: ""
   }
 
   getRecipeData = () => {
@@ -39,20 +41,23 @@ class Resep extends React.Component {
     const { recipeList } = this.state
     return recipeList.map(val => {
       // return <Card resep={val} />
-      return (
-        <>
-          <div className="d-flex flex-column justify-content-center">
-          <Link
-            to={`/resep/${val.id}`}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <Card recipe={val} 
-            // key={`resep-${val.id}`} 
-            />
-          </Link>
-          </div>
-        </>
-      )
+      if (val.recipeName.toLowerCase().includes(this.props.search.searchInput.toLowerCase()) &&
+        val.category.toLowerCase().includes(this.state.categoryFilter)) {
+        return (
+          <>
+            <div className="d-flex flex-column justify-content-center">
+              <Link
+                to={`/resep/${val.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <Card recipe={val}
+                // key={`resep-${val.id}`} 
+                />
+              </Link>
+            </div>
+          </>
+        )
+      }
     })
   }
 
@@ -63,19 +68,19 @@ class Resep extends React.Component {
         <h3 className="text-center my-5">Katalog Resep</h3>
         <div className="d-flex align-items-center justify-content-center text-center mx-4 kategori-filter">
           <div className="row">
-            <Link className="mx-4 kategori" to="" style={{ textDecoration: "none" }}>
+            <Link className="mx-4 kategori" to="/resep" style={{ textDecoration: "none" }} onClick={() => this.setState({ categoryFilter: "cakes" })}>
               <img src="https://www.meals.com/imagesrecipes/145800lrg.jpg" alt="" className="img-kategori" />
               <h6 className="text-center">Cakes</h6>
             </Link>
-            <Link className="mx-4 kategori" to="" style={{ textDecoration: "none" }}>
+            <Link className="mx-4 kategori" to="/resep" style={{ textDecoration: "none" }} onClick={() => this.setState({ categoryFilter: "kue kering" })}>
               <img src="https://www.meals.com/imagesrecipes/147086lrg.jpg" alt="" className="img-kategori" />
               <h6 className="text-center">Kue Kering</h6>
             </Link>
-            <Link className="mx-4 kategori" to="" style={{ textDecoration: "none" }}>
+            <Link className="mx-4 kategori" to="/resep" style={{ textDecoration: "none" }} onClick={() => this.setState({ categoryFilter: "roti dan muffin" })}>
               <img src="https://www.meals.com/imagesrecipes/145078lrg.jpg" alt="" className="img-kategori" />
               <h6 className="text-center">Roti dan Muffin</h6>
             </Link>
-            <Link className="mx-4 kategori" to="" style={{ textDecoration: "none" }}>
+            <Link className="mx-4 kategori" to="/resep" style={{ textDecoration: "none" }} onClick={() => this.setState({ categoryFilter: "pastry" })} >
               <img src="https://www.meals.com/imagesrecipes/32090lrg.jpg" alt="" className="img-kategori" />
               <h6 className="text-center">Pastry</h6>
             </Link>
@@ -89,4 +94,10 @@ class Resep extends React.Component {
   }
 }
 
-export default Resep;
+const mapStateToProps = (state) => {
+  return {
+      search: state.search,
+  };
+};
+
+export default connect(mapStateToProps)(Resep) ;

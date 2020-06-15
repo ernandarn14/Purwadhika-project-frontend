@@ -13,14 +13,19 @@ class RecipeDetails extends React.Component {
             cookTime: 0,
             jumlahPorsi: "",
             image: "",
-            desc: ""
+            desc: "",
+            user: []
         },
         ingredientDetails: [],
         instructionLists: []
     }
 
     getRecipeDetails = () => {
-        Axios.get(`${API_URL}/recipes/${this.props.match.params.resepId}`)
+        Axios.get(`${API_URL}/recipes/${this.props.match.params.resepId}`, {
+            params: {
+                _expand: "user"
+            }
+        })
             .then(res => {
                 console.log(res.data)
                 this.setState({ recipeDetailList: res.data })
@@ -52,19 +57,20 @@ class RecipeDetails extends React.Component {
                 recipeId: this.props.match.params.resepId,
             }
         })
-        .then(res => {
-            console.log(res.data)
-            this.setState({ instructionLists: res.data })
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            .then(res => {
+                console.log(res.data)
+                this.setState({ instructionLists: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     renderRecipeDetails = () => {
         const { recipeDetail } = this.state
         return recipeDetail.map(val => {
-            const { recipeName, category, cookTime, numbServings, image, desc } = val
+            const { recipeName, category, cookTime, numbServings, image, desc, user } = val
+            const { fullName } = user
             return (
                 <>
                     <h3 className="text-center my-5">{recipeName}</h3>
@@ -73,9 +79,9 @@ class RecipeDetails extends React.Component {
                             <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                         </div>
                         <div className="col-6">
-                            {/* <h6>{val.pengguna.namaLengkap}</h6> */}
                             <h6>{category}</h6>
-                            <h6>{cookTime} menit</h6>
+                            <h6>Oleh: {fullName}</h6>
+                            <h6>{cookTime}</h6>
                             <h6>{numbServings} porsi</h6>
                             <h6>{desc}</h6>
                         </div>
@@ -87,13 +93,13 @@ class RecipeDetails extends React.Component {
 
     renderInstructionDetails = () => {
         const { instructionLists } = this.state
-        return instructionLists.map((val,idx) => {
+        return instructionLists.map((val, idx) => {
             const { instructionName } = val
             return (
-                    <div className="d-flex mt-2 align-items-center text-justify">
-                        <h6>{idx+=1}.</h6>
-                        <h6 className="ml-3">{instructionName}</h6>
-                    </div>
+                <div className="d-flex mt-2 align-items-center text-justify">
+                    <h6>{idx += 1}.</h6>
+                    <h6 className="ml-3">{instructionName}</h6>
+                </div>
             )
         })
     }
@@ -105,11 +111,11 @@ class RecipeDetails extends React.Component {
             const { ingredientName } = ingredientList
             const { measurementName } = measurementUnit
             return (
-                    <div className="d-flex mt-2 align-items-center">
-                        <h6>{quantity}</h6>
-                        <h6 className="ml-2">{measurementName}</h6>
-                        <h6 className="ml-2">{ingredientName}</h6>
-                    </div>
+                <div className="d-flex mt-2 align-items-center">
+                    <h6>{quantity}</h6>
+                    <h6 className="ml-2">{measurementName}</h6>
+                    <h6 className="ml-2">{ingredientName}</h6>
+                </div>
             )
         })
     }
@@ -123,10 +129,11 @@ class RecipeDetails extends React.Component {
 
 
     render() {
-        const { recipeName, category, cookTime, numbServings, image, desc } = this.state.recipeDetailList
+        const { recipeName, cookTime, numbServings, image, desc, user } = this.state.recipeDetailList
+        const { fullName } = user
         return (
             <div className="container">
-                <div className="d-flex justify-content-start py-4">
+                <div className="d-flex justify-content-start mt-4">
                     <Link to="/resep" style={{ textDecoration: "none" }}>
                         <Buttons type="textual">
                             Kembali ke Halaman Resep
@@ -138,27 +145,38 @@ class RecipeDetails extends React.Component {
                         {/* <h3 className="text-center my-5">Resep Detail</h3> */}
                         {/* {this.renderRecipeDetails()} */}
                         <div className="recipe-data">
-                            <h3 className="text-header text-center my-5">{recipeName}</h3>
+                            <div className="text-center my-5">
+                                <h3 className="text-header">{recipeName}</h3>
+                                <h6>Oleh: {fullName}</h6>
+                            </div>
                             <div className="row">
-                                <div className="col-6 text-center">
+                                <div className="col-6 text-right">
                                     <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                                 </div>
                                 <div className="col-6">
-                                    <h6>{category}</h6>
-                                    <h6>{cookTime} menit</h6>
-                                    <h6>{numbServings} porsi</h6>
-                                    <h6>{desc}</h6>
+                                    {/* <h6>{category}</h6> */}
+                                    <div className="cookTime my-1 d-flex justify-content-between">
+                                        <h6>{cookTime} menit</h6>
+                                        <i className="material-icons">&#xe192;</i>
+                                    </div>
+                                    <div className="numbServings my-1 d-flex justify-content-between">
+                                        <h6>{numbServings} porsi</h6>
+                                        <i className="material-icons">&#xe556;</i>
+                                    </div>
+                                    <div className="desc">
+                                        <h6>{desc}</h6>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div className="ingredient-data d-flex">
                             <div className="w-50">
-                            <h3 className="text-header mt-5 mb-4">Bahan</h3>
-                            {this.renderIngredientDetails()}
+                                <h3 className="text-header mt-5 mb-4">Bahan</h3>
+                                {this.renderIngredientDetails()}
                             </div>
                             <div className="w-50">
-                            <h3 className="text-header mt-5 mb-4">Langkah Membuat</h3>
-                            {this.renderInstructionDetails()}
+                                <h3 className="text-header mt-5 mb-4">Langkah Membuat</h3>
+                                {this.renderInstructionDetails()}
                             </div>
                         </div>
                     </div>
