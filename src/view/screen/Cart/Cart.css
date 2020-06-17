@@ -1,0 +1,33 @@
+:root {
+    --accent-default: #ac7339;
+    --accent-dark: #86592d;
+    --accent-light: #d9b38c;
+    --gray-lightest: #f4f5f4;
+    --gray-divider: #e2e5e6;
+    --gray-default: #c3cbcd;
+    --gray-dark: #737b7d;
+    --black: #373f41;
+}
+
+.cart-data{
+    width: 100%;
+    text-align: center;
+}
+
+.cart-data thead tr th {
+    padding: 12px 0px;
+    color: var(--gray-lightest);
+    font-size: 18px;
+    background-color: var(--accent-default);
+}
+.cart-data thead tr {
+    border: 0px !important;
+}
+
+.cart-data tbody tr td{
+    vertical-align: middle;
+}
+
+.material-icons{
+    cursor: pointer;
+}

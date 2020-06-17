@@ -13,7 +13,8 @@ const init_state = {
     fullName: "",
     role: "",
     errMsg: "",
-    cookieChecked: false
+    cookieChecked: false,
+    cartItems: 0
 };
 
 export default (state = init_state, action) => {
@@ -36,6 +37,8 @@ export default (state = init_state, action) => {
             return { ...init_state, cookieChecked: true };
         case "COOKIE_CHECK":
             return { ...state, cookieChecked: true };
+        case "FILL_CART":
+            return { ...state, cartItems: action.payload };
         default:
             return { ...state };
     }

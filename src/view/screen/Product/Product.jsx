@@ -4,6 +4,7 @@ import Axios from 'axios'
 import { API_URL } from '../../../constants/API'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
+import { priceFormatter } from '../../../supports/helpers/PriceFormatter';
 // import Button from "../../../component/Button/Buttons";
 
 class Produk extends React.Component {
@@ -42,10 +43,7 @@ class Produk extends React.Component {
                                 <img src={image} alt="" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
                                 <h5 className="mt-2">{productName}</h5>
                                 <p>{netto}</p>
-                                <h6 className="mt-2"> {new Intl.NumberFormat("id-ID", {
-                                    style: "currency",
-                                    currency: "IDR",
-                                }).format(price)}</h6>
+                                <h6 className="mt-2"> {priceFormatter(price)}</h6>
                                 {/* <Link
                             to=""
                             style={{ textDecoration: "none", color: "inherit" }}
@@ -70,7 +68,7 @@ class Produk extends React.Component {
                     <div className="col-12">
                         <h3 className="text-center my-5">Katalog Produk</h3>
                         <div className="d-flex">
-                            <label for="kategori">Kategori: </label>
+                            <label>Kategori: </label>
                             <select id="kategori" className="ml-3">
                                 <option>Tepung</option>
                                 <option>Ragi</option>

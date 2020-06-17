@@ -176,6 +176,7 @@
   "products": [
     {
       "productName": "Tepung Beras Rose Brand",
+      "brandId": 1,
       "price": 2300,
       "category": "Tepung",
       "netto": "220 gr",
@@ -185,6 +186,7 @@
     },
     {
       "productName": "Pasta Koepoe Cocopandan",
+      "brandId": 2,
       "price": 6500,
       "category": "Perasa",
       "netto": "30 ml",
@@ -194,6 +196,7 @@
     },
     {
       "productName": "Pewarna Koepoe Warna Merah Cabe",
+      "brandId": 2,
       "price": "5400",
       "category": "Pewarna",
       "netto": "30 ml",
@@ -206,16 +209,51 @@
     {
       "userId": 2,
       "productId": 1,
-      "quantity": 2,
+      "quantity": 3,
       "id": 1
     },
     {
       "userId": 2,
       "productId": 3,
       "quantity": 1,
-      "id": 2
+      "id": 3
+    },
+    {
+      "userId": 2,
+      "productId": 2,
+      "quantity": 1,
+      "id": 4
     }
   ],
   "transactions": [],
-  "transactionDetails": []
+  "transactionDetails": [],
+  "wishlistProducts": [
+    {
+      "userId": 2,
+      "productId": 1,
+      "id": 1
+    },
+    {
+      "userId": 2,
+      "productId": 2,
+      "id": 2
+    }
+  ],
+  "wishlistRecipes": [
+    {
+      "userId": 2,
+      "recipeId": 1,
+      "id": 1
+    }
+  ],
+  "brands": [
+    {
+      "brandName": "Rose Brand",
+      "id": 1
+    },
+    {
+      "brandName": "Koepoe",
+      "id": 2
+    }
+  ]
 }

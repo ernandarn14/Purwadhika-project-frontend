@@ -24,10 +24,6 @@ export default class Card extends React.Component {
                             <i className="material-icons mr-2">&#xe556;</i>
                             <p style={{ color: "inherit" }}>{numbServings} orang</p>
                         </div>
-                        {/* <div className="d-flex">
-                            <i className="material-icons mr-2">&#xe5d2;</i>
-                            <h6>{jumlahBahan} bahan</h6>
-                        </div> */}
                     </div><br />
                     <div className="d-flex justify-content-around">
                         <Button type="outlined">Tambah ke Rencana</Button>

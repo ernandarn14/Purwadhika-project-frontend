@@ -51,14 +51,8 @@ class DashboardTips extends React.Component {
                     <td>{uploadDate}</td>
                     <td>
                         <div className="d-flex align-items-center justify-content-center">
-                        <Link to="/admin/tips/edit" style={{ textDecoration: "none" }}>
-                            <Button type="textual" onClick={(_) => this.editBtnHandler(idx)}>
-                                Edit
-                            </Button>
-                        </Link>
-                            <Button type="outlined" className="ml-3" onClick={() => this.deleteDataHandler(val.id)}>
-                                Hapus
-                    </Button>
+                            <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
+                            <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
                         </div>
                     </td>
                 </tr>
@@ -95,10 +89,10 @@ class DashboardTips extends React.Component {
     editBtnHandler = (idx) => {
         this.setState({
             editTipsForm: {
-            ...this.state.tipsDataList[idx],
-          }
+                ...this.state.tipsDataList[idx],
+            }
         });
-      };
+    };
 
 
 

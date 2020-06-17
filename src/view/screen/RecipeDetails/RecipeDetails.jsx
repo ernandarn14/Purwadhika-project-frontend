@@ -169,16 +169,29 @@ class RecipeDetails extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="ingredient-data d-flex">
-                            <div className="w-50">
-                                <h3 className="text-header mt-5 mb-4">Bahan</h3>
-                                {this.renderIngredientDetails()}
-                            </div>
-                            <div className="w-50">
-                                <h3 className="text-header mt-5 mb-4">Langkah Membuat</h3>
-                                {this.renderInstructionDetails()}
-                            </div>
+                    </div>
+                    <div className="row ingredient-data">
+                        <div className="col-4">
+                            <h3 className="text-header mt-5 mb-4">Bahan</h3>
+                            {this.renderIngredientDetails()}
                         </div>
+                        <div className="col-8">
+                            <h3 className="text-header mt-5 mb-4">Langkah Membuat</h3>
+                            {this.renderInstructionDetails()}
+                        </div>
+                    </div>
+                    {/* </div> */}
+                </div>
+                <div className="row mt-5 review-recipe">
+                    <div className="col-12">
+                        <h4 className="review-header">Ulasan</h4>
+                        <textarea placeholder="Silahkan Tulis Ulasan Disini" className="my-3 review-text">
+
+                        </textarea>
+                        <div className="d-flex justify-content-end">
+                            <Buttons type="contained">Simpan</Buttons>
+                        </div>
+
                     </div>
                 </div>
             </div>

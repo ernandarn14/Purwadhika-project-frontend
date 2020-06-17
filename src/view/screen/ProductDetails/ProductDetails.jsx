@@ -6,21 +6,29 @@ import { Link } from "react-router-dom"
 import Button from "../../../component/Button/Buttons"
 import { connect } from "react-redux"
 import swal from "sweetalert"
+import { countCart } from "../../../redux/actions";
+import { priceFormatter } from "../../../supports/helpers/PriceFormatter"
 
 class ProductDetails extends React.Component {
     state = {
         productDetailList: {
             productName: "",
+            brand: [],
             price: 0,
             category: "",
             netto: "",
             image: "",
-            desc: ""
+            desc: "",
+            id: 0
         }
     }
 
     getProductDetails = () => {
-        Axios.get(`${API_URL}/products/${this.props.match.params.produkId}`)
+        Axios.get(`${API_URL}/products/${this.props.match.params.produkId}`, {
+            params: {
+                _expand: "brand"
+            }
+        })
             .then(res => {
                 this.setState({ productDetailList: res.data })
             })
@@ -35,46 +43,78 @@ class ProductDetails extends React.Component {
     }
 
     addToCart = () => {
-        Axios.get(`${API_URL}/keranjangBelanja`, {
+        Axios.get(`${API_URL}/carts`, {
             params: {
-                idPengguna: this.props.user.id,
-                produkId: this.state.productDetailList.id
+                userId: this.props.user.id,
+                productId: this.state.productDetailList.id
             }
         })
             .then(res => {
                 if (res.data.length) {
-                    Axios.patch(`${API_URL}/keranjangBelanja/${res.data[0].id}`, {
+                    Axios.patch(`${API_URL}/carts/${res.data[0].id}`, {
                         quantity: res.data[0].quantity + 1
                     })
                         .then(res => {
                             swal('Sukses', 'Produk Berhasil Ditambah ke Keranjang Belanja', 'success')
+                            this.props.countCart(this.props.user.id);
                         })
                         .catch(err => {
                             console.log(err)
-                            swal('Gagal', 'Produk Gagal Ditambah ke Keranjang Belanja', 'success')
+                            swal('Gagal', 'Produk Gagal Ditambah ke Keranjang Belanja', 'error')
                         })
                 } else {
-                    Axios.post(`${API_URL}/keranjangBelanja`, {
-                        idPengguna: this.props.user.id,
-                        produkId: this.state.productDetailList.id,
+                    Axios.post(`${API_URL}/carts`, {
+                        userId: this.props.user.id,
+                        productId: this.state.productDetailList.id,
                         quantity: 1
                     })
                         .then(res => {
                             swal('Sukses', 'Produk Berhasil Ditambah ke Keranjang Belanja', 'success')
+                            this.props.countCart(this.props.user.id);
                         })
                         .catch(err => {
                             console.log(err)
-                            swal('Gagal', 'Produk Gagal Ditambah ke Keranjang Belanja', 'success')
+                            swal('Gagal', 'Produk Gagal Ditambah ke Keranjang Belanja', 'error')
                         })
                 }
             })
     }
 
+    addWishlistProduct = () => {
+        Axios.get(`${API_URL}/wishlistProducts`, {
+            params: {
+                userId: this.props.user.id,
+                productId: this.state.productDetailList.id
+            }
+        })
+            .then(res => {
+                console.log(res.data)
+                if (res.data.length) {
+                    swal('Gagal', 'Produk Sudah Ada di Rencana Saya', 'error')
+                } else {
+                    Axios.post(`${API_URL}/wishlistProducts`, {
+                        userId: this.props.user.id,
+                        productId: this.state.productDetailList.id
+                    })
+                        .then(res => {
+                            console.log(res);
+                            swal('Sukses', 'Produk Ditambah di Rencana Saya', 'success')
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
 
 
     render() {
-        const { productDetailList } = this.state
-        const { productName, price, category, netto, image, desc } = productDetailList
+        const { productName, price, category, netto, image, desc, brand } = this.state.productDetailList
+        const { brandName } = brand
         return (
             <div className="container">
                 <div className="d-flex justify-content-start mt-4">
@@ -84,31 +124,33 @@ class ProductDetails extends React.Component {
                                 </Button>
                     </Link>
                 </div>
-                <h4 className="text-center my-5">{productName}</h4>
+                <h3 className="text-center mt-5 productName">{productName}</h3>
                 <div className="row">
                     <div className="col-6 text-right">
                         <img src={image} alt="" style={{ width: "300px", height: "300px", objectFit: "contain" }} className="mt-2" />
                     </div>
                     <div className="col-6 d-flex flex-column justify-content-center">
-                        {/* <h4>{productName}</h4> */}
+                        <h4>{brandName}</h4>
                         <div className="d-flex">
                             <h6>{category}</h6>
                             <h6 className="mx-3">|</h6>
                             <h6>{netto}</h6>
                         </div>
                         <h5 className="mt-3">
-                            {new Intl.NumberFormat("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                            }).format(price)}
+                            {priceFormatter(price)}
                         </h5>
-                        <p>{desc}</p>
                         <div className="d-flex justify-content-start mt-3">
-                            <Button type="outlined">Tambah ke Rencana</Button>
+                            <Button type="outlined" onClick={this.addWishlistProduct}>Tambah ke Rencana</Button>
                             <Button type="contained" className="ml-3" onClick={this.addToCart}>
                                 Tambah ke Keranjang
                             </Button>
                         </div>
+                    </div>
+                </div>
+                <div className="row mt-5 desc-product">
+                    <div className="col-12">
+                        <h4 className="desc-header">Deskripsi Produk</h4>
+                        <p>{desc}</p>
                     </div>
                 </div>
             </div>
@@ -122,8 +164,8 @@ const mapStateToProps = state => {
     }
 }
 
-// const mapDispatchToProps = {
+const mapDispacthToProps = {
+    countCart
+}
 
-// }
-
-export default connect(mapStateToProps)(ProductDetails)
+export default connect(mapStateToProps, mapDispacthToProps)(ProductDetails)

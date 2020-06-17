@@ -41,14 +41,8 @@ class MyResep extends React.Component {
                     <td>{desc}</td>
                     <td>
                         <div className="d-flex align-items-center justify-content-center">
-                            <Link to="" style={{ textDecoration: "none" }}>
-                                <Buttons type="textual" >
-                                    Edit
-                                </Buttons>
-                            </Link>
-                            <Buttons type="outlined" className="mx-3">
-                                Hapus
-                            </Buttons>
+                            <i className="fa fa-edit" style={{ fontSize: "22px" }}></i>
+                            <i className="material-icons ml-3">&#xe872;</i>
                         </div>
                     </td>
                 </tr>
@@ -68,8 +62,9 @@ class MyResep extends React.Component {
                         <Link to="" style={{ textDecoration: "none" }}>
                             <Buttons type="outlined">
                                 Tambah Resep
-                            </Buttons>
+                                </Buttons>
                         </Link>
+
                         <table className="recipe-table table table-bordered  mt-4">
                             <thead>
                                 <tr>

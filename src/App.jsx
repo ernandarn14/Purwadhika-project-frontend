@@ -12,7 +12,7 @@ import LoginAkun from "./view/screen/Auth/LoginUser";
 import SignupAkun from "./view/screen/Auth/SignupUser";
 import { connect } from "react-redux";
 import Cookie from "universal-cookie";
-import {cookieChecker, userKeepLogin} from "./redux/actions"
+import {cookieChecker, userKeepLogin, countCart} from "./redux/actions"
 import DashboardRecipe from "./view/screen/AdminMenu/DashboardRecipe/DashboardRecipe";
 import DashboardTips from "./view/screen/AdminMenu/DashboardTips/DashboardTips";
 import DashboardReport from "./view/screen/AdminMenu/DashboardReport";
@@ -60,6 +60,7 @@ class App extends React.Component {
     if (this.props.user.id) {
       return (
         <>
+        {/* {this.props.countCart(this.props.user.id)} */}
           <Route exact path="/resepku" component={MyResep} />
           <Route exact path="/riwayat" component={History} />
           <Route exact path="/rencana" component={Wishlist} />
@@ -99,7 +100,8 @@ const mapStateToProps = (state) => {
 
 const mapDispacthToProps = {
   cookieChecker,
-  onLogin: userKeepLogin
+  onLogin: userKeepLogin,
+  // countCart
 };
 
 export default connect(mapStateToProps, mapDispacthToProps)(App);

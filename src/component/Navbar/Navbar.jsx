@@ -5,7 +5,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons/";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import "./Navbar.css";
 import Button from "../Button/Buttons";
-import { logoutHandler } from "../../redux/actions";
+import { logoutHandler, countCart } from "../../redux/actions";
 import { connect } from "react-redux";
 import {
   Dropdown,
@@ -148,7 +148,7 @@ class Navbar extends React.Component {
                   icon={faShoppingCart}
                   style={{ fontSize: 20 }}
                 />
-                <p className="small ml-1 mr-3" style={{ color: "#3C64B1", fontWeight: "bold" }}>0</p>
+                <p className="small ml-1 mr-3" style={{ color: "#3C64B1", fontWeight: "bold" }}>{this.props.user.cartItems}</p>
                 {/* <CircleBg>
                   <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
                     {this.props.user.cartItems}
@@ -201,7 +201,8 @@ const mapStateToProps = (state) => {
 
 const mapDispacthToProps = {
   onLogout: logoutHandler,
-  onSearch: navbarSearchHandler
+  onSearch: navbarSearchHandler,
+  countCart
 };
 
 export default connect(mapStateToProps, mapDispacthToProps)(Navbar);

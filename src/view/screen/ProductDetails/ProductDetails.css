@@ -8,3 +8,18 @@
     --gray-dark: #737b7d;
     --black: #373f41;
 }
+
+.productName{
+    color: var(--accent-dark);
+    font-weight: bold;
+}
+
+.desc-header{
+    border-bottom: 2px solid var( --accent-dark);
+}
+
+.desc-product{
+     background-color: var(--gray-divider);
+     padding: 10px;
+     border-radius: 2px;
+}
