@@ -40,7 +40,6 @@ class Resep extends React.Component {
   renderRecipeList = () => {
     const { recipeList } = this.state
     return recipeList.map(val => {
-      // return <Card resep={val} />
       if (val.recipeName.toLowerCase().includes(this.props.search.searchInput.toLowerCase()) &&
         val.category.toLowerCase().includes(this.state.categoryFilter)) {
         return (
@@ -57,7 +56,7 @@ class Resep extends React.Component {
             </div>
           </>
         )
-      }
+      } 
     })
   }
 

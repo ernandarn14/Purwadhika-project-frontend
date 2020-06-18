@@ -8,13 +8,29 @@ import { Link } from "react-router-dom";
 class EditTips extends React.Component {
     state = {
         editTipsForm: {
-            gambar: "",
-            judul: "",
-            tglPosting: "",
-            tglEdit: new Date(),
-            deskripsi: "",
+            image: "",
+            tipsName: "",
+            uploadDate: "",
+            editDate: new Date(),
+            desc: "",
             id: 0
         }
+    }
+
+    getTipDataDetails = () => {
+        Axios.get(`${API_URL}/tips/${this.props.match.params.tipsId}`)
+            .then(res => {
+                console.log(res.data)
+                this.setState({ tipsList: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+                alert("Data Kosong")
+            })
+    }
+
+    componentDidMount(){
+        this.getTipDataDetails()
     }
 
     inputHandler = (e, field, form) => {
@@ -39,7 +55,7 @@ class EditTips extends React.Component {
     }
 
     render() {
-        const { gambar, judul, deskripsi } = this.state.editTipsForm
+        const { image, tipsName, desc } = this.state.editTipsForm
         return (
             <div className="container">
                 <div className="row">
@@ -55,36 +71,36 @@ class EditTips extends React.Component {
                         <div className="d-flex align-items-center justify-content-center mt-4">
                             <input type="text" className="form-control w-75"
                                 placeholder="Judul Artikel Tips dan Trik"
-                                value={judul}
+                                value={tipsName}
                                 onChange={(e) =>
-                                    this.inputHandler(e, "judul", "editTipsForm")
+                                    this.inputHandler(e, "tipsName", "editTipsForm")
                                 }
                             />
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-3">
                             <input type="text" className="form-control w-75"
-                                value={gambar}
+                                value={image}
                                 placeholder="Url Gambar"
                                 onChange={(e) =>
-                                    this.inputHandler(e, "gambar", "editTipsForm")
+                                    this.inputHandler(e, "image", "editTipsForm")
                                 }
                             />
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-3">
                             <textarea className="form-control w-75" rows="25" placeholder="Mulai Menulis Artikel"
-                                value={deskripsi} onChange={(e) =>
-                                    this.inputHandler(e, "deskripsi", "editTipsForm")
+                                value={desc} onChange={(e) =>
+                                    this.inputHandler(e, "desc", "editTipsForm")
                                 }
                             >
 
                             </textarea>
                         </div>
                         <div className="d-flex justify-content-center">
-                            <Link to="/admin/tips">
+                            {/* <Link to="/admin/tips"> */}
                                 <Button type="contained" className="mt-4" onClick={this.editTipsHandler}>
                                     Simpan
                             </Button>
-                            </Link>
+                            {/* </Link> */}
                         </div>
                     </div>
                 </div>

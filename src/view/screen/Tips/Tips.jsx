@@ -1,7 +1,7 @@
 import React from 'react';
 import './Tips.css';
 import { Link } from "react-router-dom";
-import Button from "../../../component/Button/Buttons";
+// import Button from "../../../component/Button/Buttons";
 import Axios from 'axios';
 import { API_URL } from '../../../constants/API';
 import { connect } from 'react-redux';
@@ -29,7 +29,7 @@ class Tips extends React.Component {
         const { tipsDataList } = this.state
         return tipsDataList.map(val => {
             const { image, tipsName } = val
-            if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
+            // if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
                 return (
                     <>
                         <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center">
@@ -46,7 +46,7 @@ class Tips extends React.Component {
                         </div>
                     </>
                 )
-            }
+            // }
         })
     }
 

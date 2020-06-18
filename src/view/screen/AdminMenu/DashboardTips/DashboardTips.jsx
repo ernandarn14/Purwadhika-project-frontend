@@ -5,7 +5,6 @@ import Button from "../../../../component/Button/Buttons";
 import Axios from 'axios';
 import { API_URL } from '../../../../constants/API';
 import swal from "sweetalert";
-// import { Modal, ModalHeader, ModalBody } from "reactstrap";
 
 
 class DashboardTips extends React.Component {
@@ -15,7 +14,7 @@ class DashboardTips extends React.Component {
             image: "",
             tipsName: "",
             uploadDate: "",
-            tglEdit: new Date(),
+            editDate: new Date(),
             desc: "",
             id: 0
         }
@@ -51,7 +50,9 @@ class DashboardTips extends React.Component {
                     <td>{uploadDate}</td>
                     <td>
                         <div className="d-flex align-items-center justify-content-center">
+                            <Link to={`/admin/tips/edit/${val.id}`} style={{ color: "inherit" }}>
                             <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
+                            </Link>
                             <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
                         </div>
                     </td>
@@ -92,6 +93,7 @@ class DashboardTips extends React.Component {
                 ...this.state.tipsDataList[idx],
             }
         });
+        alert("Masuk")
     };
 
 

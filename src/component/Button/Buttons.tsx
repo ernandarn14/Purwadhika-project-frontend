@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react'
-// import './Button.css'
+import './Button.css'
 
 type ButtonTypes = {
     type?: "contained" | "outlined" | "textual";

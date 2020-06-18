@@ -12,7 +12,7 @@ class DashboardRecipe extends React.Component {
     }
 
     getRecipeData = () => {
-        Axios.get(`${API_URL}/recipes`)
+        Axios.get(`${API_URL}/recipes?_expand=user`)
             .then(res => {
                 this.setState({ recipeList: res.data })
             })
@@ -29,11 +29,12 @@ class DashboardRecipe extends React.Component {
     renderRecipeList = () => {
         const { recipeList } = this.state
         return recipeList.map(val => {
-            const { recipeName, category, id } = val
+            const { recipeName, category, user } = val
+            const { username } = user
             return (
                 <tr>
                     <td>{recipeName}</td>
-                    <td>{id}</td>
+                    <td>{username}</td>
                     <td>{category}</td>
                     <td>
                         <div className="d-flex align-items-center justify-content-center">

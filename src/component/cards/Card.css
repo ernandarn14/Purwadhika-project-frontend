@@ -5,17 +5,11 @@
 }
 .resep-card {
   padding: 16px;
-  /* border-radius: 8px; */
   transition: all ease 150ms;
   box-sizing: border-box;
   width: 350px;
-  /* border: 1px solid black; */
-}
-.material-icons {
-  color: var(--accent-dark);
 }
 
-div,
-h6 {
-  color: inherit;
+.details .material-icons {
+  color: var(--accent-dark);
 }

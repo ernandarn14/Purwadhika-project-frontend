@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Axios from 'axios'
-import { API_URL } from '../../../constants/API'
+import { API_URL } from '../../../../constants/API'
 import { Link } from 'react-router-dom'
-import Buttons from '../../../component/Button/Buttons'
+import Buttons from '../../../../component/Button/Buttons'
 
 class MyResep extends React.Component {
     state = {
@@ -59,7 +59,7 @@ class MyResep extends React.Component {
                 <div className="row">
                     <div className="col-12">
                         <h3 className="text-center my-5">Resep Saya</h3>
-                        <Link to="" style={{ textDecoration: "none" }}>
+                        <Link to="/resepku/tambah" style={{ textDecoration: "none" }}>
                             <Buttons type="outlined">
                                 Tambah Resep
                                 </Buttons>

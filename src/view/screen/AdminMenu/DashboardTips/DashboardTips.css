@@ -18,11 +18,11 @@
     padding: 16px 0px;
 }
   
-  .tips-table thead tr {
+.tips-table thead tr {
     border: 0px !important;
   }
   
-  .tips-table thead tr th {
+.tips-table thead tr th {
     padding: 12px 0px;
     color: var(--gray-lightest);
     font-size: 18px;
@@ -30,8 +30,11 @@
   }
 
   
-  .tips-table {
+.tips-table {
     border-radius: 4px;
     text-align: center;
 }
-  
+
+.fa{
+  cursor: pointer;
+}

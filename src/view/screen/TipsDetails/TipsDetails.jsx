@@ -95,8 +95,8 @@ class TipsDetails extends React.Component {
                                 <p>{desc}</p>
                             </div>
                         </div>
-                        <div className="recommendation mt-4">
-                            <h5>Artikel Lainnya</h5>
+                        <div className="recommendation mt-5">
+                            <h4 className="recommendation-header">Artikel Lainnya</h4>
                             <div className="row d-flex flex-wrap justify-content-center">
                                 {this.renderTipsData()}
                             </div>

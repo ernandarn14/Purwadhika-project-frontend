@@ -1,11 +1,29 @@
 :root {
-    --accent-default: #ac7339;
-    --accent-dark: #86592d;
-    --accent-light: #d9b38c;
-    --gray-lightest: #f4f5f4;
+  --accent-default: #ac7339;
+  --accent-dark: #86592d;
+  --accent-light: #d9b38c;
+  --gray-lightest: #f4f5f4;
+  --gray-divider: #e2e5e6;
+  --gray-default: #c3cbcd;
+  --gray-dark: #737b7d;
+  --black: #373f41;
 }
   
   .tips-details{
-    border-bottom: 1px solid var(--accent-default);
+    /* border-bottom: 1px solid var(--accent-default); */
     padding: 10px 13px 30px;
 }
+
+.tips-details h3{
+  color: var(--accent-dark)
+}
+
+.recommendation-header{
+  border-bottom: 2px solid var( --accent-dark);
+}
+
+/* .recommendation{
+   background-color: var(--gray-divider);
+   padding: 10px;
+   border-radius: 2px;
+} */

@@ -12,13 +12,13 @@ import LoginAkun from "./view/screen/Auth/LoginUser";
 import SignupAkun from "./view/screen/Auth/SignupUser";
 import { connect } from "react-redux";
 import Cookie from "universal-cookie";
-import {cookieChecker, userKeepLogin, countCart} from "./redux/actions"
+import {cookieChecker, userKeepLogin} from "./redux/actions"
 import DashboardRecipe from "./view/screen/AdminMenu/DashboardRecipe/DashboardRecipe";
 import DashboardTips from "./view/screen/AdminMenu/DashboardTips/DashboardTips";
 import DashboardReport from "./view/screen/AdminMenu/DashboardReport";
 import DashboardPayment from "./view/screen/AdminMenu/DashboardPayment";
 import History from "./view/screen/UserMenu/History";
-import MyResep from "./view/screen/UserMenu/MyResep";
+import MyResep from "./view/screen/UserMenu/MyResep/MyResep";
 import Wishlist from "./view/screen/UserMenu/Wishlist";
 import TipsDetails from "./view/screen/TipsDetails/TipsDetails";
 import DashboardProduk from "./view/screen/AdminMenu/DashboardProduk/DashboardProduk";
@@ -27,6 +27,7 @@ import EditTips from "./view/screen/AdminMenu/DashboardTips/EditTips";
 import RecipeDetails from "./view/screen/RecipeDetails/RecipeDetails";
 import ProductDetails from "./view/screen/ProductDetails/ProductDetails";
 import Cart from "./view/screen/Cart/Cart";
+import AddResep from "./view/screen/UserMenu/MyResep/AddRecipe";
 
 const cookieObj = new Cookie();
 
@@ -48,7 +49,7 @@ class App extends React.Component {
           <Route exact path="/admin/produk" component={DashboardProduk} />
           <Route exact path="/admin/tips" component={DashboardTips} />
           <Route exact path="/admin/tips/tambah" component={AddTips} />
-          <Route exact path="/admin/tips/edit" component={EditTips} />
+          <Route exact path="/admin/tips/edit/:tipsId" component={EditTips} />
           <Route exact path="/admin/pembayaran" component={DashboardPayment} />
           <Route exact path="/admin/laporan" component={DashboardReport} />
         </>
@@ -60,8 +61,8 @@ class App extends React.Component {
     if (this.props.user.id) {
       return (
         <>
-        {/* {this.props.countCart(this.props.user.id)} */}
           <Route exact path="/resepku" component={MyResep} />
+          <Route exact path="/resepku/tambah" component={AddResep} />
           <Route exact path="/riwayat" component={History} />
           <Route exact path="/rencana" component={Wishlist} />
           <Route exact path="/keranjang" component={Cart} />
@@ -101,7 +102,6 @@ const mapStateToProps = (state) => {
 const mapDispacthToProps = {
   cookieChecker,
   onLogin: userKeepLogin,
-  // countCart
 };
 
 export default connect(mapStateToProps, mapDispacthToProps)(App);

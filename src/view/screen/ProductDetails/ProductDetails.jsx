@@ -3,7 +3,7 @@ import "./ProductDetails.css"
 import Axios from "axios"
 import { API_URL } from "../../../constants/API"
 import { Link } from "react-router-dom"
-import Button from "../../../component/Button/Buttons"
+import Buttons from "../../../component/Button/Buttons"
 import { connect } from "react-redux"
 import swal from "sweetalert"
 import { countCart } from "../../../redux/actions";
@@ -119,9 +119,9 @@ class ProductDetails extends React.Component {
             <div className="container">
                 <div className="d-flex justify-content-start mt-4">
                     <Link to="/produk" style={{ textDecoration: "none" }}>
-                        <Button type="textual">
+                        <Buttons type="textual">
                             Kembali ke Halaman Produk
-                                </Button>
+                        </Buttons>
                     </Link>
                 </div>
                 <h3 className="text-center mt-5 productName">{productName}</h3>
@@ -140,17 +140,17 @@ class ProductDetails extends React.Component {
                             {priceFormatter(price)}
                         </h5>
                         <div className="d-flex justify-content-start mt-3">
-                            <Button type="outlined" onClick={this.addWishlistProduct}>Tambah ke Rencana</Button>
-                            <Button type="contained" className="ml-3" onClick={this.addToCart}>
+                            <Buttons type="outlined" onClick={this.addWishlistProduct}>Tambah ke Rencana</Buttons>
+                            <Buttons type="contained" className="ml-3" onClick={this.addToCart}>
                                 Tambah ke Keranjang
-                            </Button>
+                            </Buttons>
                         </div>
                     </div>
                 </div>
                 <div className="row mt-5 desc-product">
                     <div className="col-12">
                         <h4 className="desc-header">Deskripsi Produk</h4>
-                        <p>{desc}</p>
+                        <p style={{ color: "inherit" }}>{desc}</p>
                     </div>
                 </div>
             </div>
