@@ -5,13 +5,14 @@ import { API_URL } from "../../../../constants/API"
 import Button from "../../../../component/Button/Buttons";
 import swal from "sweetalert";
 import { priceFormatter } from "../../../../supports/helpers/PriceFormatter"
+import { Link } from "react-router-dom";
 
 class DashboardProduk extends React.Component {
     state = {
         productList: [],
         addForm: {
             productName: "",
-            brandId: 0,
+            brandId: "",
             price: 0,
             category: "Tepung",
             netto: "",
@@ -48,7 +49,7 @@ class DashboardProduk extends React.Component {
         return brandList.map(val => {
             return (
                 <>
-                    <option value={this.state.addForm.brandId}>{val.brandName}</option>
+                    <option value={val.id}>{val.brandName}</option>
                 </>
             )
         })
@@ -61,13 +62,21 @@ class DashboardProduk extends React.Component {
 
     renderProductData = () => {
         const { productList } = this.state
-        return productList.map(val => {
+        return productList.map((val, idx) => {
             const { productName, price, category } = val
             return (
                 <tr>
                     <td>{productName}</td>
                     <td>{category}</td>
                     <td>{priceFormatter(price)}</td>
+                    <td>
+                        <div className="d-flex align-items-center justify-content-center">
+                            <Link to={`/admin/tips/edit/${val.id}`} style={{ color: "inherit" }}>
+                            <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
+                            </Link>
+                            <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
+                        </div>
+                    </td>
                 </tr>
             )
         })
@@ -84,7 +93,7 @@ class DashboardProduk extends React.Component {
     };
 
     addProductHandler = () => {
-        Axios.post(`${API_URL}/produk`, this.state.addForm)
+        Axios.post(`${API_URL}/products`, this.state.addForm)
             .then(res => {
                 console.log(res.data)
                 swal("Sukses", "Data Produk Berhasil Ditambah!", "success")
@@ -108,6 +117,31 @@ class DashboardProduk extends React.Component {
             })
     }
 
+    deleteDataHandler = (id) => {
+        swal({
+            title: "Anda yakin untuk menghapus data?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    Axios.delete(`${API_URL}/products/${id}`)
+                        .then(res => {
+                            console.log(res.data)
+                            this.getProductData()
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            alert('Data Gagal Dihapus!')
+                        })
+                    swal("Data Berhasil Dihapus!", {
+                        icon: "success",
+                    });
+                }
+            });
+    }
+
 
     render() {
         return (
@@ -121,18 +155,20 @@ class DashboardProduk extends React.Component {
                                     <th>Nama Produk</th>
                                     <th>Kategori</th>
                                     <th>Harga</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {this.renderProductData()}
                             </tbody>
                         </table>
-                        <div className="dashboard-form-container p-4">
+                        <div className="dashboard-form-container p-4 mt-5">
                             <caption className="mb-4 mt-2">
                                 <h4>Tambah Produk</h4>
                             </caption>
                             <div className="row">
                                 <div className="col-4">
+                                    <label>Nama Produk:</label>
                                     <input type="text" className="form-control"
                                         value={this.state.addForm.productName}
                                         placeholder="Nama Produk"
@@ -142,6 +178,7 @@ class DashboardProduk extends React.Component {
                                     />
                                 </div>
                                 <div className="col-4">
+                                <label>Harga Produk: Rp.</label>
                                     <input type="text" className="form-control"
                                         value={this.state.addForm.price}
                                         placeholder="price"
@@ -149,6 +186,7 @@ class DashboardProduk extends React.Component {
                                     />
                                 </div>
                                 <div className="col-4">
+                                <label>Kategori Produk:</label>
                                     <select
                                         value={this.state.addForm.category}
                                         className="custom-text-input pl-1 form-control"
@@ -160,32 +198,40 @@ class DashboardProduk extends React.Component {
                                         <option>Perasa</option>
                                     </select>
                                 </div>
-                                {/* <div className="col-4 mt-3">
+                                <div className="col-4 mt-3">
+                                <label>Merk Produk:</label>
                                     <select
                                         className="custom-text-input pl-1 form-control"
+                                        value={this.state.addForm.brandId}
                                         onChange={(e) => this.inputHandler(e, "brandId", "addForm")}
                                     >
                                         {this.renderBrandList()}
+                                        {/* <option>Rose Brand</option>
+                                        <option>Koepoe</option> */}
                                     </select>
-                                </div> */}
+                                </div>
                                 <div className="col-4 mt-3">
+                                <label>Gambar Produk:</label>
                                     <input type="text" className="form-control"
-                                        value={this.state.addForm.gambar}
+                                        value={this.state.addForm.image}
                                         placeholder="URL Gambar"
-                                        onChange={(e) => this.inputHandler(e, "gambar", "addForm")}
+                                        onChange={(e) => this.inputHandler(e, "image", "addForm")}
                                     />
                                 </div>
                                 <div className="col-4 mt-3">
+                                <label>Netto Produk:</label>
                                     <input type="text" className="form-control"
                                         value={this.state.addForm.netto}
-                                        placeholder="Berat Produk"
+                                        placeholder="Netto Produk"
                                         onChange={(e) => this.inputHandler(e, "netto", "addForm")}
                                     />
                                 </div>
                                 <div className="col-12 mt-3">
+                                <label>Deskripsi Produk:</label>
                                     <textarea className="form-control w-100" placeholder="Deskripsi Produk"
-                                    value={this.state.addForm.desc} onChange={(e) =>
-                                        this.inputHandler(e, "desc", "addTipsForm")
+                                    value={this.state.addForm.desc}
+                                     onChange={(e) =>
+                                        this.inputHandler(e, "desc", "addForm")
                                     }
                                     >
                                     </textarea>

@@ -28,6 +28,7 @@ import RecipeDetails from "./view/screen/RecipeDetails/RecipeDetails";
 import ProductDetails from "./view/screen/ProductDetails/ProductDetails";
 import Cart from "./view/screen/Cart/Cart";
 import AddResep from "./view/screen/UserMenu/MyResep/AddRecipe";
+import Footer from "./component/Footer/Footer";
 
 const cookieObj = new Cookie();
 
@@ -89,6 +90,7 @@ class App extends React.Component {
         {this.renderProtectedRoutes()}
         <Route path="*" component={PageNotFound} />
       </Switch>
+      <Footer />
     </>
   )};
 }
