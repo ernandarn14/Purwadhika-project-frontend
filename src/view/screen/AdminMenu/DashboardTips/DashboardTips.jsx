@@ -93,7 +93,6 @@ class DashboardTips extends React.Component {
                 ...this.state.tipsDataList[idx],
             }
         });
-        alert("Masuk")
     };
 
 

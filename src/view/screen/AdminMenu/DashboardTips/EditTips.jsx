@@ -20,8 +20,8 @@ class EditTips extends React.Component {
     getTipDataDetails = () => {
         Axios.get(`${API_URL}/tips/${this.props.match.params.tipsId}`)
             .then(res => {
-                console.log(res.data)
-                this.setState({ tipsList: res.data })
+                // console.log(res.data)
+                this.setState({ editTipsForm: res.data })
             })
             .catch(err => {
                 console.log(err)
@@ -29,7 +29,7 @@ class EditTips extends React.Component {
             })
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getTipDataDetails()
     }
 
@@ -44,12 +44,22 @@ class EditTips extends React.Component {
     };
 
     editTipsHandler = () => {
-        Axios.put(`${API_URL}/tips/${this.state.editTipsForm.id}`, this.state.editTipsForm)
+        Axios.put(`${API_URL}/tips/${this.props.match.params.tipsId}`, this.state.editTipsForm)
             .then(res => {
-                console.log(res.data)
                 swal("Sukses", "Artikel Berhasil Diubah!", "success")
+                this.setState({
+                    editTipsForm: {
+                        image: "",
+                        tipsName: "",
+                        uploadDate: "",
+                        editDate: "",
+                        desc: "",
+                        id: 0
+                    }
+                })
             })
             .catch(err => {
+                console.log(err)
                 swal("Gagal", "Artikel Gagal Diubah!", "error")
             })
     }
@@ -70,7 +80,6 @@ class EditTips extends React.Component {
                         <h3 className="text-center my-5">Edit Artikel</h3>
                         <div className="d-flex align-items-center justify-content-center mt-4">
                             <input type="text" className="form-control w-75"
-                                placeholder="Judul Artikel Tips dan Trik"
                                 value={tipsName}
                                 onChange={(e) =>
                                     this.inputHandler(e, "tipsName", "editTipsForm")
@@ -80,14 +89,13 @@ class EditTips extends React.Component {
                         <div className="d-flex align-items-center justify-content-center mt-3">
                             <input type="text" className="form-control w-75"
                                 value={image}
-                                placeholder="Url Gambar"
                                 onChange={(e) =>
                                     this.inputHandler(e, "image", "editTipsForm")
                                 }
                             />
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-3">
-                            <textarea className="form-control w-75" rows="25" placeholder="Mulai Menulis Artikel"
+                            <textarea className="form-control w-75" rows="25"
                                 value={desc} onChange={(e) =>
                                     this.inputHandler(e, "desc", "editTipsForm")
                                 }
@@ -96,11 +104,9 @@ class EditTips extends React.Component {
                             </textarea>
                         </div>
                         <div className="d-flex justify-content-center">
-                            {/* <Link to="/admin/tips"> */}
-                                <Button type="contained" className="mt-4" onClick={this.editTipsHandler}>
-                                    Simpan
+                            <Button type="contained" className="mt-4" onClick={this.editTipsHandler}>
+                                Simpan
                             </Button>
-                            {/* </Link> */}
                         </div>
                     </div>
                 </div>

@@ -23,6 +23,20 @@ export const loginHandler = (users) => {
                         type: ON_LOGIN_SUCCESS,
                         payload: res.data[0]
                     })
+                    Axios.get(`${API_URL}/carts`, {
+                        params: {
+                            userId: res.data[0].id,
+                        },
+                    })
+                        .then((res) => {
+                            dispatch({
+                                type: "FILL_CART",
+                                payload: res.data.length,
+                            });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
                 } else {
                     dispatch({
                         type: ON_LOGIN_FAIL,
@@ -56,6 +70,20 @@ export const signupHandler = (users) => {
                         type: ON_SIGNUP_FAIL,
                         payload: "Username sudah digunakan"
                     })
+                    Axios.get(`${API_URL}/carts`, {
+                        params: {
+                            userId: res.data[0].id,
+                        },
+                    })
+                        .then((res) => {
+                            dispatch({
+                                type: "FILL_CART",
+                                payload: res.data.length,
+                            });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
                 } else {
                     Axios.post(`${API_URL}/users`, { ...users, role: "user" })
                         .then(res => {
@@ -89,6 +117,20 @@ export const userKeepLogin = (users) => {
                         type: ON_LOGIN_SUCCESS,
                         payload: res.data[0],
                     });
+                    Axios.get(`${API_URL}/carts`, {
+                        params: {
+                            userId: res.data[0].id,
+                        },
+                    })
+                        .then((res) => {
+                            dispatch({
+                                type: "FILL_CART",
+                                payload: res.data.length,
+                            });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
                 } else {
                     dispatch({
                         type: ON_LOGIN_FAIL,

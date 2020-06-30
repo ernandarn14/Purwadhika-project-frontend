@@ -174,7 +174,7 @@ class Navbar extends React.Component {
                   to="/login"
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  <Button type="outlined" className="mx-3">
+                  <Button type="outlined" className="login mx-3">
                     Masuk
                     </Button>
                 </Link>
@@ -182,7 +182,7 @@ class Navbar extends React.Component {
                   to="/signup"
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  <Button type="contained">Daftar</Button>
+                  <Button type="contained" className="signup">Daftar</Button>
 
                 </Link>
               </>
