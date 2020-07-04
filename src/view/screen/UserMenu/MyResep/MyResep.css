@@ -1,0 +1,12 @@
+:root {
+    --accent-default: #ac7339;
+    --accent-dark: #86592d;
+    --accent-light: #d9b38c;
+}
+
+
+.recipelist{
+    width: 60vw;
+    border: 1px solid var(--accent-light);
+    padding: 20px;
+}

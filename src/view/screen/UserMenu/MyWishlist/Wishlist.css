@@ -1,0 +1,6 @@
+.wishlist{
+    padding: 16px;
+    transition: all ease 150ms;
+    box-sizing: border-box;
+    width: 350px;
+}

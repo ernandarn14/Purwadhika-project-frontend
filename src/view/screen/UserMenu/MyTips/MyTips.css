@@ -1,0 +1,25 @@
+:root {
+    --accent-default: #ac7339;
+    --accent-dark: #86592d;
+    --accent-light: #d9b38c;
+  }
+/* 
+  img{
+    width: 35vw;
+    height: 30vh;
+} */
+
+.tipslist{
+    width: 80vw;
+    border: 1px solid var(--accent-light);
+    padding: 16px;
+}
+
+.add-recipe{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid var(--accent-dark);
+}
