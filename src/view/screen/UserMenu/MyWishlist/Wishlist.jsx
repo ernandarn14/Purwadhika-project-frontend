@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 // import { priceFormatter } from '../../../supports/helpers/PriceFormatter'
 import Buttons from '../../../../component/Button/Buttons'
 import swal from "sweetalert";
+import { Alert } from 'reactstrap'
 
 class Wishlist extends React.Component {
     state = {
@@ -31,12 +32,7 @@ class Wishlist extends React.Component {
     // }
 
     getWishilistResep = () => {
-        Axios.get(`${API_URL}/wishlistRecipes?_expand=user`, {
-            params: {
-                userId: this.props.user.id,
-                _expand: "recipe"
-            }
-        })
+        Axios.get(`${API_URL}/rencana/pengguna/${this.props.user.id}`)
             .then(res => {
                 console.log(res.data)
                 this.setState({ recipeList: res.data })
@@ -56,9 +52,9 @@ class Wishlist extends React.Component {
         // if (activePage === "recipe") {
         const { recipeList } = this.state
         return recipeList.map(val => {
-            const { recipe, user } = val
-            const { recipeName, numbServings, cookTime, image } = recipe
-            const { fullName } = user
+            const { recipes, users } = val
+            const { recipeName, numbServings, cookTime, image } = recipes
+            const { fullname } = users
             return (
                     <div className="d-flex flex-column justify-content-center wishlist" key={val.id.toString()}>
                         <Link
@@ -68,7 +64,7 @@ class Wishlist extends React.Component {
                             <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                             <br />
                             <h6 className="mt-2">{recipeName}</h6>
-                            <p>Oleh: {fullName}</p>
+                            <p>Oleh: {fullname}</p>
                             <div className="d-flex justify-content-around mt-3">
                                 <div className="d-flex details">
                                     <i className="material-icons mr-2">&#xe192;</i>
@@ -119,7 +115,7 @@ class Wishlist extends React.Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    Axios.delete(`${API_URL}/wishlistRecipes/${id}`)
+                    Axios.delete(`${API_URL}/rencana/hapus/${id}`)
                         .then(res => {
                             console.log(res.data)
                             this.getWishilistResep()
@@ -152,9 +148,14 @@ class Wishlist extends React.Component {
                                 this.state.activePage === "product" ? "active" : null
                                 }`} onClick={() => this.setState({ activePage: "product" })}>Produk</Buttons>
                         </div> */}
-                        <div className="row d-flex flex-wrap justify-content-center text-center mt-5">
+                        {this.state.recipeList.length > 0 ? (
+                            <div className="row d-flex flex-wrap justify-content-center text-center mt-5">
                             {this.renderWishlist()}
                         </div>
+                        ) : (
+                            <Alert>Rencana Anda Kosong! Untuk Menambah Rencana, Silahkan Tekan Tombol "Simpan Resep" di <Link to="/resep">Halaman Resep</Link></Alert>
+                        )}
+                        
                     </div>
                 </div>
             </div>

@@ -9,23 +9,26 @@ class RecipeDetails extends React.Component {
     state = {
         recipeDetailList: {
             recipeName: "",
-            category: "",
+            // recipeCategory: {},
             cookTime: 0,
-            jumlahPorsi: "",
-            image: "",
-            desc: "",
-            user: []
+            numbServings: "",
+            recipeImage: "",
+            shortDesc: "",
+            users: {}
         },
         ingredientDetails: [],
-        instructionLists: []
+        instructionLists: [],
+        categoryList: []
     }
 
     getRecipeDetails = () => {
-        Axios.get(`${API_URL}/recipes/${this.props.match.params.resepId}`, {
-            params: {
-                _expand: "user"
-            }
-        })
+        Axios.get(`${API_URL}/resep/${this.props.match.params.resepId}`
+        // , {
+        //     params: {
+        //         _expand: "user"
+        //     }
+        // }
+        )
             .then(res => {
                 console.log(res.data)
                 this.setState({ recipeDetailList: res.data })
@@ -37,11 +40,13 @@ class RecipeDetails extends React.Component {
     }
 
     getIngredientDetails = () => {
-        Axios.get(`${API_URL}/ingredientDetails?_expand=ingredientList&_expand=measurementUnit`, {
-            params: {
-                recipeId: this.props.match.params.resepId,
-            }
-        })
+        Axios.get(`${API_URL}/bahan/resep/${this.props.match.params.resepId}`
+        // , {
+        //     params: {
+        //         recipeId: this.props.match.params.resepId,
+        //     }
+        // }
+        )
             .then(res => {
                 console.log(res.data)
                 this.setState({ ingredientDetails: res.data })
@@ -52,11 +57,13 @@ class RecipeDetails extends React.Component {
     }
 
     getInstructionDetails = () => {
-        Axios.get(`${API_URL}/instructionLists`, {
-            params: {
-                recipeId: this.props.match.params.resepId,
-            }
-        })
+        Axios.get(`${API_URL}/langkah-membuat/resep/${this.props.match.params.resepId}`
+        // , {
+        //     params: {
+        //         recipeId: this.props.match.params.resepId,
+        //     }
+        // }
+        )
             .then(res => {
                 console.log(res.data)
                 this.setState({ instructionLists: res.data })
@@ -69,18 +76,18 @@ class RecipeDetails extends React.Component {
     renderRecipeDetails = () => {
         const { recipeDetail } = this.state
         return recipeDetail.map(val => {
-            const { recipeName, category, cookTime, numbServings, image, desc, user } = val
-            const { fullName } = user
+            const { recipeName, category, cookTime, numbServings, recipeImage, desc, user } = val
+            const { username } = user
             return (
                 <>
                     <h3 className="text-center my-5">{recipeName}</h3>
                     <div className="row">
                         <div className="col-6">
-                            <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                            <img src={recipeImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                         </div>
                         <div className="col-6">
-                            <h6>{category}</h6>
-                            <h6>Oleh: {fullName}</h6>
+                            <h6>category</h6>
+                            <h6>Oleh: {username}</h6>
                             <h6>{cookTime}</h6>
                             <h6>{numbServings} porsi</h6>
                             <h6>{desc}</h6>
@@ -94,11 +101,11 @@ class RecipeDetails extends React.Component {
     renderInstructionDetails = () => {
         const { instructionLists } = this.state
         return instructionLists.map((val, idx) => {
-            const { instructionName } = val
+            const { stepName } = val
             return (
-                <div className="d-flex mt-2 align-items-center text-justify">
+                <div className="d-flex mt-2 align-items-center text-justify" key={val.id.toString()}>
                     <h6>{idx += 1}.</h6>
-                    <h6 className="ml-3">{instructionName}</h6>
+                    <h6 className="ml-3">{stepName}</h6>
                 </div>
             )
         })
@@ -107,14 +114,14 @@ class RecipeDetails extends React.Component {
     renderIngredientDetails = () => {
         const { ingredientDetails } = this.state
         return ingredientDetails.map(val => {
-            const { quantity, measurementUnit, ingredientList } = val
-            const { ingredientName } = ingredientList
-            const { measurementName } = measurementUnit
+            // const { quantity, measurementUnit, ingredientList } = val
+            const { ingredientName } = val
+            // const { measurementName } = measurementUnit
             return (
-                <div className="d-flex mt-2 align-items-center">
-                    <h6>{quantity}</h6>
-                    <h6 className="ml-2">{measurementName}</h6>
-                    <h6 className="ml-2">{ingredientName}</h6>
+                <div className="d-flex mt-2 align-items-center" key={val.id.toString()}>
+                    <h6>{ingredientName}</h6>
+                    {/* <h6 className="ml-2">{measurementName}</h6>
+                    <h6 className="ml-2">{ingredientName}</h6> */}
                 </div>
             )
         })
@@ -129,8 +136,8 @@ class RecipeDetails extends React.Component {
 
 
     render() {
-        const { recipeName, cookTime, numbServings, image, desc, user } = this.state.recipeDetailList
-        const { fullName } = user
+        const { recipeName, cookTime, numbServings, recipeImage, shortDesc, users } = this.state.recipeDetailList
+        const { fullname } = users
         return (
             <div className="container">
                 <div className="d-flex justify-content-start mt-4">
@@ -147,11 +154,11 @@ class RecipeDetails extends React.Component {
                         <div className="recipe-data">
                             <div className="text-center my-5">
                                 <h3 className="text-header">{recipeName}</h3>
-                                <h6>Oleh: {fullName}</h6>
+                                <h6>Oleh: {fullname}</h6>
                             </div>
                             <div className="row">
                                 <div className="col-6 text-right">
-                                    <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                                    <img src={recipeImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                                 </div>
                                 <div className="col-6">
                                     {/* <h6>{category}</h6> */}
@@ -164,18 +171,18 @@ class RecipeDetails extends React.Component {
                                         <i className="material-icons">&#xe556;</i>
                                     </div>
                                     <div className="desc">
-                                        <h6>{desc}</h6>
+                                        <h6>{shortDesc}</h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="row ingredient-data">
-                        <div className="col-4">
+                        <div className="col-6">
                             <h3 className="text-header mt-5 mb-4">Bahan</h3>
                             {this.renderIngredientDetails()}
                         </div>
-                        <div className="col-8">
+                        <div className="col-6">
                             <h3 className="text-header mt-5 mb-4">Langkah Membuat</h3>
                             {this.renderInstructionDetails()}
                         </div>

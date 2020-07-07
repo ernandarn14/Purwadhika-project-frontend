@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 
 class Tips extends React.Component {
     state = {
-        tipsDataList: []
+        tipsDataList: [],
+        selectedFile: null,
     }
 
     getTipsData = () => {
@@ -28,25 +29,25 @@ class Tips extends React.Component {
     renderTipsData = () => {
         const { tipsDataList } = this.state
         return tipsDataList.map(val => {
-            const { image, tipsName } = val
-            // if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
+            const { tipsImage, tipsName } = val
+            if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
                 return (
-                    <>
-                        <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center">
+                    // <>
+                        <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()}>
                             <Link
                                 to={`/tips/${val.id}`}
                                 style={{ textDecoration: "none", color: "inherit" }}
                             >
-                                <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                                <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                                 <h5 className="mt-2">{tipsName}</h5>
                                 {/* <Button type="contained" className="mt-2">
                                     Baca Selengkapnya
                                 </Button> */}
                             </Link>
                         </div>
-                    </>
+                    // </>
                 )
-            // }
+            }
         })
     }
 

@@ -6,27 +6,20 @@ import Buttons from '../../../../component/Button/Buttons'
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+import { Alert } from 'reactstrap'
 
 class MyTips extends React.Component {
     state = {
+        selectedFile: null,
         tipsDataList: [],
-        editTipsForm: {
-            image: "",
-            tipsName: "",
-            uploadDate: "",
-            editDate: new Date(),
-            desc: "",
-            id: 0
-        }
+        editTips: []
     }
 
     getTipsData = () => {
-        Axios.get(`${API_URL}/tips`, {
-            params: {
-                userId: this.props.user.id,
-            }
-        })
+        Axios.get(`${API_URL}/tips/pengguna/${this.props.user.id}`
+        )
             .then(res => {
+                console.log(res.data)
                 this.setState({ tipsDataList: res.data })
             })
             .catch(err => {
@@ -49,13 +42,13 @@ class MyTips extends React.Component {
     renderTipsData = () => {
         const { tipsDataList } = this.state
         return tipsDataList.map((val, idx) => {
-            const { image, tipsName, desc } = val
+            const { tipsImage, tipsName, tipsContent } = val
             return (
                     <div className="d-flex justify-content-start mt-4 align-items-center tipslist" key={val.id.toString()}>
-                        <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                        <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                         <div className="d-flex flex-column ml-4 justify-content-center">
                             <h5 className="mt-2">{tipsName}</h5>
-                            <p style={{ textAlign: "justify" }}>{desc}</p>
+                            <p style={{ textAlign: "justify" }}>{tipsContent}</p>
                             <div className="d-flex my-4">
                                 <Link to={`/tipsku/edit/${val.id}`} style={{ color: "inherit" }}>
                                     <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
@@ -77,7 +70,7 @@ class MyTips extends React.Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    Axios.delete(`${API_URL}/tips/${id}`)
+                    Axios.delete(`${API_URL}/tips/delete/${id}`)
                         .then(res => {
                             console.log(res.data)
                             this.getTipsData()
@@ -95,7 +88,7 @@ class MyTips extends React.Component {
 
     editBtnHandler = (idx) => {
         this.setState({
-            editTipsForm: {
+            editTips: {
                 ...this.state.tipsDataList[idx],
             }
         });
@@ -112,9 +105,14 @@ class MyTips extends React.Component {
                                 Tambah Artikel Tips dan Trik
                             </Buttons>
                         </Link>
-                        <div className="container mt-4 d-flex justify-content-center flex-column align-items-center">
-                            {this.renderTipsData()}
-                        </div>
+                        {this.state.tipsDataList.length > 0 ? (
+                             <div className="container mt-4 d-flex justify-content-center flex-column align-items-center">
+                             {this.renderTipsData()}
+                         </div>
+                        ) : (
+                            <Alert>Artikel Tips dan Trik Anda Kosong! Silahkan Tambah Artikel</Alert>
+                        )}
+                       
                     </div>
                 </div>
             </div>

@@ -9,12 +9,16 @@ import { Link } from "react-router-dom";
 
 class EditMyTips extends React.Component {
     state = {
+        selectedFile: null,
         editTipsForm: {
-            image: "",
+            tipsImage: "",
+            users: {
+                id: this.props.user.id,
+            },
             tipsName: "",
-            uploadDate: "",
+            postedDate: "",
             editDate: new Date(),
-            desc: "",
+            tipsContent: "",
             id: 0
         }
     }
@@ -46,17 +50,32 @@ class EditMyTips extends React.Component {
         });
     };
 
+    fileChangeHandler = (e) => {
+        this.setState({ selectedFile: e.target.files[0] });
+    };
+
     editTipsHandler = () => {
-        Axios.put(`${API_URL}/tips/${this.props.match.params.tipsId}`, this.state.editTipsForm)
+        let formData = new FormData();
+
+        formData.append(
+            "file",
+            this.state.selectedFile,
+            this.state.selectedFile.name
+        );
+
+        formData.append("userData", JSON.stringify(this.state.editTipsForm))
+
+        Axios.put(`${API_URL}/tips/edit/${this.props.match.params.tipsId}/pengguna/${this.props.user.id}`, formData)
             .then(res => {
+                console.log(res.data)
                 swal("Sukses", "Artikel Berhasil Diubah!", "success")
                 this.setState({
                     editTipsForm: {
-                        image: "",
+                        tipsImage: "",
                         tipsName: "",
-                        uploadDate: "",
+                        postedDate: "",
                         editDate: "",
-                        desc: "",
+                        tipsContent: "",
                         id: 0
                     }
                 })
@@ -65,11 +84,33 @@ class EditMyTips extends React.Component {
                 console.log(err)
                 swal("Gagal", "Artikel Gagal Diubah!", "error")
             })
-    }
+        console.log(JSON.stringify(this.state.editTipsForm));
+    };
+
+    // editTipsHandler = () => {
+    //     Axios.put(`${API_URL}/tips/edit/${this.props.match.params.tipsId}/pengguna/${this.props.user.id}`, this.state.editTipsForm)
+    //         .then(res => {
+    //             swal("Sukses", "Artikel Berhasil Diubah!", "success")
+    //             this.setState({
+    //                 editTipsForm: {
+    //                     tipsImage: "",
+    //                     tipsName: "",
+    //                     postedDate: "",
+    //                     editDate: "",
+    //                     tipsContent: "",
+    //                     id: 0
+    //                 }
+    //             })
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //             swal("Gagal", "Artikel Gagal Diubah!", "error")
+    //         })
+    // }
 
 
     render() {
-        const { image, tipsName, desc } = this.state.editTipsForm
+        const { tipsImage, tipsName, tipsContent } = this.state.editTipsForm
         return (
             <div className="container">
                 <div className="row">
@@ -83,7 +124,7 @@ class EditMyTips extends React.Component {
                     <div className="col-12">
                         <h3 className="text-center my-5">Edit Artikel Tips dan Trik</h3>
                         <div className="d-flex align-items-center justify-content-center mt-4">
-                            <input type="text" className="form-control w-75"
+                            <input type="text" className="form-control w-75 form-control-lg"
                                 value={tipsName}
                                 onChange={(e) =>
                                     this.inputHandler(e, "tipsName", "editTipsForm")
@@ -91,17 +132,18 @@ class EditMyTips extends React.Component {
                             />
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-3">
-                            <input type="text" className="form-control w-75"
-                                value={image}
-                                onChange={(e) =>
-                                    this.inputHandler(e, "image", "editTipsForm")
-                                }
+                            <input type="file" className="form-control-lg"
+                                onChange={this.fileChangeHandler}
+                            // value={tipsImage}
+                            // onChange={(e) =>
+                            //     this.inputHandler(e, "image", "editTipsForm")
+                            // }
                             />
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-3">
-                            <textarea className="form-control w-75" rows="25"
-                                value={desc} onChange={(e) =>
-                                    this.inputHandler(e, "desc", "editTipsForm")
+                            <textarea className="form-control w-75 form-control-lg" rows="25"
+                                value={tipsContent} onChange={(e) =>
+                                    this.inputHandler(e, "tipsContent", "editTipsForm")
                                 }
                             >
 

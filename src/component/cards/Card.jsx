@@ -1,20 +1,20 @@
 import React from 'react'
 import './Card.css'
-import Button from '../Button/Button'
 import Buttons from '../Button/Buttons'
+import { Link } from "react-router-dom";
 
 export default class Card extends React.Component {
     render() {
         const { recipe } = this.props
-        const { recipeName, numbServings, cookTime, image, user } = recipe
-        const { fullName } = user
+        const { recipeName, numbServings, cookTime, recipeImage, users } = recipe
+        const { fullname } = users
         const renderList = () => {
             return (
                 <>
-                    <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                    <img src={recipeImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                     <br />
                     <h6 style={{ color: "inherit" }} className="mt-2">{recipeName}</h6>
-                    <p>Oleh: {fullName}</p>
+                    <p>Oleh: {fullname}</p>
                     <div className="d-flex justify-content-around mt-3 details">
                         <div className="d-flex details">
                             <i className="material-icons mr-2">&#xe192;</i>
@@ -25,10 +25,6 @@ export default class Card extends React.Component {
                             <p style={{ color: "inherit" }}>{numbServings} orang</p>
                         </div>
                     </div><br />
-                    <div className="d-flex justify-content-around">
-                        <Buttons type="outlined">Tambah ke Rencana</Buttons>
-                        <Buttons type="contained" className="ml-3">Lihat Resep</Buttons>
-                    </div>
                 </>
             )
         }

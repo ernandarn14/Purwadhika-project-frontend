@@ -8,12 +8,12 @@ import Button from "../../../component/Button/Buttons";
 class TipsDetails extends React.Component {
     state = {
         tipsList: {
-            image: "",
+            tipsImage: "",
             tipsName: "",
-            desc: "",
-            id: 0
+            tipsContent: "",
         },
-        tipsDataList: []
+        tipsDataList: [],
+        selectedFile: null
     }
 
     componentDidMount() {
@@ -50,15 +50,15 @@ class TipsDetails extends React.Component {
     renderTipsData = () => {
         const { tipsDataList } = this.state
         return tipsDataList.map(val => {
-            const { image, tipsName } = val
+            const { tipsImage, tipsName } = val
             return (
-                <>
-                    <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center">
+                // <>
+                    <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()}>
                         <Link
                             to={`/tips/${val.id}`}
                             style={{ textDecoration: "none", color: "inherit" }}
                         >
-                            <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                            <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                             <h5 className="mt-2">{tipsName}</h5>
                             {/* <Button type="contained" className="mt-2">
                                 Baca Selengkapnya
@@ -67,14 +67,14 @@ class TipsDetails extends React.Component {
                         {/* {this.getAllTipsData}
                         {this.getTipDataDetails()} */}
                     </div>
-                </>
+                // </>
             )
         })
     }
 
     render() {
         const { tipsList } = this.state
-        const { tipsName, image, desc } = tipsList
+        const { tipsName, tipsImage, tipsContent } = tipsList
         return (
             <div className="container">
                 <div className="d-flex justify-content-start mt-4">
@@ -89,18 +89,18 @@ class TipsDetails extends React.Component {
                         <div className="tips-details">
                             <div className="d-flex flex-column text-center align-items-center">
                                 <h3 className="my-4">{tipsName}</h3>
-                                <img src={image} alt="" style={{ width: "450px", height: "300px", objectFit: "contain" }} className="mt-2" />
+                                <img src={tipsImage} alt="" style={{ width: "450px", height: "300px", objectFit: "contain" }} className="mt-2" />
                             </div>
                             <div className="d-flex mt-5 text-justify">
-                                <p>{desc}</p>
+                                <p>{tipsContent}</p>
                             </div>
                         </div>
-                        <div className="recommendation mt-5">
+                        {/* <div className="recommendation mt-5">
                             <h4 className="recommendation-header">Artikel Lainnya</h4>
                             <div className="row d-flex flex-wrap justify-content-center">
                                 {this.renderTipsData()}
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
