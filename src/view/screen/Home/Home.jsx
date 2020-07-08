@@ -39,12 +39,12 @@ class Home extends React.Component {
   }
 
   getRecipeData = () => {
-    Axios.get(`${API_URL}/recipes`
-      , {
-        params: {
-          _expand: "user"
-        }
-      }
+    Axios.get(`${API_URL}/resep`
+      // , {
+      //   params: {
+      //     _expand: "user"
+      //   }
+      // }
     )
       .then(res => {
         console.log(res.data)
@@ -65,8 +65,7 @@ class Home extends React.Component {
     return recipeList.map(val => {
       if (val.recipeName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
         return (
-          <>
-            <div className="d-flex flex-column justify-content-center">
+            <div className="d-flex flex-column justify-content-center" key={val.id.toString()}>
               <Link
                 to={`/resep/${val.id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
@@ -76,7 +75,6 @@ class Home extends React.Component {
                 />
               </Link>
             </div>
-          </>
         )
       }
     })

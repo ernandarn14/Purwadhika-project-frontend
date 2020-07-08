@@ -9,7 +9,7 @@ class SignupAkun extends React.Component {
   state = {
     signupForm: {
       username: "",
-      fullName: "",
+      fullname: "",
       email: "",
       password: "",
       showPassword: false
@@ -27,10 +27,10 @@ class SignupAkun extends React.Component {
   }
 
   signupButtonHandler = () => {
-    const { username, fullName, email, password } = this.state.signupForm
+    const { username, fullname, email, password } = this.state.signupForm
     let newUser = {
       username,
-      fullName,
+      fullname,
       email,
       password
     }
@@ -57,7 +57,7 @@ class SignupAkun extends React.Component {
 
 
   render() {
-    const { username, fullName, email, password, showPassword } = this.state.signupForm
+    const { username, fullname, email, password, showPassword } = this.state.signupForm
     if (this.props.user.id > 0) {
       return <Redirect to="/" />
     }
@@ -87,14 +87,14 @@ class SignupAkun extends React.Component {
               <div className="d-flex justify-content-center">
                 <input
                   type="text"
-                  placeholder="Nama Lengkap" value={fullName}
+                  placeholder="Nama Lengkap" value={fullname}
                   className="mt-3 form-control"
-                  onChange={(e) => this.inputHandler(e, "fullName", "signupForm")}
+                  onChange={(e) => this.inputHandler(e, "fullname", "signupForm")}
                 />
               </div>
               <div className="d-flex justify-content-center">
                 <input
-                  type="text"
+                  type="email"
                   placeholder="Email" value={email}
                   className="mt-3 form-control"
                   onChange={(e) => this.inputHandler(e, "email", "signupForm")}

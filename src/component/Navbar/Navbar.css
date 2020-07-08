@@ -10,15 +10,15 @@
   padding: 10px;
   border: 1px solid lightgray;
   font-size: 12px;
-  width: 70%;
+  width: 30%;
   outline: none;
   border-radius: 25px;
   transition: all ease 150ms;
 }
 
-/* .navbarSearch.active{
-    border-bottom: 1px solid red;
-} */
+.navbarSearch:focus{
+  width: 70%;
+}
 
 .search i {
   position: absolute;

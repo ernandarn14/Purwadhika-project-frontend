@@ -9,7 +9,7 @@ class RecipeDetails extends React.Component {
     state = {
         recipeDetailList: {
             recipeName: "",
-            // recipeCategory: {},
+            recipeCategory: {},
             cookTime: 0,
             numbServings: "",
             recipeImage: "",
@@ -23,11 +23,11 @@ class RecipeDetails extends React.Component {
 
     getRecipeDetails = () => {
         Axios.get(`${API_URL}/resep/${this.props.match.params.resepId}`
-        // , {
-        //     params: {
-        //         _expand: "user"
-        //     }
-        // }
+            // , {
+            //     params: {
+            //         _expand: "user"
+            //     }
+            // }
         )
             .then(res => {
                 console.log(res.data)
@@ -41,11 +41,11 @@ class RecipeDetails extends React.Component {
 
     getIngredientDetails = () => {
         Axios.get(`${API_URL}/bahan/resep/${this.props.match.params.resepId}`
-        // , {
-        //     params: {
-        //         recipeId: this.props.match.params.resepId,
-        //     }
-        // }
+            // , {
+            //     params: {
+            //         recipeId: this.props.match.params.resepId,
+            //     }
+            // }
         )
             .then(res => {
                 console.log(res.data)
@@ -58,11 +58,11 @@ class RecipeDetails extends React.Component {
 
     getInstructionDetails = () => {
         Axios.get(`${API_URL}/langkah-membuat/resep/${this.props.match.params.resepId}`
-        // , {
-        //     params: {
-        //         recipeId: this.props.match.params.resepId,
-        //     }
-        // }
+            // , {
+            //     params: {
+            //         recipeId: this.props.match.params.resepId,
+            //     }
+            // }
         )
             .then(res => {
                 console.log(res.data)
@@ -136,8 +136,9 @@ class RecipeDetails extends React.Component {
 
 
     render() {
-        const { recipeName, cookTime, numbServings, recipeImage, shortDesc, users } = this.state.recipeDetailList
+        const { recipeName, cookTime, numbServings, recipeImage, shortDesc, users, recipeCategory } = this.state.recipeDetailList
         const { fullname } = users
+        const { recipeCategoryName } = recipeCategory
         return (
             <div className="container">
                 <div className="d-flex justify-content-start mt-4">
@@ -154,6 +155,7 @@ class RecipeDetails extends React.Component {
                         <div className="recipe-data">
                             <div className="text-center my-5">
                                 <h3 className="text-header">{recipeName}</h3>
+                                {/* <p>{recipeCategoryName}</p> */}
                                 <h6>Oleh: {fullname}</h6>
                             </div>
                             <div className="row">

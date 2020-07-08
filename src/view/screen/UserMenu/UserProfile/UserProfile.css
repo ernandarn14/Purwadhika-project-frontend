@@ -1,0 +1,35 @@
+:root {
+    --accent-default: #ac7339;
+    --accent-dark: #86592d;
+    --accent-light: #d9b38c;
+    --gray-lightest: #f4f5f4;
+    --gray-divider: #e2e5e6;
+    --gray-default: #c3cbcd;
+    --gray-dark: #737b7d;
+    --black: #373f41;
+}
+
+.profil-img{
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 1px solid var(--accent-dark);
+    color: red;
+}
+
+.label{
+    color: var(--gray-dark);
+    font-weight: bold;
+}
+
+.header-profile{
+    color: var(--accent-default);
+    font-weight: bold;
+}
+
+.usertable, tr, td{
+    padding: 15px 0px 10px 15px;
+    width: 80%;
+    font-weight: bold;
+}

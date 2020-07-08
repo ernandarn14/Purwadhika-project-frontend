@@ -12,6 +12,7 @@ class LoginAkun extends React.Component {
     loginForm: {
       username: "",
       password: "",
+      showPassword: false
     }
   }
 
@@ -43,6 +44,16 @@ class LoginAkun extends React.Component {
     this.props.onLogin(newUser)
   }
 
+  checkboxHandler = (e, form) => {
+    const { checked } = e.target;
+    this.setState({
+      [form]: {
+        ...this.state[form],
+        showPassword: checked,
+      },
+    });
+  };
+
   render() {
     if (this.props.user.id > 0) {
       return <Redirect to="/" />
@@ -53,7 +64,7 @@ class LoginAkun extends React.Component {
           <div className="col-12">
             <div className="mt-5">
               <h3>Masuk</h3>
-              <h6 className="mt-4">Silahkan masuk dengan nama pengguna</h6>
+              <h6 className="mt-4">Silahkan masuk dengan username</h6>
               {this.props.user.errMsg ? (
                 <div className="alert alert-danger mt-3">
                   {this.props.user.errMsg}
@@ -65,22 +76,33 @@ class LoginAkun extends React.Component {
               </div>
               <div className="d-flex justify-content-center">
                 <input
-                  type="password"
+                  type={this.state.loginForm.showPassword ? "text" : "password"}
                   placeholder="Password"
                   className="mt-3 form-control"
                   value={this.state.loginForm.password} onChange={(e) => this.inputHandler(e, "password", "loginForm")}
                 />
               </div>
+              <input
+                type="checkbox"
+                className="mt-3"
+                name="showPassword"
+                onChange={(e) => this.checkboxHandler(e, "loginForm")}
+              />{" "}
+                  Tampilkan Password
+                  <br />
 
               <div className="d-flex justify-content-center">
                 <Button type="contained" className="mt-4" onClick={this.loginButtonHandler}>
                   Masuk
                 </Button>
               </div><br />
-              <div className="d-flex justify-content-around">
-                <Link to="" style={{ textDecoration: "none" }}>
+              <div className="d-flex flex-column justify-content-center">
+                <div className="row justify-content-center">
+                  <h6> Belum punya Akun?</h6>
+                  <Link to="/signup" className="mx-1" style={{ textDecoration: "none" }}><h6>Daftar di sini</h6></Link>
+                </div>
+                <Link to="/lupa-password" style={{ textDecoration: "none" }}>
                   <h6>Lupa Password?</h6></Link>
-                <Link to="/signup" className="mx-3" style={{ textDecoration: "none" }}><h6>Belum punya Akun?</h6></Link>
               </div>
             </div>
           </div>

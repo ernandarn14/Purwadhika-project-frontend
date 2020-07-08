@@ -8,13 +8,14 @@ import swal from "sweetalert";
 
 class MyResep extends React.Component {
     state = {
+        selectedFile: null,
         recipeList: [],
         editRecipeForm: {
             recipeName: "",
             category: "Kue Kering",
             cookTime: 0,
             numbServings: "",
-            image: "",
+            recipeImage: "",
             desc: "",
             id: 0
         },
@@ -36,11 +37,13 @@ class MyResep extends React.Component {
     }
 
     getRecipeData = () => {
-        Axios.get(`${API_URL}/recipes`, {
-            params: {
-                userId: this.props.user.id,
-            }
-        })
+        Axios.get(`${API_URL}/resep/pengguna/${this.props.user.id}`
+        // , {
+        //     params: {
+        //         userId: this.props.user.id,
+        //     }
+        // }
+        )
             .then(res => {
                 console.log(res.data)
                 this.setState({ recipeList: res.data })
@@ -58,10 +61,10 @@ class MyResep extends React.Component {
     renderRecipeList = () => {
         const { recipeList } = this.state
         return recipeList.map((val, idx) => {
-            const { recipeName, category, desc, image } = val
+            const { recipeName, category, desc, recipeImage } = val
             return (
                 <div className="d-flex justify-content-start mt-4 align-items-center recipelist" key={val.id.toString()}>
-                        <img src={image} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                        <img src={recipeImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                         <div className="d-flex flex-column ml-5 justify-content-start">
                             <h5 className="mt-2">{recipeName}</h5>
                             <h6>{category}</h6>

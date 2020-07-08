@@ -4,17 +4,22 @@ import Axios from "axios";
 import { API_URL } from "../../../../constants/API";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 class AddTips extends React.Component {
     state = {
+        selectedFile: null,
         addTipsForm: {
-            image: "",
+            tipsImage: "",
+            users: {
+                id: this.props.user.id,
+            },
             tipsName: "",
-            uploadDate: new Date(),
+            postedDate: new Date(),
             editDate: "",
-            desc: "",
+            tipsContent: "",
             id: 0
-        },
+        }
     }
 
     inputHandler = (e, field, form) => {
@@ -27,28 +32,64 @@ class AddTips extends React.Component {
         });
     };
 
+    fileChangeHandler = (e) => {
+        this.setState({ selectedFile: e.target.files[0] });
+    };
+
     addTipsHandler = () => {
-        Axios.post(`${API_URL}/tips`, this.state.addTipsForm)
-            .then(res => {
-                console.log(res.data)
+        let formData = new FormData();
+
+        formData.append(
+            "file",
+            this.state.selectedFile,
+            this.state.selectedFile.name
+        );
+
+        formData.append("userData", JSON.stringify(this.state.addTipsForm))
+
+        Axios.post(`${API_URL}/tips/pengguna/${this.props.user.id}`, formData)
+            .then((res) => {
+                console.log(res.data);
                 swal("Sukses", "Artikel Berhasil Ditambah!", "success")
                 this.setState({
                     addTipsForm: {
-                        image: "",
+                        tipsImage: "",
                         tipsName: "",
-                        uploadDate: "",
-                        desc: "",
+                        postedDate: "",
+                        tipsContent: "",
                         id: 0
                     }
                 })
             })
-            .catch(err => {
+            .catch((err) => {
+                console.log(err);
                 swal("Gagal", "Artikel Gagal Ditambah!", "error")
-            })
-    }
+            });
+        console.log(JSON.stringify(this.state.addTipsForm));
+    };
+
+    // addTipsHandler = () => {
+    //     Axios.post(`${API_URL}/tips`, this.state.addTipsForm)
+    //         .then(res => {
+    //             console.log(res.data)
+    //             swal("Sukses", "Artikel Berhasil Ditambah!", "success")
+    //             this.setState({
+    //                 addTipsForm: {
+    //                     image: "",
+    //                     tipsName: "",
+    //                     uploadDate: "",
+    //                     desc: "",
+    //                     id: 0
+    //                 }
+    //             })
+    //         })
+    //         .catch(err => {
+    //             swal("Gagal", "Artikel Gagal Ditambah!", "error")
+    //         })
+    // }
 
     render() {
-        const { image, tipsName, desc } = this.state.addTipsForm
+        const { image, tipsName, tipsContent } = this.state.addTipsForm
         return (
             <div className="container">
                 <div className="row">
@@ -62,7 +103,7 @@ class AddTips extends React.Component {
                     <div className="col-12">
                         <h3 className="text-center my-5">Tambah Artikel Tips dan Trik</h3>
                         <div className="d-flex align-items-center justify-content-center mt-4">
-                            <input type="text" className="form-control w-75"
+                            <input type="text" className="form-control w-75 form-control-lg"
                                 placeholder="Judul Artikel Tips dan Trik"
                                 value={tipsName}
                                 onChange={(e) =>
@@ -71,18 +112,19 @@ class AddTips extends React.Component {
                             />
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-3">
-                            <input type="text" className="form-control w-75"
-                                value={image}
-                                placeholder="Url Gambar"
-                                onChange={(e) =>
-                                    this.inputHandler(e, "image", "addTipsForm")
-                                }
+                            <input type="file" className="form-control-lg"
+                            onChange={this.fileChangeHandler}
+                                // value={image}
+                                // placeholder="Url Gambar"
+                                // onChange={(e) =>
+                                //     this.inputHandler(e, "image", "addTipsForm")
+                                // }
                             />
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-3">
-                            <textarea className="form-control w-75" rows="25" placeholder="Mulai Menulis Artikel"
-                                value={desc} onChange={(e) =>
-                                    this.inputHandler(e, "desc", "addTipsForm")
+                            <textarea className="form-control w-75 form-control-lg" rows="25" placeholder="Mulai Menulis Artikel"
+                                value={tipsContent} onChange={(e) =>
+                                    this.inputHandler(e, "tipsContent", "addTipsForm")
                                 }
                             >
 
@@ -100,4 +142,10 @@ class AddTips extends React.Component {
     }
 }
 
-export default AddTips
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(AddTips) 

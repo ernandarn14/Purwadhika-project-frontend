@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons/";
+// import { faShoppingCart } from "@fortawesome/free-solid-svg-icons/";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import "./Navbar.css";
 import Button from "../Button/Buttons";
-import { logoutHandler, countCart } from "../../redux/actions";
+import { logoutHandler } from "../../redux/actions";
 import { connect } from "react-redux";
 import {
   Dropdown,
@@ -47,12 +47,12 @@ class Navbar extends React.Component {
           >
             <h5 className="mx-2 font-weight-bold">Resep</h5>
           </Link>
-          <Link
+          {/* <Link
             to="/produk"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <h5 className="mx-2 font-weight-bold">Produk</h5>
-          </Link>
+          </Link> */}
           <Link to="/tips" style={{ textDecoration: "none", color: "inherit" }}>
             <h5 className="mx-2 font-weight-bold">Tips dan Trik</h5>
           </Link>
@@ -65,7 +65,7 @@ class Navbar extends React.Component {
             type="text"
             onChange={this.props.onSearch}
             className="navbarSearch"
-            placeholder="Ketik untuk mencari"
+            placeholder="Cari Resep atau Artikel"
           />
           <i className="fa fa-search icon"></i>
         </div>
@@ -87,24 +87,24 @@ class Navbar extends React.Component {
                           Dashboard Resep
                       </Link>
                       </DropdownItem>
-                      <DropdownItem>
+                      {/* <DropdownItem>
                         <Link style={{ color: "inherit", textDecoration: "none" }}
                           to="/admin/produk">
                           Dashboard Produk
                       </Link>
-                      </DropdownItem>
+                      </DropdownItem> */}
                       <DropdownItem>
                         <Link style={{ color: "inherit", textDecoration: "none" }}
                           to="/admin/tips">
                           Dashboard Tips dan Trik
                       </Link>
                       </DropdownItem>
-                      <DropdownItem>
+                      {/* <DropdownItem>
                         <Link style={{ color: "inherit", textDecoration: "none" }}
                           to="/admin/pembayaran">
                           Konfirmasi Pembelian
                       </Link>
-                      </DropdownItem>
+                      </DropdownItem> */}
                       <DropdownItem>
                         <Link style={{ color: "inherit", textDecoration: "none" }}
                           to="/admin/laporan">
@@ -114,6 +114,12 @@ class Navbar extends React.Component {
                     </>
                   ) : (
                       <>
+                        <DropdownItem>
+                          <Link style={{ color: "inherit", textDecoration: "none" }}
+                            to="/pengaturan">
+                            Profil Saya
+                      </Link>
+                        </DropdownItem>
                         <DropdownItem>
                           <Link style={{ color: "inherit", textDecoration: "none" }}
                             to="/resepku">
@@ -128,8 +134,8 @@ class Navbar extends React.Component {
                         </DropdownItem>
                         <DropdownItem>
                           <Link style={{ color: "inherit", textDecoration: "none" }}
-                            to="/riwayat">
-                            Riwayat Pembelian
+                            to="/tipsku">
+                            Tips Saya
                       </Link>
                         </DropdownItem>
                       </>
@@ -138,7 +144,7 @@ class Navbar extends React.Component {
 
               </Dropdown>
 
-              <Link
+              {/* <Link
                 className="d-flex flex-row"
                 to="/keranjang"
                 style={{ textDecoration: "none", color: "inherit" }}
@@ -148,13 +154,13 @@ class Navbar extends React.Component {
                   icon={faShoppingCart}
                   style={{ fontSize: 20 }}
                 />
-                <p className="small ml-1 mr-3" style={{ color: "#3C64B1", fontWeight: "bold" }}>{this.props.user.cartItems}</p>
-                {/* <CircleBg>
+                <p className="small ml-1 mr-3" style={{ color: "#3C64B1", fontWeight: "bold" }}>{this.props.user.cartItems}</p> */}
+              {/* <CircleBg>
                   <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
                     {this.props.user.cartItems}
                   </small>
                 </CircleBg> */}
-              </Link>
+              {/* </Link> */}
               <Link
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/"
@@ -202,7 +208,7 @@ const mapStateToProps = (state) => {
 const mapDispacthToProps = {
   onLogout: logoutHandler,
   onSearch: navbarSearchHandler,
-  countCart
+  // countCart
 };
 
 export default connect(mapStateToProps, mapDispacthToProps)(Navbar);

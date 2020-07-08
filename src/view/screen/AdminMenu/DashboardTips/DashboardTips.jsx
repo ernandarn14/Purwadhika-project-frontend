@@ -10,14 +10,15 @@ import swal from "sweetalert";
 class DashboardTips extends React.Component {
     state = {
         tipsDataList: [],
-        editTipsForm: {
-            image: "",
-            tipsName: "",
-            uploadDate: "",
-            editDate: new Date(),
-            desc: "",
-            id: 0
-        }
+        // editTipsForm: {
+        //     image: "",
+        //     tipsName: "",
+        //     postedDate: "",
+        //     editDate: new Date(),
+        //     desc: "",
+        //     id: 0
+        // }
+        editTipsForm: []
     }
 
     getTipsData = () => {
@@ -37,17 +38,19 @@ class DashboardTips extends React.Component {
     renderTipsData = () => {
         const { tipsDataList } = this.state
         return tipsDataList.map((val, idx) => {
-            const { tipsName, uploadDate } = val
+            const { tipsName, postedDate, users } = val
+            const { username } = users
             return (
-                <tr>
-                    {/* <th scope="row">{val.id}</th> */}
+                <tr key={val.id.toString()}>
+                    <td>{idx+=1}</td>
                     {/* <td>
                         <div className="d-flex align-items-center justify-content-center">
                             <img src={image} alt="" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
                         </div>
                     </td> */}
                     <td>{tipsName}</td>
-                    <td>{uploadDate}</td>
+                    <td>{username}</td>
+                    <td>{postedDate}</td>
                     <td>
                         <div className="d-flex align-items-center justify-content-center">
                             <Link to={`/admin/tips/edit/${val.id}`} style={{ color: "inherit" }}>
@@ -61,17 +64,24 @@ class DashboardTips extends React.Component {
         })
     }
 
+    editBtnHandler = (idx) => {
+        this.setState({
+            editTipsForm: {
+                ...this.state.tipsDataList[idx],
+            }
+        });
+    };
+
     deleteDataHandler = (id) => {
         swal({
             title: "Anda yakin untuk menghapus data?",
-            // text: "Once deleted, you will not be able to recover this imaginary file!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    Axios.delete(`${API_URL}/tips/${id}`)
+                    Axios.delete(`${API_URL}/tips/delete/${id}`)
                         .then(res => {
                             console.log(res.data)
                             this.getTipsData()
@@ -86,14 +96,6 @@ class DashboardTips extends React.Component {
                 }
             });
     }
-
-    editBtnHandler = (idx) => {
-        this.setState({
-            editTipsForm: {
-                ...this.state.tipsDataList[idx],
-            }
-        });
-    };
 
 
 
@@ -111,9 +113,10 @@ class DashboardTips extends React.Component {
                         <table className="tips-table mt-4 table table-bordered w-auto">
                             <thead>
                                 <tr>
-                                    {/* <th scope="col">No.</th> */}
+                                    <th>No.</th>
                                     {/* <th>Gambar</th> */}
                                     <th>Judul</th>
+                                    <th>Username</th>
                                     <th>Tanggal Posting</th>
                                     <th></th>
                                 </tr>
