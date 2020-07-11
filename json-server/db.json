@@ -46,6 +46,56 @@
       "image": "https://www.meals.com/imagesrecipes/30142lrg.jpg",
       "desc": "ini paling laris",
       "id": 1
+    },
+    {
+      "userId": 2,
+      "recipeName": "coba deh",
+      "category": "Kue Kering",
+      "cookTime": 0,
+      "numbServings": "",
+      "image": "",
+      "desc": "",
+      "id": 9
+    },
+    {
+      "userId": 2,
+      "recipeName": "abc",
+      "category": "Cakes",
+      "cookTime": "57",
+      "numbServings": "12",
+      "image": "https://www.meals.com/imagesrecipes/30340lrg.jpg",
+      "desc": "aaa",
+      "id": 10
+    },
+    {
+      "userId": 1,
+      "recipeName": "",
+      "category": "Kue Kering",
+      "cookTime": 0,
+      "numbServings": "",
+      "image": "",
+      "desc": "",
+      "id": 11
+    },
+    {
+      "userId": 1,
+      "recipeName": "coba",
+      "category": "Kue Kering",
+      "cookTime": 0,
+      "numbServings": "",
+      "image": "",
+      "desc": "",
+      "id": 12
+    },
+    {
+      "userId": 1,
+      "recipeName": "ab",
+      "category": "Kue Kering",
+      "cookTime": 0,
+      "numbServings": "",
+      "image": "",
+      "desc": "",
+      "id": 13
     }
   ],
   "ingredientLists": [
@@ -126,6 +176,23 @@
       "id": 4
     }
   ],
+  "ingredients": [
+    {
+      "recipeId": 10,
+      "ingredients": "ab",
+      "id": 10
+    },
+    {
+      "recipeId": 10,
+      "ingredients": "bc",
+      "id": 11
+    },
+    {
+      "recipeId": 10,
+      "ingredients": "cd",
+      "id": 12
+    }
+  ],
   "instructionLists": [
     {
       "recipeId": 1,
@@ -141,11 +208,87 @@
       "recipeId": 1,
       "instructionName": "Lapisi loyang dengan kertas kue dan butter, masukkan adonan dalam loyang. Lalu panggang dalam oven selama 8 - 9 menit",
       "id": 4
+    },
+    {
+      "recipeId": 9,
+      "instructionName": "aaa",
+      "id": 9
+    },
+    {
+      "recipeId": 9,
+      "instructionName": "bbb",
+      "id": 10
+    },
+    {
+      "recipeId": 9,
+      "instructionName": "ccc",
+      "id": 11
+    },
+    {
+      "recipeId": 10,
+      "instructionName": "aaa",
+      "id": 12
+    },
+    {
+      "recipeId": 10,
+      "instructionName": "aaa",
+      "id": 13
+    },
+    {
+      "recipeId": 10,
+      "instructionName": "bbbbbb",
+      "id": 14
+    },
+    {
+      "recipeId": 10,
+      "instructionName": "ccccccc",
+      "id": 15
+    },
+    {
+      "recipeId": 10,
+      "instructionName": "dddddddd",
+      "id": 16
+    },
+    {
+      "recipeId": 10,
+      "instructionName": "erf",
+      "id": 17
+    },
+    {
+      "recipeId": 10,
+      "instructionName": "erf",
+      "id": 18
+    },
+    {
+      "recipeId": 10,
+      "instructionName": "eee",
+      "id": 19
+    },
+    {
+      "recipeId": 10,
+      "instructionName": "dddd",
+      "id": 20
+    },
+    {
+      "recipeId": 11,
+      "instructionName": "",
+      "id": 21
+    },
+    {
+      "recipeId": 13,
+      "instructionName": "cobaa",
+      "id": 22
+    },
+    {
+      "recipeId": 13,
+      "instructionName": "",
+      "id": 23
     }
   ],
   "tips": [
     {
       "image": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
+      "userId": 2,
       "uploadDate": "",
       "tipsName": "Chocolate Crinkle-Top Cookies",
       "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
@@ -153,90 +296,28 @@
     },
     {
       "image": "https://www.meals.com/imagesrecipes/147657lrg.jpg",
+      "userId": 2,
       "uploadDate": "",
-      "tipsName": "Cookies Coklat",
+      "tipsName": "Cookies Coklatku",
       "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
       "id": 2
-    },
-    {
-      "image": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
-      "uploadDate": "",
-      "tipsName": "Tart ABC",
-      "desc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur commodi quibusdam minus sit optio et explicabo, eos reiciendis veniam ipsam aut dignissimos dicta harum temporibus laborum veritatis itaque odit sapiente?",
-      "id": 3
     },
     {
       "image": "https://www.meals.com/imagesrecipes/144770lrg.jpg",
+      "userId": 2,
       "tipsName": "Red Velvel Anti Gagal",
       "uploadDate": "2020-06-03T08:46:34.149Z",
-      "desc": "1. Coklat\n    menggunakan coklat premium\n2. Gula \n    bisa memakai gula pasir jika tidak ada brown sugar\n3.  Butter\n     Jangan mengganti butter dengan margarine karena hasilnya akan berbeda",
+      "desc": "1. Coklat\n    menggunakan coklat premium\n2. Gula \n    bisa memakai gula pasir jika tidak ada brown sugar\n3.  Butter\n     Jangan mengganti butter dengan margarine karena hasilnya akan berbeda\n4. Coba Edit\n     coba rapi tidak",
       "id": 4
-    }
-  ],
-  "products": [
-    {
-      "productName": "Tepung Beras Rose Brand",
-      "brandId": 1,
-      "price": 2300,
-      "category": "Tepung",
-      "netto": "220 gr",
-      "image": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/medium//87/MTA-4012277/rose_brand_rose_brand_tepung_beras_500_gr_full02.jpg?output-format=webp",
-      "desc": "aaaaaaaaaaaa",
-      "id": 1
     },
     {
-      "productName": "Pasta Koepoe Cocopandan",
-      "brandId": 2,
-      "price": 6500,
-      "category": "Perasa",
-      "netto": "30 ml",
-      "image": "https://cf.shopee.co.id/file/787a5c5008841d021a9e77c17491811d",
-      "desc": "aaaaaaaaaaaa",
-      "id": 2
-    },
-    {
-      "productName": "Pewarna Koepoe Warna Merah Cabe",
-      "brandId": 2,
-      "price": "5400",
-      "category": "Pewarna",
-      "netto": "30 ml",
-      "image": "https://ecs7.tokopedia.net/img/cache/700/product-1/2017/3/14/15297204/15297204_9b26b492-d8bf-4fe3-bbd3-5904e22e961c_800_800.jpg",
-      "desc": "aaaaaaaaaaa",
-      "id": 3
-    }
-  ],
-  "carts": [
-    {
-      "userId": 2,
-      "productId": 1,
-      "quantity": 3,
-      "id": 1
-    },
-    {
-      "userId": 2,
-      "productId": 3,
-      "quantity": 1,
-      "id": 3
-    },
-    {
-      "userId": 2,
-      "productId": 2,
-      "quantity": 1,
-      "id": 4
-    }
-  ],
-  "transactions": [],
-  "transactionDetails": [],
-  "wishlistProducts": [
-    {
-      "userId": 2,
-      "productId": 1,
-      "id": 1
-    },
-    {
-      "userId": 2,
-      "productId": 2,
-      "id": 2
+      "image": "https://www.meals.com/imagesrecipes/30128lrg.jpg",
+      "userId": 1,
+      "tipsName": "coba edit data",
+      "uploadDate": "2020-06-29T14:59:06.189Z",
+      "editDate": "",
+      "desc": "1. coba aja\n2. coba lagi\n3. semoga rapi\n4. alhamdulillah rapi",
+      "id": 5
     }
   ],
   "wishlistRecipes": [
@@ -244,16 +325,11 @@
       "userId": 2,
       "recipeId": 1,
       "id": 1
-    }
-  ],
-  "brands": [
-    {
-      "brandName": "Rose Brand",
-      "id": 1
     },
     {
-      "brandName": "Koepoe",
-      "id": 2
+      "userId": 2,
+      "recipeId": 10,
+      "id": 3
     }
   ]
 }

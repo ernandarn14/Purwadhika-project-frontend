@@ -1,0 +1,70 @@
+:root {
+    --accent-default: #ac7339;
+    --accent-dark: #86592d;
+    --accent-light: #d9b38c;
+    --gray-lightest: #f4f5f4;
+    --gray-divider: #e2e5e6;
+    --gray-default: #c3cbcd;
+    --gray-dark: #737b7d;
+    --black: #373f41;
+}
+
+.payment-table td {
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-top: 1px solid #dbdde0;
+    border-bottom: 1px solid #dbdde0;
+    padding: 16px 0px;
+}
+  
+.payment-table thead tr {
+    border: 0px !important;
+  }
+  
+.payment-table thead tr th {
+    padding: 12px 0px;
+    color: var(--gray-lightest);
+    font-size: 18px;
+    background-color: var(--accent-default);
+  }
+
+  
+.payment-table {
+    border-radius: 4px;
+    text-align: center;
+}
+
+.collapse-item {
+    padding: 0 !important;
+    height: 0px;
+    opacity: 0;
+    transition: all 150ms ease-in-out;
+    visibility: collapse !important;
+  }
+  
+  .collapse-item:hover {
+    background: white !important;
+    cursor: default !important;
+  }
+  
+  .collapse-item img {
+    height: 160px;
+    object-fit: contain;
+    transition: all 150ms ease-in-out;
+    opacity: 0;
+  }
+  
+  .collapse-item.active img {
+    height: 160px;
+    object-fit: contain;
+    opacity: 1;
+    transition: all 150ms ease-in-out;
+  }
+  
+  .collapse-item.active {
+    height: 160px;
+    opacity: 1;
+    transition: all 150ms ease-in-out;
+    visibility: visible !important;
+  }

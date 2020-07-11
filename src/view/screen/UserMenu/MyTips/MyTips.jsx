@@ -110,7 +110,7 @@ class MyTips extends React.Component {
                              {this.renderTipsData()}
                          </div>
                         ) : (
-                            <Alert>Artikel Tips dan Trik Anda Kosong! Silahkan Tambah Artikel</Alert>
+                            <Alert className="mt-3">Artikel Tips dan Trik Anda Kosong! Silahkan Tambah Artikel</Alert>
                         )}
                        
                     </div>

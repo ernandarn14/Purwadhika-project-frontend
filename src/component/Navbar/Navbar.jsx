@@ -99,12 +99,12 @@ class Navbar extends React.Component {
                           Dashboard Tips dan Trik
                       </Link>
                       </DropdownItem>
-                      {/* <DropdownItem>
+                      <DropdownItem>
                         <Link style={{ color: "inherit", textDecoration: "none" }}
                           to="/admin/pembayaran">
-                          Konfirmasi Pembelian
+                          Konfirmasi Pembayaran
                       </Link>
-                      </DropdownItem> */}
+                      </DropdownItem>
                       <DropdownItem>
                         <Link style={{ color: "inherit", textDecoration: "none" }}
                           to="/admin/laporan">
@@ -136,6 +136,12 @@ class Navbar extends React.Component {
                           <Link style={{ color: "inherit", textDecoration: "none" }}
                             to="/tipsku">
                             Tips Saya
+                      </Link>
+                        </DropdownItem>
+                        <DropdownItem>
+                          <Link style={{ color: "inherit", textDecoration: "none" }}
+                            to="/riwayat">
+                            Riwayat Transaksi
                       </Link>
                         </DropdownItem>
                       </>

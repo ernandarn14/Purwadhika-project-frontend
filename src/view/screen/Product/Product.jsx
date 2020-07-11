@@ -31,8 +31,8 @@ class Produk extends React.Component {
         const { productList } = this.state
         return productList.map(val => {
             const { image, productName, price, netto } = val
-            if (productName.toLowerCase().includes(this.props.search.searchInput.toLowerCase()) &&
-            val.category.toLowerCase().includes(this.state.categoryFilter)) {
+            // if (productName.toLowerCase().includes(this.props.search.searchInput.toLowerCase()) &&
+            // val.category.toLowerCase().includes(this.state.categoryFilter)) {
                 return (
                     <>
                         <div className="product-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center">
@@ -56,7 +56,7 @@ class Produk extends React.Component {
                         </div>
                     </>
                 )
-            }
+            // }
         })
     }
 

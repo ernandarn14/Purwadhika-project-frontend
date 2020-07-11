@@ -8,7 +8,7 @@ import Buttons from "../../../component/Button/Buttons"
 import swal from "sweetalert"
 import { Alert } from "reactstrap"
 import { Link } from "react-router-dom"
-import { countCart } from "../../../redux/actions";
+// import { countCart } from "../../../redux/actions";
 
 class Cart extends React.Component {
     state = {
@@ -177,7 +177,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispacthToProps = {
-    countCart
+    // countCart
 }
 
 export default connect(mapStateToProps, mapDispacthToProps)(Cart) 

@@ -16,7 +16,7 @@ import {cookieChecker, userKeepLogin} from "./redux/actions"
 import DashboardRecipe from "./view/screen/AdminMenu/DashboardRecipe/DashboardRecipe";
 import DashboardTips from "./view/screen/AdminMenu/DashboardTips/DashboardTips";
 import DashboardReport from "./view/screen/AdminMenu/DashboardReport";
-import DashboardPayment from "./view/screen/AdminMenu/DashboardPayment";
+import DashboardPayment from "./view/screen/AdminMenu/DashboardPayment/DashboardPayment";
 import MyTips from "./view/screen/UserMenu/MyTips/MyTips";
 import MyResep from "./view/screen/UserMenu/MyResep/MyResep";
 import Wishlist from "./view/screen/UserMenu/MyWishlist/Wishlist";
@@ -36,6 +36,8 @@ import AddNewTips from "./view/screen/UserMenu/MyTips/AddNewTips";
 import EditMyTips from "./view/screen/UserMenu/MyTips/EditMyTips";
 import EditRecipe from "./view/screen/UserMenu/MyResep/EditRecipe";
 import Profile from "./view/screen/Profile";
+import MyHistory from "./view/screen/UserMenu/MyHistory/MyHistory";
+import Resetpassword from "./view/screen/ForgotPassword/ResetPassword";
 
 const cookieObj = new Cookie();
 
@@ -77,8 +79,9 @@ class App extends React.Component {
           <Route exact path="/tipsku/tambah" component={AddNewTips} />
           <Route exact path="/tipsku/edit/:tipsId" component={EditMyTips} />
           <Route exact path="/rencana" component={Wishlist} />
-          <Route exact path="/keranjang" component={Profile} />
+          {/* <Route exact path="/keranjang" component={Profile} /> */}
           <Route exact path="/pengaturan" component={UserProfile} />
+          <Route exact path="/riwayat" component={MyHistory} />
           {/* <Route exact path="/pengaturan" conponent={Profile} /> */}
         </>
       );
@@ -100,6 +103,9 @@ class App extends React.Component {
         <Route exact path="/tips" component={Tips} />
         <Route exact path="/tips/:tipsId" component={TipsDetails} />
         <Route exact path="/lupa-password" component={ForgotPassword} />
+        <Route exact path="/resetPassword/:user_id" component={Resetpassword} />
+        <Route exact path="/pengguna" component={Resetpassword} />
+        <Route exact path="/pengguna/verifikasi/" component={Profile} />
         {this.renderAdminRoutes()}
         {this.renderProtectedRoutes()}
         <Route path="*" component={PageNotFound} />

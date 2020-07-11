@@ -6,8 +6,14 @@ import { API_URL } from '../../../../constants/API'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { Modal, ModalHeader, ModalBody } from "reactstrap";
+import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import swal from "sweetalert";
+import { priceFormatter } from '../../../../supports/helpers/PriceFormatter'
+import OVOImg from "../../../../assets/images/logo/ovo.png"
+import GopayImg from "../../../../assets/images/logo/gopay.png"
+import BCAImg from "../../../../assets/images/logo/bca.png"
+import CIMBImg from "../../../../assets/images/logo/cimb.png"
+import { logoutHandler } from '../../../../redux/actions'
 
 class UserProfile extends React.Component {
     state = {
@@ -31,8 +37,12 @@ class UserProfile extends React.Component {
             newPassword: "",
             confirmPassword: ""
         },
+        planList: [],
+        paymentData: [],
         modalEditOpen: false,
-        modalEditPwdOpen: false
+        modalEditPwdOpen: false,
+        modalPaymentOpen: false,
+        method: "gopay"
     }
 
     getUserData = () => {
@@ -50,8 +60,20 @@ class UserProfile extends React.Component {
             })
     }
 
+    getPlanList = () => {
+        Axios.get(`${API_URL}/langganan`)
+            .then(res => {
+                console.log(res.data)
+                this.setState({ planList: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
     componentDidMount() {
         this.getUserData()
+        this.getPlanList()
     }
 
     inputHandler = (e, field, form) => {
@@ -82,6 +104,14 @@ class UserProfile extends React.Component {
         });
     };
 
+    paymentBtnHandler = (idx) => {
+        this.setState({
+            paymentData: {
+                ...this.state.planList[idx],
+            }, modalPaymentOpen: true
+        })
+    }
+
     toggleModalEdit = () => {
         this.setState({ modalEditOpen: !this.state.modalEditOpen });
     };
@@ -90,9 +120,19 @@ class UserProfile extends React.Component {
         this.setState({ modalEditPwdOpen: !this.state.modalEditPwdOpen });
     };
 
+    togglModalPayment = () => {
+        this.setState({ modalPaymentOpen: !this.state.modalPaymentOpen })
+    }
+
     fileChangeHandler = (e) => {
         this.setState({ selectedFile: e.target.files[0] });
     };
+
+    radioButtonHandler = (e) => {
+        //  const { checked } = e.target
+        this.setState({ method: e.target.value })
+        alert(e.target.value);
+    }
 
     editUserHandler = () => {
         let formData = new FormData();
@@ -121,35 +161,85 @@ class UserProfile extends React.Component {
 
     updatePasswordHandler = () => {
         const { userData } = this.state
-        const { oldPassword, newPassword, confirmPassword} = this.state.editPasswordForm
-        let newUserData = {...userData}
+        const { oldPassword, newPassword, confirmPassword } = this.state.editPasswordForm
+        let newUserData = { ...userData }
         console.log(newUserData)
 
-        if (newPassword === confirmPassword){
+        if (newPassword === confirmPassword) {
             Axios.put(`${API_URL}/pengguna/ubah-password/${this.props.user.id}`, newUserData, {
                 params: {
                     oldPassword,
                     newPassword
                 }
             })
-            .then(res => {
-                console.log(res.data)
-                swal("Sukses", "Password Berhasil Diubah!", "success")
-                this.setState({ modalEditOpen: false })
-                this.getUserData()
-            })
-            .catch(err => {
-                swal("Gagal", "Password Gagal Diubah!", "error")
-            })
+                .then(res => {
+                    console.log(res.data)
+                    swal("Sukses", "Password Berhasil Diubah!", "success")
+                    this.setState({ modalEditOpen: false })
+                    //this.props.onLogout()
+                    this.getUserData()
+                })
+                .catch(err => {
+                    swal("Gagal", "Password Gagal Diubah!", "error")
+                })
         } else {
             swal("Gagal", "Password Salah!", "error")
         }
     }
 
+    paymentHandler = () => {
+        // const { planList } = this.state
+        // const newPlan = {...planList}
+        // //console.log(newPlan[idx].id)
+        // alert('masuk')
+        // console.log(this.state.paymentData.id)
+        // Axios.get(`${API_URL}/langganan/${this.state.paymentData.id}`)
+        // .then(res => {
+        //     console.log(res.data)
+        // })
+        // .catch(err => {
+        //     console.log(err)
+        // })
+        Axios.post(`${API_URL}/transaksi/tambah/pengguna/${this.props.user.id}/langganan/${this.state.paymentData.id}`, {
+            userId: this.props.user.id,
+            planId: this.state.paymentData.id,
+            checkoutDate: new Date(),
+            status: "pending",
+            totalPayment: this.state.paymentData.price,
+            paymentMethod: this.state.method
+        })
+            .then(res => {
+                console.log(res.data)
+                swal("Sukses", "Transaksi Berhasil! Silahkan Melakukan Pembayaran Sesuai dengan Jumlah dan Upload Bukti Bayar", "success")
+                this.setState({ modalPaymentOpen: false })
+            })
+            .catch(err => {
+                console.log(err)
+                swal("Gagal", "Transaksi Gagal! Silahkan Ulang Beberapa Saat Lagi", "error")
+            })
+    }
+
+    renderPlansList = () => {
+        const { planList } = this.state
+        return planList.map((val, idx) => {
+            const { planName, planDesc, price } = val
+            return (
+                <div className="d-flex justify-content-center mt-4 align-items-center planlist" key={val.id.toString()}>
+                    <h5>{planName}</h5>
+                    <p>{planDesc}</p>
+                    <div className="d-flex flex-column ml-4">
+                        <h6>{priceFormatter(price)}</h6>
+                        <Buttons type="outlined" onClick={(_) => this.paymentBtnHandler(idx)}>Beli</Buttons>
+                    </div>
+                </div>
+            )
+        })
+    }
+
     renderViewPage = () => {
         const { username, fullname, noHp, email, profilePicture } = this.state.userData
         const { activePage } = this.state
-        if (activePage == "profile") {
+        if (activePage === "profile") {
             return (
                 <>
                     <h6 className="header-profile">Ubah Profil</h6>
@@ -162,26 +252,28 @@ class UserProfile extends React.Component {
                     <div className="row">
                         <div className="col-8 mt-5">
                             <table className="usertabel">
-                                <tr>
-                                    <td className="label">Nama Lengkap</td>
-                                    <td>{fullname}</td>
-                                </tr>
-                                <tr>
-                                    <td className="label">Username</td>
-                                    <td>{username}</td>
-                                </tr>
-                                <tr>
-                                    <td className="label">Nomor Handphone</td>
-                                    <td>{noHp}</td>
-                                </tr>
-                                <tr>
-                                    <td className="label">Email</td>
-                                    <td>{email}</td>
-                                </tr>
-                                <tr>
-                                    <td className="label">Password</td>
-                                    <td><Buttons type="textual" onClick={this.editBtnPassword}>Ubah</Buttons></td>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td className="label">Nama Lengkap</td>
+                                        <td>{fullname}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="label">Username</td>
+                                        <td>{username}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="label">Nomor Handphone</td>
+                                        <td>{noHp}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="label">Email</td>
+                                        <td>{email}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="label">Password</td>
+                                        <td><Buttons type="textual" onClick={this.editBtnPassword}>Ubah</Buttons></td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -192,7 +284,7 @@ class UserProfile extends React.Component {
                     >
                         <ModalHeader toggle={this.toggleModalEditPassword}>
                             <caption>
-                                <h6>Ubah Password</h6>
+                                Ubah Password
                             </caption>
                         </ModalHeader>
                         <ModalBody>
@@ -223,11 +315,13 @@ class UserProfile extends React.Component {
                                     }
                                 />
                             </div>
+                        </ModalBody>
+                        <ModalFooter>
                             <div className="d-flex align-items-center justify-content-center mt-4">
                                 <Buttons type="outlined" onClick={this.toggleModalEditPassword}>Kembali</Buttons>
                                 <Buttons type="contained" onClick={this.updatePasswordHandler} className="ml-3">Simpan</Buttons>
                             </div>
-                        </ModalBody>
+                        </ModalFooter>
                     </Modal>
 
                     <Modal
@@ -237,7 +331,7 @@ class UserProfile extends React.Component {
                     >
                         <ModalHeader toggle={this.toggleModalEdit}>
                             <caption>
-                                <h6>Ubah Profil</h6>
+                                Ubah Profil
                             </caption>
                         </ModalHeader>
                         <ModalBody>
@@ -275,10 +369,12 @@ class UserProfile extends React.Component {
                                 <input type="text" className="form-control w-75 form-control-lg"
                                     value={this.state.userData.email} readOnly />
                             </div>
-                            <div className="d-flex align-items-center justify-content-center mt-4">
-                                <Buttons type="outlined" onClick={this.toggleModalEdit}>Kembali</Buttons>
-                                <Buttons type="contained" onClick={this.editUserHandler} className="ml-3">Simpan</Buttons>
-                            </div>
+                            <ModalFooter>
+                                <div className="d-flex align-items-center justify-content-center mt-4">
+                                    <Buttons type="outlined" onClick={this.toggleModalEdit}>Kembali</Buttons>
+                                    <Buttons type="contained" onClick={this.editUserHandler} className="ml-3">Simpan</Buttons>
+                                </div>
+                            </ModalFooter>
                         </ModalBody>
                     </Modal>
                 </>
@@ -286,14 +382,79 @@ class UserProfile extends React.Component {
         } else if (activePage === "subscription") {
             return (
                 <>
-                    <h6 className="header-profile">Langganan dan Keuntungan</h6>
-                    <div className="d-flex flex-column align-items-center justify-content-center text-center mt-4">
+                    <h6 className="header-profile">Paket Langganan</h6>
+                    <div className="d-flex flex-column align-items-center justify-content-center text-center mt-5">
                         <h5>Beli Paket Langganan Untuk Membaca Resep dan Tips Tanpa Batas!</h5>
-                        <div>
-                            <div>
-                                <h6>Langganan Bulanan</h6>
-                            </div>
+                        <div className="mt-4">
+                            {this.renderPlansList()}
                         </div>
+                        <Modal
+                            toggle={this.togglModalPayment}
+                            isOpen={this.state.modalPaymentOpen}
+                            className="payment-modal"
+                        >
+                            <ModalHeader toggle={this.togglModalPayment}>
+                                <caption>
+                                    Pembayaran Transaksi
+                                </caption>
+                            </ModalHeader>
+                            <ModalBody>
+                                <form className="ml-2">
+                                    <div className="form-group row">
+                                        <label className="col-sm-4 col-form-label">Paket Langganan</label>
+                                        <div className="col-sm-8">
+                                            <input type="text" className="form-control"
+                                                value={this.state.paymentData.planName} readOnly
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="form-group row">
+                                        <label className="col-sm-4 col-form-label">Harga</label>
+                                        <div className="col-sm-8">
+                                            <input type="text" className="form-control"
+                                                value={this.state.paymentData.price} readOnly
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="form-group row d-flex justify-content-start align-items-center">
+                                        <label className="col-sm-4 col-form-label">Metode Pembayaran</label>
+                                        <div className="col-sm-8" >
+                                            <div className="form-check d-flex justify-content-start align-items-center">
+                                                <input className="form-check-input" type="radio" name="payment" value="gopay"
+                                                    onChange={(e) => this.radioButtonHandler(e)} />
+                                                <label className="form-check-label">
+                                                    <img src={GopayImg} alt="" className="payment-logo" />
+                                                </label>
+                                            </div>
+                                            <div className="form-check d-flex justify-content-start align-items-center">
+                                                <input className="form-check-input" type="radio" name="payment" value="ovo" onChange={(e) => this.radioButtonHandler(e)} />
+                                                <label className="form-check-label" >
+                                                    <img src={OVOImg} alt="" className="payment-logo" />
+                                                </label>
+                                            </div>
+                                            <div className="form-check d-flex justify-content-start align-items-center">
+                                                <input className="form-check-input" type="radio" name="payment" value="bca" onChange={(e) => this.radioButtonHandler(e)} />
+                                                <label className="form-check-label" >
+                                                    <img src={BCAImg} alt="" className="payment-logo" />
+                                                </label>
+                                            </div>
+                                            <div className="form-check d-flex justify-content-start align-items-center">
+                                                <input className="form-check-input" type="radio" name="payment" value="cimb" onChange={(e) => this.radioButtonHandler(e)} />
+                                                <label className="form-check-label">
+                                                    <img src={CIMBImg} alt="" className="payment-logo" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </ModalBody>
+                            <ModalFooter>
+                                <div className="d-flex align-items-center justify-content-center mt-4">
+                                    <Buttons type="outlined" onClick={this.togglModalPayment}>Kembali</Buttons>
+                                    <Buttons type="contained" onClick={this.paymentHandler} className="ml-3">Bayar</Buttons>
+                                </div>
+                            </ModalFooter>
+                        </Modal>
                     </div>
                 </>
             )
@@ -301,6 +462,7 @@ class UserProfile extends React.Component {
             return (
                 <>
                     <h6 className="header-profile">Riwayat Transaksi</h6>
+                    <p>Belum bayar, gagal, berhasil, riwayat</p>
                 </>
             )
         }
@@ -331,13 +493,13 @@ class UserProfile extends React.Component {
                             <Buttons type="textual" className={`mt-3 ${
                                 this.state.activePage === "subscription" ? "active" : null
                                 }`} onClick={() => this.setState({ activePage: "subscription" })}>
-                                Langganan dan Keuntungan
+                                Paket Langganan
                                     </Buttons>
-                            <Buttons type="textual" className={`mt-3 ${
+                            {/* <Buttons type="textual" className={`mt-3 ${
                                 this.state.activePage === "transaction" ? "active" : null
                                 }`} onClick={() => this.setState({ activePage: "transaction" })}>
                                 Riwayat Transaksi
-                                    </Buttons>
+                                    </Buttons> */}
                         </div>
                     </div>
                     <div className="col-8 mt-5">
@@ -355,4 +517,8 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(UserProfile) 
+const mapDispatchToProps = {
+    onLogout: logoutHandler
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile) 

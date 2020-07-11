@@ -1,7 +1,42 @@
 import React from 'react'
 import Buttons from '../../../component/Button/Buttons'
+import Axios from 'axios';
+import { API_URL } from '../../../constants/API';
+import swal from 'sweetalert';
 
 class ForgotPassword extends React.Component {
+    state = {
+        resetPass: {
+            email: ""
+        }
+    }
+
+    inputHandler = (e, field, form) => {
+        let { value } = e.target;
+        this.setState({
+            [form]: {
+                ...this.state[form],
+                [field]: value,
+            },
+        });
+    };
+
+    forgotPasswordHandler = () => {
+        const { resetPass } = this.state
+        Axios.post(`${API_URL}/pengguna/forgotpassword`, resetPass)
+            .then(res => {
+                console.log(res.data)
+                swal("Sukses", "Silahkan Cek Email Untuk Verifikasi Atur Ulang Password", "success")
+            })
+            .catch(err => {
+                console.log(err)
+                swal("Gagal", "Email Tidak Ditemukan atau Belum Terdaftar", "error")
+            })
+    }
+
+
+
+
     render() {
         return (
             <div className="container">
@@ -13,13 +48,13 @@ class ForgotPassword extends React.Component {
                             <input
                                 type="email"
                                 placeholder="Email"
-                                // value={email}
+                                value={this.state.resetPass.email}
                                 className="mt-3 form-control"
-                            // onChange={(e) => this.inputHandler(e, "email", "signupForm")}
+                                onChange={(e) => this.inputHandler(e, "email", "resetPass")}
                             />
                         </div>
                         <div className="d-flex justify-content-center">
-                            <Buttons type="contained" className="mt-4" onClick="">
+                            <Buttons type="contained" className="mt-4" onClick={this.forgotPasswordHandler}>
                                 Kirim
                             </Buttons>
                         </div>
