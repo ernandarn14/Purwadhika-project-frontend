@@ -17,7 +17,10 @@ class MyHistory extends React.Component {
         successStatus: [],
         failedStatus: [],
         paymentForm: [],
-        modalPayment: false
+        modalPayment: false,
+        reUploadForm: [],
+        modalReupload: false,
+        transactionId: 0
     }
 
     payNowHandler = (idx) => {
@@ -26,11 +29,26 @@ class MyHistory extends React.Component {
                 ...this.state.pendingStatus[idx],
             },
             modalPayment: true,
+            transactionId: this.state.failedStatus[idx].id
         });
     };
 
     toggleModalPayment = () => {
         this.setState({ modalPayment: !this.state.modalPayment });
+    };
+
+    reUploadHandler = (idx) => {
+        this.setState({
+            reUploadForm: {
+                ...this.state.failedStatus[idx],
+            },
+            modalReupload: true,
+        });
+        //console.log(this.state.failedStatus[idx])
+    };
+
+    toggleModalReUpload = () => {
+        this.setState({ modalReupload: !this.state.modalReupload });
     };
 
     fileChangeHandler = (e) => {
@@ -45,8 +63,8 @@ class MyHistory extends React.Component {
             }
         })
             .then(res => {
-                    console.log(res.data)
-                    this.setState({ pendingStatus: res.data })
+                console.log(res.data)
+                this.setState({ pendingStatus: res.data })
             })
             .catch(err => {
                 console.log(err)
@@ -79,7 +97,7 @@ class MyHistory extends React.Component {
             .then(res => {
                 console.log(res.data)
                 this.setState({ successStatus: res.data })
-                console.log(this.state.successStatus)
+                //console.log(this.state.successStatus)
             })
             .catch(err => {
                 console.log(err)
@@ -94,8 +112,8 @@ class MyHistory extends React.Component {
             }
         })
             .then(res => {
-                // console.log(res.data)
-                this.setState({ successStatus: res.data })
+                console.log(res.data)
+                this.setState({ failedStatus: res.data })
             })
             .catch(err => {
                 console.log(err)
@@ -150,45 +168,94 @@ class MyHistory extends React.Component {
     }
 
     renderSuccessStatus = () => {
-        //return( <h5>Halo</h5>)
-        // const { successStatus } = this.state
-        // return successStatus.map((val, idx) => {
-        //     const { plans, checkoutDate, totalPayment, paymentMethod } = val
-        //     const { planName } = plans
-        //     return (
-        //         <div className="d-flex flex-column justify-content-start mt-4 align-items-center planlist" key={val.id.toString()}>
-        //             <h5 className="header-plan">{planName}</h5>
-        //             <h6>{priceFormatter(totalPayment)}</h6>
-        //             <div className="d-flex flex-column mt-2">
-        //                 <h6>Waktu Transaksi: {checkoutDate.slice(0, 10)}</h6>
-        //                 <h6>Metode Pembayaran: {paymentMethod}</h6>
-        //             </div>
-        //         </div>
-        //     )
-
-        // })
-
-            return (
-                <>
-                <h5>halo</h5>
-                </>
-            )
-    }
-
-    renderFailedStatus = () => {
-        const { failedStatus } = this.state
-        return failedStatus.map((val, idx) => {
-            const { plans, checkoutDate, totalPayment, paymentMethod } = val
+        const { successStatus } = this.state
+        return successStatus.map((val, idx) => {
+            const { plans, checkoutDate, totalPayment, paymentMethod, confirmDate, paymentDate } = val
             const { planName } = plans
             return (
                 <div className="d-flex flex-column justify-content-start mt-4 align-items-center planlist" key={val.id.toString()}>
                     <h5 className="header-plan">{planName}</h5>
                     <h6>{priceFormatter(totalPayment)}</h6>
                     <div className="d-flex flex-column mt-2">
-                        <h6>Waktu Transaksi: {checkoutDate.slice(0, 10)}</h6>
-                        <h6>Metode Pembayaran: {paymentMethod}</h6>
+                        <p>Tanggal Transaksi: {checkoutDate.slice(0, 10)}</p>
+                        <p>Tanggal Pembayaran: {paymentDate.slice(0, 10)}</p>
+                        <p>Tanggal Konfrimasi: {confirmDate.slice(0, 10)}</p>
+                        <p>Metode Pembayaran: {paymentMethod}</p>
                     </div>
-                    {/* <Buttons type="contained" className="mt-3" onClick={(_) => this.payNowHandler(idx)}>Bayar Sekarang</Buttons> */}
+                </div>
+            )
+
+        })
+
+        // return (
+        //     <>
+        //         <h5>halo</h5>
+        //     </>
+        // )
+    }
+
+    renderFailedStatus = () => {
+        const { failedStatus } = this.state
+        return failedStatus.map((val, idx) => {
+            const { plans, checkoutDate, totalPayment, paymentMethod, confirmDate, failedNote } = val
+            const { planName } = plans
+            return (
+                <div className="d-flex flex-column justify-content-start mt-4 align-items-center planlist" key={val.id.toString()}>
+                    <h5 className="header-plan">{planName}</h5>
+                    <h6>{priceFormatter(totalPayment)}</h6>
+                    <div className="d-flex flex-column mt-2">
+                        <p>Tanggal Transaksi: {checkoutDate.slice(0, 10)}</p>
+                        <p>Tanggal Konfirmasi: {confirmDate.slice(0, 10)}</p>
+                        <p>Metode Pembayaran: {paymentMethod}</p>
+                        <p>Catatan: {failedNote}</p>
+                    </div>
+                    <Buttons type="contained" className="mt-3" onClick={(_) => this.reUploadHandler(idx)}>Unggah Bukti Bayar</Buttons>
+                    {/* <Modal
+                        toggle={this.toggleModalReUpload}
+                        isOpen={this.state.reUploadForm}
+                        className="repayment-modal"
+                    >
+                        <ModalHeader toggle={this.toggleModalReUpload}>
+                            <caption>
+                                Unggah Ulang Bukti Pembayaran Transaksi
+                                </caption>
+                        </ModalHeader>
+                        <ModalBody>
+                            <h6>Berikut Info Pembayaran Anda: </h6>
+                            <form className="ml-2 mt-3">
+                                <div className="form-group row">
+                                    <label className="col-sm-4 col-form-label">Total Bayar</label>
+                                    <div className="col-sm-8">
+                                        <input type="text" className="form-control"
+                                            value={priceFormatter(this.state.reUploadForm.totalPayment)} readOnly
+                                        />
+                                    </div>
+                                </div>
+                                <div className="form-group row d-flex justify-content-start align-items-center">
+                                    <label className="col-sm-4 col-form-label">Metode Pembayaran</label>
+                                    <div className="col-sm-8 d-flex justify-content-start align-items-center">
+                                        <input type="text" className="form-control"
+                                            value={this.state.reUploadForm.paymentMethod} readOnly
+                                        />
+                                    </div>
+                                </div>
+                                <div className="form-group row d-flex justify-content-start align-items-center">
+                                    <label className="col-sm-4 col-form-label">Unggah Bukti Pembayaran</label>
+                                    <div className="col-sm-8 d-flex justify-content-start align-items-center">
+                                        <input type="file" className="" onChange={this.fileChangeHandler}
+                                        //value={this.state.pendingStatus.paymentMethod} readOnly
+                                        />
+                                    </div>
+                                </div>
+                            </form>
+                        </ModalBody>
+                        <ModalFooter>
+                            <div className="d-flex align-items-center justify-content-center mt-4">
+                                <Buttons type="outlined" onClick={this.toggleModalReUpload}>Kembali</Buttons>
+                                <Buttons type="contained" onClick={this.reUploadPaymentReceipt} className="ml-3">Bayar</Buttons>
+                            </div>
+                        </ModalFooter>
+                    </Modal> */}
                 </div>
             )
 
@@ -217,6 +284,32 @@ class MyHistory extends React.Component {
                 swal("Gagal", "Pembayaran Gagal", "error")
             })
         console.log(JSON.stringify(this.state.paymentForm))
+    }
+
+    reUploadPaymentReceipt = () => {
+        alert('masuk')
+        let formData = new FormData();
+        formData.append(
+            "file",
+            this.state.selectedFile,
+            this.state.selectedFile.name
+        );
+
+        formData.append("userData", JSON.stringify(this.state.reUploadForm))
+
+        Axios.put(`${API_URL}/transaksi/upload/${this.state.reUploadForm.id}`, formData)
+            .then(res => {
+                console.log(res.data)
+                swal("Sukses", "Pembayaran Berhasil", "success")
+                this.setState({ modalReupload: false, selectedFile: null })
+                this.getFailedTransaction()
+                this.getPendingTransaction()
+            })
+            .catch(err => {
+                console.log(err)
+                swal("Gagal", "Pembayaran Gagal", "error")
+            })
+        console.log(JSON.stringify(this.state.reUploadForm))
     }
 
     renderViewPage = () => {
@@ -302,6 +395,43 @@ class MyHistory extends React.Component {
                         <h6 className="">Transaksi DIbatalkan</h6>
                         {this.renderFailedStatus()}
                     </div>
+                    <Modal
+                            toggle={this.toggleModalReUpload}
+                            isOpen={this.state.modalReupload}
+                            className="repayment-modal"
+                        >
+                            <ModalHeader toggle={this.toggleModalReUpload}>
+                                <caption>
+                                    Unggah Ulang Pembayaran Transaksi
+                                </caption>
+                            </ModalHeader>
+                            <ModalBody>
+                                <form className="ml-2 mt-3">
+                                <div className="form-group row">
+                                    <label className="col-sm-4 col-form-label">Total Bayar</label>
+                                    <div className="col-sm-8">
+                                        <input type="text" className="form-control"
+                                            value={priceFormatter(this.state.reUploadForm.totalPayment)} readOnly
+                                        />
+                                    </div>
+                                </div>
+                                    <div className="form-group row d-flex justify-content-start align-items-center">
+                                        <label className="col-sm-4 col-form-label">Unggah Bukti Pembayaran</label>
+                                        <div className="col-sm-8 d-flex justify-content-start align-items-center">
+                                            <input type="file" className="" onChange={this.fileChangeHandler}
+                                            //value={this.state.pendingStatus.paymentMethod} readOnly
+                                            />
+                                        </div>
+                                    </div>
+                                </form>
+                            </ModalBody>
+                            <ModalFooter>
+                                <div className="d-flex align-items-center justify-content-center mt-4">
+                                    <Buttons type="outlined" onClick={this.toggleModalReUpload}>Kembali</Buttons>
+                                    <Buttons type="contained" onClick={this.reUploadPaymentReceipt} className="ml-3">Unggah</Buttons>
+                                </div>
+                            </ModalFooter>
+                        </Modal>
                 </>
             )
         }

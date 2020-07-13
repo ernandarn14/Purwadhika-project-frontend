@@ -11,6 +11,7 @@ class TipsDetails extends React.Component {
             tipsImage: "",
             tipsName: "",
             tipsContent: "",
+            users: {}
         },
         tipsDataList: [],
         selectedFile: null
@@ -24,6 +25,7 @@ class TipsDetails extends React.Component {
     getTipDataDetails = () => {
         Axios.get(`${API_URL}/tips/${this.props.match.params.tipsId}`)
             .then(res => {
+                console.log(res.data)
                 this.setState({ tipsList: res.data })
             })
             .catch(err => {
@@ -74,7 +76,7 @@ class TipsDetails extends React.Component {
 
     render() {
         const { tipsList } = this.state
-        const { tipsName, tipsImage, tipsContent } = tipsList
+        const { tipsName, tipsImage, tipsContent, users } = tipsList
         return (
             <div className="container">
                 <div className="d-flex justify-content-start mt-4">
@@ -88,19 +90,14 @@ class TipsDetails extends React.Component {
                     <div className="col-12">
                         <div className="tips-details">
                             <div className="d-flex flex-column text-center align-items-center">
-                                <h3 className="my-4">{tipsName}</h3>
-                                <img src={tipsImage} alt="" style={{ width: "450px", height: "300px", objectFit: "contain" }} className="mt-2" />
+                                <h3 className="mt-4">{tipsName}</h3>
+                                <h6>Oleh: {users.username}</h6>
+                                <img src={tipsImage} alt="" style={{ width: "450px", height: "300px", objectFit: "contain" }} className="mt-5" />
                             </div>
                             <div className="d-flex mt-5 text-justify">
                                 <p>{tipsContent}</p>
                             </div>
                         </div>
-                        {/* <div className="recommendation mt-5">
-                            <h4 className="recommendation-header">Artikel Lainnya</h4>
-                            <div className="row d-flex flex-wrap justify-content-center">
-                                {this.renderTipsData()}
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             </div>

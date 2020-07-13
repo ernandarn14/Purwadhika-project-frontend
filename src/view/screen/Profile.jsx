@@ -1,6 +1,34 @@
 import React, { Component } from 'react'
+import Axios from 'axios'
+import { API_URL } from '../../constants/API'
+//import { URLSearchParams } from 'url'
 
 export default class Profile extends Component {
+    state = {
+        getUserActive: []
+    }
+
+    getUseractive = () => {
+        const newToken = new URLSearchParams(window.location.search).get("token")
+        //console.log(this.props.match.params.username)
+        Axios.get(`${API_URL}/pengguna/verifikasi/${this.props.match.params.username}`, {
+            params: { 
+                token: newToken
+            }
+        })
+        .then(res => {
+            console.log(res.data)
+            //this.setState
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    componentDidMount(){
+        this.getUseractive()
+    }
+
     render() {
         return (
             <div className="container text-center py-4">

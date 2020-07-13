@@ -56,12 +56,13 @@ class EditMyTips extends React.Component {
 
     editTipsHandler = () => {
         let formData = new FormData();
-
+        
+        if(this.state.selectedFile){
         formData.append(
             "file",
             this.state.selectedFile,
             this.state.selectedFile.name
-        );
+        )}
 
         formData.append("userData", JSON.stringify(this.state.editTipsForm))
 

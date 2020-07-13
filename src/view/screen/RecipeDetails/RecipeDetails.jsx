@@ -180,18 +180,18 @@ class RecipeDetails extends React.Component {
                         </div>
                     </div>
                     <div className="row ingredient-data">
-                        <div className="col-6">
+                        <div className="col-5">
                             <h3 className="text-header mt-5 mb-4">Bahan</h3>
                             {this.renderIngredientDetails()}
                         </div>
-                        <div className="col-6">
+                        <div className="col-7">
                             <h3 className="text-header mt-5 mb-4">Langkah Membuat</h3>
                             {this.renderInstructionDetails()}
                         </div>
                     </div>
                     {/* </div> */}
                 </div>
-                <div className="row mt-5 review-recipe">
+                {/* <div className="row mt-5 review-recipe">
                     <div className="col-12">
                         <h4 className="review-header">Ulasan</h4>
                         <textarea placeholder="Silahkan Tulis Ulasan Disini" className="my-3 review-text">
@@ -202,7 +202,7 @@ class RecipeDetails extends React.Component {
                         </div>
 
                     </div>
-                </div>
+                </div> */}
             </div>
         )
     }

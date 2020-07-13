@@ -20,7 +20,8 @@ class DashboardPayment extends React.Component {
         modalPaymentReciept: false,
         transactionSuccess: [],
         transactionFailed: [],
-        modalFailed: false
+        modalFailed: false,
+        transactionId: 0
     }
 
     getAllPendingData = () => {
@@ -93,8 +94,9 @@ class DashboardPayment extends React.Component {
                 ...this.state.transactionFailed[idx],
             },
             modalFailed: true,
+            transactionId: idx
         });
-        console.log(this.state.activeFailedData)
+        //console.log(this.state.transactionFailed[idx])
     };
 
     componentDidMount() {
@@ -125,12 +127,20 @@ class DashboardPayment extends React.Component {
                 [field]: value,
             },
         });
+        console.log(e.target.value)
     };
 
     confirmPayment = (id) => {
         Axios.put(`${API_URL}/transaksi/konfirmasi/${id}`)
             .then(res => {
                 console.log(res.data)
+                Axios.post(`${API_URL}/langgananku/tambah/${id}`)
+                .then(res => {
+                    console.log(res.data)
+                })
+                .catch(e => {
+                    console.log(e)
+                })
                 swal("Sukses", "Konfirmasi Berhasil", "success")
                 this.getAllPendingData()
             })
@@ -140,11 +150,15 @@ class DashboardPayment extends React.Component {
             })
     }
 
-    rejectPayment = id => {
+    rejectPayment = () => {
         // const { transactionFailed } = this.state
         // const { failedNote } = this.state.activeFailedData
         // let newData = { ...transactionFailed }
-        Axios.put(`${API_URL}/transaksi/tolak/${id}`, this.state.activeFailedData)
+        console.log(this.state.transactionId)
+        Axios.put(`${API_URL}/transaksi/tolak/${this.state.transactionId}`, {
+            failedNote: this.state.activeFailedData.failedNote,
+            status: "gagal"
+        })
         .then(res => {
             console.log(res.data)
             swal("Sukses", "Penolakan Transaksi Berhasil", "success")
@@ -184,7 +198,7 @@ class DashboardPayment extends React.Component {
                                 </div>
                                 <div className="d-flex align-items-center ml-5">
                                     <Buttons type="outlined" onClick={() => this.confirmPayment(val.id)}>Konfirmasi</Buttons>
-                                    <Buttons type="contained" className="ml-3" onClick={(_) => this.failedNoteHandler(idx)}>Tolak</Buttons>
+                                    <Buttons type="contained" className="ml-3" onClick={() => this.failedNoteHandler(val.id)}>Tolak</Buttons>
                                 </div>
                             </div>
                         </td>
@@ -238,7 +252,7 @@ class DashboardPayment extends React.Component {
                         <ModalFooter>
                         <div className="d-flex align-items-center ml-5">
                             <Buttons type="outlined" onClick={this.toggleModalFailed}>Kembali</Buttons>
-                            <Buttons type="contained" className="ml-3" onClick={() => this.rejectPayment(this.state.activeFailedData.id)}>Kirim</Buttons>
+                            <Buttons type="contained" className="ml-3" onClick={this.rejectPayment}>Kirim</Buttons>
                         </div>
                         </ModalFooter>
                     </Modal>
@@ -308,7 +322,7 @@ class DashboardPayment extends React.Component {
     renderFailedData = () => {
         const { transactionFailed } = this.state
         return transactionFailed.map((val, idx) => {
-            const { user, plans, paymentDate, paymentMethod, paymentReciept, totalPayment, status, confirmDate } = val
+            const { user, plans, paymentDate, paymentMethod, paymentReciept, totalPayment, status, confirmDate, failedNote } = val
             const { username } = user
             const { planName } = plans
             return (
@@ -331,6 +345,7 @@ class DashboardPayment extends React.Component {
                                     <h6>Tanggal Pembayaran: {paymentDate.slice(0, 10)}</h6>
                                     <h6>Tanggal Konfirmasi: {confirmDate.slice(0, 10)}</h6>
                                     <h6>Metode Pembayaran: {paymentMethod}</h6>
+                                    <h6>Catatan: {failedNote}</h6>
                                 </div>
                             </div>
                         </td>

@@ -14,6 +14,7 @@ import GopayImg from "../../../../assets/images/logo/gopay.png"
 import BCAImg from "../../../../assets/images/logo/bca.png"
 import CIMBImg from "../../../../assets/images/logo/cimb.png"
 import { logoutHandler } from '../../../../redux/actions'
+import { Link } from 'react-router-dom'
 
 class UserProfile extends React.Component {
     state = {
@@ -21,13 +22,9 @@ class UserProfile extends React.Component {
         userData: [],
         activePage: "profile",
         editUserForm: {
-            // id: this.props.user.id,
             email: "",
             username: "",
             password: "",
-            //isVerified: this.props.user.isVerified,
-            role: "pengguna",
-            //verifyToken: this.props.user.verifyToken,
             fullname: "",
             noHp: "",
             profilePicture: ""
@@ -35,7 +32,8 @@ class UserProfile extends React.Component {
         editPasswordForm: {
             oldPassword: "",
             newPassword: "",
-            confirmPassword: ""
+            confirmPassword: "",
+            showPassword: false
         },
         planList: [],
         paymentData: [],
@@ -84,6 +82,17 @@ class UserProfile extends React.Component {
                 [field]: value,
             },
         });
+        //console.log(e.target.value);
+    };
+
+    checkboxHandler = (e, form) => {
+        const { checked } = e.target;
+        this.setState({
+            [form]: {
+                ...this.state[form],
+                showPassword: checked,
+            },
+        });
     };
 
     editBtnProfileHandler = () => {
@@ -93,6 +102,7 @@ class UserProfile extends React.Component {
             },
             modalEditOpen: true,
         });
+        //console.log(this.state.editUserForm)
     };
 
     editBtnPassword = () => {
@@ -102,6 +112,7 @@ class UserProfile extends React.Component {
             },
             modalEditPwdOpen: true,
         });
+        //console.log(this.state.editPasswordForm)
     };
 
     paymentBtnHandler = (idx) => {
@@ -110,6 +121,7 @@ class UserProfile extends React.Component {
                 ...this.state.planList[idx],
             }, modalPaymentOpen: true
         })
+        //console.log(this.state.paymentData)
     }
 
     toggleModalEdit = () => {
@@ -137,26 +149,33 @@ class UserProfile extends React.Component {
     editUserHandler = () => {
         let formData = new FormData();
 
-        formData.append(
-            "file",
-            this.state.selectedFile,
-            this.state.selectedFile.name
-        );
+        if (this.state.selectedFile) {
+            formData.append(
+                "file",
+                this.state.selectedFile,
+                this.state.selectedFile.name
+            );
+        }
+
 
         formData.append("userData", JSON.stringify(this.state.editUserForm))
 
-        Axios.patch(`${API_URL}/pengguna/ubah/${this.props.user.id}`, formData)
-            .then(res => {
-                console.log(res.data)
-                swal("Sukses", "Profil Berhasil Diubah!", "success")
-                this.setState({ modalEditOpen: false, selectedFile: null })
-                this.getUserData()
-            })
-            .catch(err => {
-                console.log(err)
-                swal("Gagal", "Profil Gagal Diubah!", "error")
-            })
-        console.log(JSON.stringify(this.state.editUserForm));
+        if (this.state.userData.verified === true) {
+            Axios.patch(`${API_URL}/pengguna/ubah/${this.props.user.id}`, formData)
+                .then(res => {
+                    console.log(res.data)
+                    swal("Sukses", "Profil Berhasil Diubah!", "success")
+                    this.setState({ modalEditOpen: false })
+                    this.getUserData()
+                })
+                .catch(err => {
+                    console.log(err)
+                    swal("Gagal", "Profil Gagal Diubah!", "error")
+                })
+            console.log(JSON.stringify(this.state.editUserForm));
+        } else {
+            swal("Gagal", "Akun Anda Belum Terverifikasi!", "error")
+        }
     }
 
     updatePasswordHandler = () => {
@@ -176,14 +195,14 @@ class UserProfile extends React.Component {
                     console.log(res.data)
                     swal("Sukses", "Password Berhasil Diubah!", "success")
                     this.setState({ modalEditOpen: false })
-                    //this.props.onLogout()
+                    this.sigoutButtonHandler()
                     this.getUserData()
                 })
                 .catch(err => {
                     swal("Gagal", "Password Gagal Diubah!", "error")
                 })
         } else {
-            swal("Gagal", "Password Salah!", "error")
+            swal("Gagal", "Password Tidak Cocok!", "error")
         }
     }
 
@@ -290,7 +309,7 @@ class UserProfile extends React.Component {
                         <ModalBody>
                             <div className="d-flex flex-column align-items-center justify-content-center mt-4">
                                 <label>Password Lama</label>
-                                <input type="text" className="form-control-lg w-50"
+                                <input type={this.state.editPasswordForm.showPassword ? "text" : "password"} className="form-control-lg w-50"
                                     value={this.state.editPasswordForm.oldPassword}
                                     onChange={(e) =>
                                         this.inputHandler(e, "oldPassword", "editPasswordForm")
@@ -299,7 +318,7 @@ class UserProfile extends React.Component {
                             </div>
                             <div className="d-flex flex-column align-items-center justify-content-center mt-4">
                                 <label>Password Baru</label>
-                                <input type="text" className="form-control-lg w-50"
+                                <input type={this.state.editPasswordForm.showPassword ? "text" : "password"} className="form-control-lg w-50"
                                     value={this.state.editPasswordForm.newPassword}
                                     onChange={(e) =>
                                         this.inputHandler(e, "newPassword", "editPasswordForm")
@@ -308,18 +327,33 @@ class UserProfile extends React.Component {
                             </div>
                             <div className="d-flex flex-column align-items-center justify-content-center mt-4">
                                 <label>Konfirmasi Ulang Password</label>
-                                <input type="text" className="form-control-lg w-50"
+                                <input type={this.state.editPasswordForm.showPassword ? "text" : "password"} className="form-control-lg w-50"
                                     value={this.state.editPasswordForm.confirmPassword}
                                     onChange={(e) =>
                                         this.inputHandler(e, "confirmPassword", "editPasswordForm")
                                     }
                                 />
                             </div>
+                            <div className="d-flex justify-content-center mt-3">
+                                <input
+                                    type="checkbox"
+                                    className="mr-3"
+                                    name="showPassword"
+                                    onChange={(e) => this.checkboxHandler(e, "editPasswordForm")}
+                                />{" "}
+                                Tampilkan Password
+                            </div>
+                            <div className="d-flex flex-column align-items-center justify-content-center mt-4">
+                                <Link to="/lupa-password" style={{ textDecoration: "none" }}>
+                                    <h6 onClick={this.sigoutButtonHandler}>Lupa Password?</h6></Link>
+                            </div>
                         </ModalBody>
                         <ModalFooter>
                             <div className="d-flex align-items-center justify-content-center mt-4">
                                 <Buttons type="outlined" onClick={this.toggleModalEditPassword}>Kembali</Buttons>
-                                <Buttons type="contained" onClick={this.updatePasswordHandler} className="ml-3">Simpan</Buttons>
+                                <Link to="/login" style={{ textDecoration: "none" }}>
+                                    <Buttons type="contained" onClick={this.updatePasswordHandler} className="ml-3">Simpan</Buttons>
+                                </Link>
                             </div>
                         </ModalFooter>
                     </Modal>
@@ -337,19 +371,28 @@ class UserProfile extends React.Component {
                         <ModalBody>
                             <div className="d-flex flex-column align-items-center justify-content-center mt-3">
                                 <label>Gambar Profil</label>
-                                <input type="file" className="form-control-lg"
+                                <input type="file" className="form-control-lg w-75"
                                     onChange={this.fileChangeHandler}
                                 />
                             </div>
                             <div className="d-flex flex-column align-items-center justify-content-center mt-4">
                                 <label>Username</label>
                                 <input type="text" className="form-control w-75 form-control-lg"
-                                    value={this.state.userData.username} readOnly />
+                                    value={this.state.editUserForm.username} readOnly />
                             </div>
+                            {/* <div className="d-flex flex-column align-items-center justify-content-center mt-4">
+                                <label>Nama Lengkap</label>
+                                <input type="text" className="fform-control w-75 form-control-lg"
+                                    value={this.state.userData.fullname}
+                                    onChange={(e) =>
+                                        this.inputHandler(e, "fullname", "editUserForm")
+                                    }
+                                />
+                            </div> */}
                             <div className="d-flex flex-column align-items-center justify-content-center mt-4">
                                 <label>Nama Lengkap</label>
                                 <input type="text" className="form-control w-75 form-control-lg"
-                                    value={this.state.userData.fullname}
+                                    value={this.state.editUserForm.fullname}
                                     onChange={(e) =>
                                         this.inputHandler(e, "fullname", "editUserForm")
                                     }
@@ -358,7 +401,7 @@ class UserProfile extends React.Component {
                             <div className="d-flex flex-column align-items-center justify-content-center mt-4">
                                 <label>No. Handphone</label>
                                 <input type="text" className="form-control w-75 form-control-lg"
-                                    value={this.state.userData.noHp}
+                                    value={this.state.editUserForm.noHp}
                                     onChange={(e) =>
                                         this.inputHandler(e, "noHp", "editUserForm")
                                     }
@@ -367,15 +410,15 @@ class UserProfile extends React.Component {
                             <div className="d-flex flex-column align-items-center justify-content-center mt-4">
                                 <label>Email</label>
                                 <input type="text" className="form-control w-75 form-control-lg"
-                                    value={this.state.userData.email} readOnly />
+                                    value={this.state.editUserForm.email} readOnly />
                             </div>
-                            <ModalFooter>
-                                <div className="d-flex align-items-center justify-content-center mt-4">
-                                    <Buttons type="outlined" onClick={this.toggleModalEdit}>Kembali</Buttons>
-                                    <Buttons type="contained" onClick={this.editUserHandler} className="ml-3">Simpan</Buttons>
-                                </div>
-                            </ModalFooter>
                         </ModalBody>
+                        <ModalFooter>
+                            <div className="d-flex align-items-center justify-content-center mt-4">
+                                <Buttons type="outlined" onClick={this.toggleModalEdit}>Kembali</Buttons>
+                                <Buttons type="contained" onClick={this.editUserHandler} className="ml-3">Simpan</Buttons>
+                            </div>
+                        </ModalFooter>
                     </Modal>
                 </>
             )
@@ -466,6 +509,10 @@ class UserProfile extends React.Component {
                 </>
             )
         }
+    }
+
+    sigoutButtonHandler = () => {
+        this.props.onLogout()
     }
 
 

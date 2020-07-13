@@ -9,22 +9,29 @@ class Resetpassword extends React.Component {
     state = {
         resetPassword: {
             newPassword: "",
+            confirmPassword: "",
             showPassword: false
         },
         userData: []
     }
 
     getUserData = () => {
-        alert('masuk')
-        Axios.post(`${API_URL}/pengguna/reset/${this.props.match.params.user_id}`)
-        .then(res => {
-            console.log(res.data)
-            this.setState({ userData: res.data})
-            console.log(this.state.userData)
+        //alert('masuk')
+        const newToken = new URLSearchParams(window.location.search).get("token")
+        console.log(this.props.match.params.username)
+        Axios.get(`${API_URL}/pengguna/lupa-password/${this.props.match.params.username}`, {
+            params: {
+                token: newToken
+            }
         })
-        .catch(e => {
-            console.log(e)
-        })
+            .then(res => {
+                //console.log(res.data)
+                this.setState({ userData: res.data })
+                console.log(this.state.userData)
+            })
+            .catch(e => {
+                console.log(e)
+            })
     }
 
     componentDidMount = () => {
@@ -52,18 +59,30 @@ class Resetpassword extends React.Component {
     };
 
     resetPasswordHandler = () => {
-        const { resetPassword, userData } = this.state
-        const newPassword = { ...resetPassword, ...userData}
+        const { userData } = this.state
+        const { newPassword, confirmPassword } = this.state.resetPassword
+        const newData = { ...userData }
+        console.log(newData)
 
-        Axios.put(`${API_URL}/pengguna/resetpassword`, newPassword)
-        .then(res => {
-            console.log(res.data)
-            swal("Sukses", "Atur Ulang Password Berhasil. Silahkan Login Kembali", "success")
-        })
-        .catch(e => {
-            console.log(e)
-            swal("Gagal", "Atur Ulang Password Gagal", "error")
-        })
+        if (confirmPassword === newPassword) {
+            Axios.put(`${API_URL}/pengguna//ganti-password/${this.props.match.params.username}`, newData, {
+                params: {
+                    newPassword
+                }
+            })
+                .then(res => {
+                    console.log(res.data)
+                    swal("Sukses", "Atur Ulang Password Berhasil. Silahkan Login Kembali", "success")
+                    this.setState({ resetPassword: { newPassword: "" } });
+                })
+                .catch(e => {
+                    console.log(e)
+                    swal("Gagal", "Atur Ulang Password Gagal", "error")
+                })
+        }
+        else {
+            swal("Gagal", "Password Tidak Cocok!", "error")
+        }
     }
 
 
@@ -80,6 +99,14 @@ class Resetpassword extends React.Component {
                                 placeholder="Password"
                                 className="mt-3 form-control"
                                 value={this.state.resetPassword.newPassword} onChange={(e) => this.inputHandler(e, "newPassword", "resetPassword")}
+                            />
+                        </div>
+                        <div className="d-flex justify-content-center">
+                            <input
+                                type={this.state.resetPassword.showPassword ? "text" : "password"}
+                                placeholder="Konfirmasi Ulang Password"
+                                className="mt-3 form-control"
+                                value={this.state.resetPassword.confirmPassword} onChange={(e) => this.inputHandler(e, "confirmPassword", "resetPassword")}
                             />
                         </div>
                         <div className="d-flex justify-content-center mt-3">
@@ -108,8 +135,8 @@ class Resetpassword extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-      user: state.user
+        user: state.user
     }
-  }
+}
 
 export default connect(mapStateToProps)(Resetpassword) 

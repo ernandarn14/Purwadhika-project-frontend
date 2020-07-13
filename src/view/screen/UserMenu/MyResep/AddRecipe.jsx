@@ -16,20 +16,22 @@ class AddRecipe extends React.Component {
                 id: this.props.user.id,
             },
             recipeName: "",
-            recipeCategory: {},
+            uploadDate: new Date(),
+            // recipeCategoryId: 0,
             cookTime: 0,
             numbServings: "",
             recipeImage: "",
             shortDesc: "",
             id: 0
         },
+        recipeCategoryId: 0,
         ingredientLists: {
             ingredientName: [],
             id: 0
         },
         instructionLists: {
             recipeId: 0,
-            instructionName: [],
+            stepName: [],
             id: 0
         },
         recipeList: [],
@@ -50,34 +52,26 @@ class AddRecipe extends React.Component {
                 [field]: value,
             },
         });
+        //console.log(typeof(e.target.value))
     };
+
+
 
     fileChangeHandler = (e) => {
         this.setState({ selectedFile: e.target.files[0] });
     };
 
-    // getRecipeData = () => {
-    //     Axios.get(`${API_URL}/resep/pengguna/${this.props.user.id}`)
-    //         .then(res => {
-    //             console.log(res.data)
-    //             this.setState({ recipeList: res.data })
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //             alert('Data Kosong')
-    //         })
-    // }
 
     getCategoryRecipe = () => {
         Axios.get(`${API_URL}/kategori-resep`)
-        .then(res => {
-            console.log(res.data)
-            this.setState({ dataCategory: JSON.stringify(res.data), categoryRecipeList: res.data})
-            console.log(this.state.dataCategory)
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            .then(res => {
+                console.log(res.data)
+                this.setState({ dataCategory: JSON.stringify(res.data), categoryRecipeList: res.data })
+                //console.log(this.state.categoryRecipeList)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     renderCategoryRecipe = () => {
@@ -88,11 +82,10 @@ class AddRecipe extends React.Component {
     }
 
     componentDidMount() {
-        // this.getRecipeData()
         this.getCategoryRecipe()
     }
 
-    addRecipeHandler = (idx) => {
+    addRecipeHandler = () => {
         let formData = new FormData();
 
         formData.append(
@@ -103,95 +96,68 @@ class AddRecipe extends React.Component {
 
         formData.append("userData", JSON.stringify(this.state.addRecipeForm))
 
-        Axios.post(`${API_URL}/resep/tambah/pengguna/${this.props.user.id}/kategori/${2}`, formData)
-        .then((res) => {
-            console.log(res.data);
-            Object.keys(this.state.inputIngredient).forEach(input => {
-                Axios.post(`${API_URL}/bahan/tambah/resep/${JSON.stringify(this.state.recipeList[0].id)}`,
-                    {
-                        recipeId: this.state.recipeList[0].id,
-                        ingredients: this.state.inputIngredient[input],
-                        id: this.state.instructionLists.id
-                    }
-                )
-                    .then((res) => {
-                        console.log(res.data);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            })
-            Object.keys(this.state.inputStep).forEach(input => {
-                Axios.post(`${API_URL}/langkah-membuat/tambah/resep/${this.state.recipeList[0].id}`,
-                    {
-                        recipeId: this.state.recipeList[0].id,
-                        instructionName: this.state.inputStep[input],
-                        id: this.state.instructionLists.id
-                    }
-                )
-                    .then((res) => {
-                        console.log(res.data);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            })
-            swal("Sukses", "Resep Berhasil Ditambah!", "success")
-        })
-        .catch((err) => {
-            console.log(err);
-            swal("Gagal", "Resep Gagal Ditambah!", "error")
-        });
-        console.log(JSON.stringify(this.state.addRecipeForm));
-    }
-
-
-    addRecipe = () => {
-        Axios.post(`${API_URL}/resep/tambah/pengguna/${this.props.user.id}/kategori/${this.state.categoryRecipeList[0].id}`, this.state.addRecipeForm)
+        Axios.post(`${API_URL}/resep/tambah/pengguna/${this.props.user.id}/kategori/${this.state.recipeCategoryId}`, formData)
             .then((res) => {
                 console.log(res.data);
-                // Object.keys(this.state.inputIngredient).forEach(input => {
-                //     Axios.post(`${API_URL}/tambah/resep/${res.data.id}`,
-                //         {
-                //             recipeId: res.data.id,
-                //             ingredients: this.state.inputIngredient[input],
-                //             id: this.state.instructionLists.id
-                //         }
-                //     )
-                //         .then((res) => {
-                //             console.log(res.data);
-                //         })
-                //         .catch((err) => {
-                //             console.log(err);
-                //         });
-                // })
-                // Object.keys(this.state.inputStep).forEach(input => {
-                //     Axios.post(`${API_URL}/tambah/resep/${res.data.id}`,
-                //         {
-                //             recipeId: res.data.id,
-                //             instructionName: this.state.inputStep[input],
-                //             id: this.state.instructionLists.id
-                //         }
-                //     )
-                //         .then((res) => {
-                //             console.log(res.data);
-                //         })
-                //         .catch((err) => {
-                //             console.log(err);
-                //         });
-                // })
-                // swal("Sukses", "Resep Berhasil Ditambah!", "success")
+                Object.keys(this.state.inputIngredient).forEach(input => {
+                    //console.log(this.state.inputIngredient, input, this.state.inputIngredient[input])
+                    Axios.post(`${API_URL}/bahan/tambah/resep/${res.data.id}`,
+                        {
+                            recipeId: res.data.id,
+                            ingredientName: this.state.inputIngredient[input],
+                            id: this.state.instructionLists.id
+                        }
+                    )
+                        .then((res) => {
+                            console.log(res.data);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                })
+                Object.keys(this.state.inputStep).forEach(input => {
+                    Axios.post(`${API_URL}/langkah-membuat/tambah/resep/${res.data.id}`,
+                        {
+                            recipeId: res.data.id,
+                            stepName: this.state.inputStep[input],
+                            id: this.state.instructionLists.id
+                        }
+                    )
+                        .then((res) => {
+                            console.log(res.data);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                })
+                this.setState({
+                    addRecipeForm: {
+                        recipeName: "",
+                        cookTime: 0,
+                        numbServings: "",
+                        recipeImage: "",
+                        shortDesc: "",
+                    }, inputIngredient: {
+                        input0: ""
+                    },
+                    inputStep: {
+                        input0: ""
+                    },
+                })
+                swal("Sukses", "Resep Berhasil Ditambah!", "success")
             })
             .catch((err) => {
                 console.log(err);
                 swal("Gagal", "Resep Gagal Ditambah!", "error")
             });
+        //console.log(JSON.stringify(this.state.addRecipeForm));
     }
+
 
     addNewInputIngredient = () => {
         let newInput = `input${Object.keys(this.state.inputIngredient).length}`
         this.setState({ inputIngredient: { ...this.state.inputIngredient, [newInput]: "" } })
-        // console.log(newInput, this.state.inputIngredient)
+        //console.log(newInput, this.state.inputIngredient)
     }
 
     addNewInputStep = () => {
@@ -201,7 +167,7 @@ class AddRecipe extends React.Component {
     }
 
     render() {
-        const { recipeName, recipeCategoryId, cookTime, numbServings, image, shortDesc, id } = this.state.addRecipeForm
+        const { recipeName, recipeCategoryId, cookTime, numbServings, shortDesc } = this.state.addRecipeForm
         return (
             <div className="container">
                 <div className="row">
@@ -228,14 +194,9 @@ class AddRecipe extends React.Component {
                                 <label>Kategori</label>
                                 <select id="kategori" className="form-control w-100 form-control-lg"
                                     value={recipeCategoryId}
-                                    onChange={(e) =>
-                                        this.inputHandler(e, "recipeCategoryId", "addRecipeForm")
+                                    onChange={(e) => this.setState({ recipeCategoryId: parseInt(e.target.value) })
                                     }>
-                                        {this.renderCategoryRecipe()}
-                                    {/* <option>Cakes</option>
-                                    <option>Kue Kering</option>
-                                    <option>Roti dan Muffin</option>
-                                    <option>Pastry</option> */}
+                                    {this.renderCategoryRecipe()}
                                 </select>
                             </div>
                             <div className="d-flex flex-column ml-5 align-items-center">
@@ -249,7 +210,7 @@ class AddRecipe extends React.Component {
                                 />
                             </div>
                             <div className="d-flex flex-column align-items-center">
-                            <label>Porsi</label>
+                                <label>Porsi</label>
                                 <input type="text" className="form-control w-75 form-control-lg"
                                     placeholder="3 - 4 Porsi"
                                     value={numbServings}
@@ -261,11 +222,6 @@ class AddRecipe extends React.Component {
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-5">
                             <input type="file" className="form-control-lg"
-                                // value={recipeImage}
-                                // placeholder="Url Gambar"
-                                // onChange={(e) =>
-                                //     this.inputHandler(e, "recipeImage", "addRecipeForm")
-                                // }
                                 onChange={this.fileChangeHandler}
                             />
                         </div>

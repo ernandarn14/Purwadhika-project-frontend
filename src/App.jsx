@@ -103,9 +103,9 @@ class App extends React.Component {
         <Route exact path="/tips" component={Tips} />
         <Route exact path="/tips/:tipsId" component={TipsDetails} />
         <Route exact path="/lupa-password" component={ForgotPassword} />
-        <Route exact path="/resetPassword/:user_id" component={Resetpassword} />
+        <Route exact path="/pengguna/lupa-password/:username" component={Resetpassword} />
         <Route exact path="/pengguna" component={Resetpassword} />
-        <Route exact path="/pengguna/verifikasi/" component={Profile} />
+        <Route exact path="/pengguna/verifikasi/:username" component={Profile} />
         {this.renderAdminRoutes()}
         {this.renderProtectedRoutes()}
         <Route path="*" component={PageNotFound} />

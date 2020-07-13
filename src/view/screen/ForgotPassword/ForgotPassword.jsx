@@ -23,7 +23,7 @@ class ForgotPassword extends React.Component {
 
     forgotPasswordHandler = () => {
         const { resetPass } = this.state
-        Axios.post(`${API_URL}/pengguna/forgotpassword`, resetPass)
+        Axios.post(`${API_URL}/pengguna/lupa-password`, resetPass)
             .then(res => {
                 console.log(res.data)
                 swal("Sukses", "Silahkan Cek Email Untuk Verifikasi Atur Ulang Password", "success")

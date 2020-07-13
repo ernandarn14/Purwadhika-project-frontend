@@ -39,13 +39,7 @@ class Home extends React.Component {
   }
 
   getRecipeData = () => {
-    Axios.get(`${API_URL}/resep`
-      // , {
-      //   params: {
-      //     _expand: "user"
-      //   }
-      // }
-    )
+    Axios.get(`${API_URL}/resep/terbaik`)
       .then(res => {
         console.log(res.data)
         this.setState({ recipeList: res.data })

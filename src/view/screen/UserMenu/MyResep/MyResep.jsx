@@ -10,15 +10,15 @@ class MyResep extends React.Component {
     state = {
         selectedFile: null,
         recipeList: [],
-        editRecipeForm: {
-            recipeName: "",
-            category: "Kue Kering",
-            cookTime: 0,
-            numbServings: "",
-            recipeImage: "",
-            desc: "",
-            id: 0
-        },
+        // editRecipeForm: {
+        //     recipeName: "",
+        //     category: "Kue Kering",
+        //     cookTime: 0,
+        //     numbServings: "",
+        //     recipeImage: "",
+        //     desc: "",
+        //     id: 0
+        // },
         ingredientLists: {
             ingredientName: [],
             id: 0
@@ -33,17 +33,12 @@ class MyResep extends React.Component {
         },
         inputStep: {
             input0: ""
-        }
+        },
+        editRecipe: []
     }
 
     getRecipeData = () => {
-        Axios.get(`${API_URL}/resep/pengguna/${this.props.user.id}`
-        // , {
-        //     params: {
-        //         userId: this.props.user.id,
-        //     }
-        // }
-        )
+        Axios.get(`${API_URL}/resep/pengguna/${this.props.user.id}`)
             .then(res => {
                 console.log(res.data)
                 this.setState({ recipeList: res.data })
@@ -61,23 +56,26 @@ class MyResep extends React.Component {
     renderRecipeList = () => {
         const { recipeList } = this.state
         return recipeList.map((val, idx) => {
-            const { recipeName, category, desc, recipeImage } = val
+            const { recipeName, category, shortDesc, recipeImage } = val
             return (
-                <div className="d-flex justify-content-start mt-4 align-items-center recipelist" key={val.id.toString()}>
+                <div className="row d-flex justify-content-start mt-4 align-items-center recipelist" key={val.id.toString()}>
+                    <div className="col-4">
                         <img src={recipeImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                    </div>
+                    <div className="col-8">
                         <div className="d-flex flex-column ml-5 justify-content-start">
                             <h5 className="mt-2">{recipeName}</h5>
                             <h6>{category}</h6>
-                            <p style={{ textAlign: "justify" }}>{desc}</p>
+                            <p style={{ textAlign: "justify" }}>{shortDesc}</p>
                             <div className="d-flex my-4">
-                                <Link to={`/tipsku/edit/${val.id}`} style={{ color: "inherit" }}>
+                                <Link to={`/resepku/edit/${val.id}`} style={{ color: "inherit" }}>
                                     <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
                                 </Link>
                                 <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
                             </div>
                         </div>
-
                     </div>
+                </div>
             )
         })
     }
@@ -91,31 +89,9 @@ class MyResep extends React.Component {
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    Axios.delete(`${API_URL}/recipes/${id}`)
+                    Axios.delete(`${API_URL}/resep/hapus/${id}`)
                         .then(res => {
                             console.log(res.data)
-                            Axios.delete(`${API_URL}/instructionLists`,
-                                {
-                                    recipeId: res.data.id,
-                                }
-                            )
-                                .then((res) => {
-                                    console.log(res.data);
-                                })
-                                .catch((err) => {
-                                    console.log(err);
-                                });
-                            Axios.delete(`${API_URL}/ingredients`,
-                                {
-                                    recipeId: res.data.id,
-                                }
-                            )
-                                .then((res) => {
-                                    console.log(res.data);
-                                })
-                                .catch((err) => {
-                                    console.log(err);
-                                });
                             this.getRecipeData()
                         })
                         .catch(err => {
@@ -131,8 +107,9 @@ class MyResep extends React.Component {
 
     editBtnHandler = (idx) => {
         this.setState({
-            editRecipeForm: {
+            editRecipe: {
                 ...this.state.recipeList[idx],
+                ...this.state.ingredientLists[idx]
             }
         });
     };

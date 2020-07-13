@@ -44,8 +44,11 @@ class MyTips extends React.Component {
         return tipsDataList.map((val, idx) => {
             const { tipsImage, tipsName, tipsContent } = val
             return (
-                    <div className="d-flex justify-content-start mt-4 align-items-center tipslist" key={val.id.toString()}>
+                <div className="row d-flex justify-content-start mt-4 align-items-center tipslist" key={val.id.toString()}>
+                    <div className="col-3">
                         <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                    </div>
+                    <div className="col-9">
                         <div className="d-flex flex-column ml-4 justify-content-center">
                             <h5 className="mt-2">{tipsName}</h5>
                             <p style={{ textAlign: "justify" }}>{tipsContent}</p>
@@ -57,6 +60,7 @@ class MyTips extends React.Component {
                             </div>
                         </div>
                     </div>
+                </div>
             )
         })
     }
@@ -106,13 +110,13 @@ class MyTips extends React.Component {
                             </Buttons>
                         </Link>
                         {this.state.tipsDataList.length > 0 ? (
-                             <div className="container mt-4 d-flex justify-content-center flex-column align-items-center">
-                             {this.renderTipsData()}
-                         </div>
+                            <div className="container mt-4 d-flex justify-content-center flex-column align-items-center">
+                                {this.renderTipsData()}
+                            </div>
                         ) : (
-                            <Alert className="mt-3">Artikel Tips dan Trik Anda Kosong! Silahkan Tambah Artikel</Alert>
-                        )}
-                       
+                                <Alert className="mt-3">Artikel Tips dan Trik Anda Kosong! Silahkan Tambah Artikel</Alert>
+                            )}
+
                     </div>
                 </div>
             </div>

@@ -15,6 +15,7 @@ class Tips extends React.Component {
         tipsDataPage: [],
         selectedFile: null,
         sortList: "asc",
+        activeTipsName: "",
         currentPage: 0,
         itemsPerPage: 6,
         totalPages: 0,
@@ -31,31 +32,31 @@ class Tips extends React.Component {
             })
     }
 
-    getTipsDataPage = (currentPage) => {
-        currentPage -= 1
-        Axios.get(`${API_URL}/tips/pagination?page=${currentPage}&size=${this.state.itemsPerPage}`)
-            .then(res => {
-                this.setState({
-                    tipsDataList: res.data.content,
-                    totalPages: res.data.totalPages,
-                    totalElements: res.data.totalElements,
-                    currentPage: res.data.number + 1
-                })
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
+    // getTipsDataPage = (currentPage) => {
+    //     currentPage -= 1
+    //     Axios.get(`${API_URL}/tips/pagination?page=${currentPage}&size=${this.state.itemsPerPage}`)
+    //         .then(res => {
+    //             this.setState({
+    //                 tipsDataList: res.data.content,
+    //                 totalPages: res.data.totalPages,
+    //                 totalElements: res.data.totalElements,
+    //                 currentPage: res.data.number + 1
+    //             })
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //         })
+    // }
 
     componentDidMount() {
         this.getTipsData()
-        this.getTipsDataPage(this.state.currentPage)
+        // this.getTipsDataPage(this.state.currentPage)
         this.getTipsPerPage(this.state.currentPage)
     }
 
     renderTipsData = () => {
-        const { tipsDataList } = this.state
-        return tipsDataList.map(val => {
+        const { tipsDataPage } = this.state
+        return tipsDataPage.map(val => {
             const { tipsImage, tipsName } = val
             if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
                 return (
@@ -82,7 +83,7 @@ class Tips extends React.Component {
 
     changePage = event => {
         let targetPage = parseInt(event.target.value)
-        this.getTipsDataPage(targetPage);
+        this.getTipsPerPage(targetPage);
         this.setState({
             [event.target.name]: targetPage
         })
@@ -92,7 +93,7 @@ class Tips extends React.Component {
         currentPage -= 1
         Axios.get(`${API_URL}/tips/sort/${this.state.sortList}?page=${currentPage}&size=${this.state.itemsPerPage}`)
             .then(res => {
-                //console.log(res.data.content)
+                console.log(res.data.content)
                 this.setState({
                     tipsDataPage: res.data.content,
                     totalPages: res.data.totalPages,
@@ -108,27 +109,27 @@ class Tips extends React.Component {
     firstPage = () => {
         let firstPage = 1;
         if (this.state.currentPage > firstPage) {
-            this.getTipsDataPage(firstPage)
+            this.getTipsPerPage(firstPage)
         }
     }
 
     prevPage = () => {
         let prevPage = 1;
         if (this.state.currentPage > prevPage) {
-            this.getTipsDataPage(this.state.currentPage - prevPage)
+            this.getTipsPerPage(this.state.currentPage - prevPage)
         }
     }
 
     nextPage = () => {
         if (this.state.currentPage < Math.ceil(this.state.totalElements / this.state.itemsPerPage)) {
-            this.getTipsDataPage(this.state.currentPage + 1)
+            this.getTipsPerPage(this.state.currentPage + 1)
         }
     }
 
     lastPage = () => {
         let condition = Math.ceil(this.state.totalElements / this.state.itemsPerPage)
         if (this.state.currentPage < condition) {
-            this.getTipsDataPage(condition)
+            this.getTipsPerPage(condition)
         }
     }
 
@@ -136,8 +137,8 @@ class Tips extends React.Component {
         const { currentPage, totalPages } = this.state;
         return (
             <>
-                <div>
-                    Halaman {this.state.currentPage} dari {this.state.totalPages}
+                 <div className="row d-flex flex-wrap justify-content-center">
+                    {this.renderTipsData()}
                 </div>
                 <div className="row justify-content-center mt-3 pt-2">
                     <Buttons disabled={currentPage === 1 ? true : false}
@@ -151,9 +152,10 @@ class Tips extends React.Component {
                     <Buttons disabled={currentPage === totalPages ? true : false}
                         onClick={this.lastPage}><FontAwesomeIcon icon={faFastForward} /></Buttons>
                 </div>
-                <div className="row d-flex flex-wrap justify-content-center">
-                    {this.renderTipsData()}
+                <div className="d-flex justify-content-center mt-2">
+                    Halaman {this.state.currentPage} dari {this.state.totalPages}
                 </div>
+               
             </>
         )
     }
@@ -164,7 +166,7 @@ class Tips extends React.Component {
                 <h3 className="text-center my-5">Tips dan Trik</h3>
                 <div className="d-flex align-items-center">
                     <select className="form-control ml-4" style={{ width: "100px" }} name="sortList"
-                        onClick={() => this.getTipsPerPage()} 
+                        onClick={() => this.getTipsPerPage()}
                         onChange={(e) => this.setState({ sortList: e.target.value })}
                     >
                         <option value="asc">A - Z</option>
