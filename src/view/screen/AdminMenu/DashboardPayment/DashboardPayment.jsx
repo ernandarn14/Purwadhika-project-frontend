@@ -127,20 +127,23 @@ class DashboardPayment extends React.Component {
                 [field]: value,
             },
         });
-        console.log(e.target.value)
+        //console.log(e.target.value)
     };
 
     confirmPayment = (id) => {
+        //let newData = {...this.state.transactionPendingList.id}
         Axios.put(`${API_URL}/transaksi/konfirmasi/${id}`)
             .then(res => {
                 console.log(res.data)
-                Axios.post(`${API_URL}/langgananku/tambah/${id}`)
-                .then(res => {
-                    console.log(res.data)
+                Axios.post(`${API_URL}/langgananku/tambah/${id}`, {
+                    stardate: res.data.confirmDate
                 })
-                .catch(e => {
-                    console.log(e)
-                })
+                    .then(res => {
+                        console.log(res.data)
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
                 swal("Sukses", "Konfirmasi Berhasil", "success")
                 this.getAllPendingData()
             })
@@ -151,23 +154,20 @@ class DashboardPayment extends React.Component {
     }
 
     rejectPayment = () => {
-        // const { transactionFailed } = this.state
-        // const { failedNote } = this.state.activeFailedData
-        // let newData = { ...transactionFailed }
-        console.log(this.state.transactionId)
-        Axios.put(`${API_URL}/transaksi/tolak/${this.state.transactionId}`, {
-            failedNote: this.state.activeFailedData.failedNote,
-            status: "gagal"
-        })
-        .then(res => {
-            console.log(res.data)
-            swal("Sukses", "Penolakan Transaksi Berhasil", "success")
-            this.getAllFailedData()
-        })
-        .catch(err => {
-            console.log(err)
-            swal("Gagal", "Penolakan Transaksi Gagal", "error")
-        })
+        const { transactionFailed } = this.state
+        const { failedNote } = this.state.activeFailedData
+        let newData = { ...transactionFailed, failedNote }
+        console.log(this.state.activeFailedData.failedNote)
+        Axios.put(`${API_URL}/transaksi/tolak/${this.state.transactionId}`, newData)
+            .then(res => {
+                console.log(res.data)
+                swal("Sukses", "Penolakan Transaksi Berhasil", "success")
+                this.getAllFailedData()
+            })
+            .catch(err => {
+                console.log(err)
+                swal("Gagal", "Penolakan Transaksi Gagal", "error")
+            })
     }
 
     renderPendingData = () => {
@@ -176,6 +176,7 @@ class DashboardPayment extends React.Component {
             const { user, plans, paymentDate, paymentMethod, paymentReciept, totalPayment, status } = val
             const { username } = user
             const { planName } = plans
+            const date = new Date(paymentDate)
             return (
                 <>
                     <tr onClick={(_) => { this.collapseHandler(idx) }}>
@@ -193,7 +194,7 @@ class DashboardPayment extends React.Component {
                             <div className="d-flex justify-content-center align-items-center">
                                 <img src={paymentReciept} alt="" onClick={(_) => this.paymentRecieptHandler(idx)} />
                                 <div className="d-flex flex-column ml-4 justify-content-start text-left">
-                                    <h6>Tanggal Pembayaran: {paymentDate.slice(0, 10)}</h6>
+                                    <h6>Tanggal Pembayaran: {date.toLocaleString('en-GB')}</h6>
                                     <h6>Metode Pembayaran: {paymentMethod}</h6>
                                 </div>
                                 <div className="d-flex align-items-center ml-5">
@@ -240,20 +241,20 @@ class DashboardPayment extends React.Component {
                         <ModalBody>
                             <div className="row">
                                 <div className="col-sm-12 d-flex justify-content-center">
-                                    <input type="text" className="form-control-lg w-50"
-                                    value={this.state.activeFailedData.failedNote}
-                                    onChange={(e) =>
-                                        this.inputHandler(e, "failedNote", "activeFailedData")
-                                    }
+                                    <input type="text" className="form-control-lg w-75"
+                                        value={this.state.activeFailedData.failedNote}
+                                        onChange={(e) =>
+                                            this.inputHandler(e, "failedNote", "activeFailedData")
+                                        }
                                     />
                                 </div>
                             </div>
                         </ModalBody>
                         <ModalFooter>
-                        <div className="d-flex align-items-center ml-5">
-                            <Buttons type="outlined" onClick={this.toggleModalFailed}>Kembali</Buttons>
-                            <Buttons type="contained" className="ml-3" onClick={this.rejectPayment}>Kirim</Buttons>
-                        </div>
+                            <div className="d-flex align-items-center ml-5">
+                                <Buttons type="outlined" onClick={this.toggleModalFailed}>Kembali</Buttons>
+                                <Buttons type="contained" className="ml-3" onClick={this.rejectPayment}>Kirim</Buttons>
+                            </div>
                         </ModalFooter>
                     </Modal>
                 </>
@@ -267,6 +268,8 @@ class DashboardPayment extends React.Component {
             const { user, plans, paymentDate, paymentMethod, paymentReciept, totalPayment, status, confirmDate } = val
             const { username } = user
             const { planName } = plans
+            const datePayment = new Date(paymentDate)
+            const date = new Date(confirmDate)
             return (
                 <>
                     <tr onClick={(_) => { this.collapseHandler(idx) }}>
@@ -284,8 +287,8 @@ class DashboardPayment extends React.Component {
                             <div className="d-flex justify-content-center align-items-center">
                                 <img src={paymentReciept} alt="" onClick={(_) => this.paymentRecieptHandler(idx)} />
                                 <div className="d-flex flex-column ml-4 justify-content-start text-left">
-                                    <h6>Tanggal Pembayaran: {paymentDate.slice(0, 10)}</h6>
-                                    <h6>Tanggal Konfirmasi: {confirmDate.slice(0, 10)}</h6>
+                                    <h6>Tanggal Pembayaran: {datePayment.toLocaleString('en-GB')}</h6>
+                                    <h6>Tanggal Konfirmasi: {date.toLocaleString('en-GB')}</h6>
                                     <h6>Metode Pembayaran: {paymentMethod}</h6>
                                 </div>
                             </div>
@@ -325,6 +328,8 @@ class DashboardPayment extends React.Component {
             const { user, plans, paymentDate, paymentMethod, paymentReciept, totalPayment, status, confirmDate, failedNote } = val
             const { username } = user
             const { planName } = plans
+            const datePayment = new Date(paymentDate)
+            const date = new Date(confirmDate)
             return (
                 <>
                     <tr onClick={(_) => { this.collapseHandler(idx) }}>
@@ -342,8 +347,8 @@ class DashboardPayment extends React.Component {
                             <div className="d-flex justify-content-center align-items-center">
                                 <img src={paymentReciept} alt="" onClick={(_) => this.paymentRecieptHandler(idx)} />
                                 <div className="d-flex flex-column ml-4 justify-content-start text-left">
-                                    <h6>Tanggal Pembayaran: {paymentDate.slice(0, 10)}</h6>
-                                    <h6>Tanggal Konfirmasi: {confirmDate.slice(0, 10)}</h6>
+                                    <h6>Tanggal Pembayaran: {datePayment.toLocaleString('en-GB')}</h6>
+                                    <h6>Tanggal Konfirmasi: {date.toLocaleString('en-GB')}</h6>
                                     <h6>Metode Pembayaran: {paymentMethod}</h6>
                                     <h6>Catatan: {failedNote}</h6>
                                 </div>

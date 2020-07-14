@@ -5,6 +5,7 @@ import { API_URL } from '../../../../constants/API'
 import { Link } from 'react-router-dom'
 import Buttons from '../../../../component/Button/Buttons'
 import swal from "sweetalert";
+import { Alert } from 'reactstrap'
 
 class MyResep extends React.Component {
     state = {
@@ -34,7 +35,11 @@ class MyResep extends React.Component {
         inputStep: {
             input0: ""
         },
-        editRecipe: []
+        editRecipe: [],
+        recipeCategoryId: 0,
+        ingredientEditName: [],
+        instructionEditName: [],
+
     }
 
     getRecipeData = () => {
@@ -109,9 +114,13 @@ class MyResep extends React.Component {
         this.setState({
             editRecipe: {
                 ...this.state.recipeList[idx],
-                ...this.state.ingredientLists[idx]
-            }
+                // ...this.state.ingredientLists[idx]
+            },
+            recipeCategoryId: this.state.recipeList[idx].recipeCategory.id,
+            ingredientEditName: this.state.ingredientLists[idx],
+            instructionEditName: this.state.instructionLists[idx]
         });
+        console.log(this.state.ingredientLists)
     };
 
 
@@ -128,9 +137,13 @@ class MyResep extends React.Component {
                                 Tambah Resep Saya
                                 </Buttons>
                         </Link>
-                        <div className="mt-4 d-flex justify-content-center flex-column align-items-center">
+                        {this.state.recipeList.length > 0 ? (
+                            <div className="mt-4 d-flex justify-content-center flex-column align-items-center">
                             {this.renderRecipeList()}
                         </div>
+                        ) : (
+                            <Alert className="mt-4">Resep Anda Kosong! Silahkan Menulis Resep Baru dan Bagikan Kepada Pengguna Yang Lain</Alert>
+                        )}
                     </div>
                 </div>
             </div>

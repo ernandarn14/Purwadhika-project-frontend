@@ -25,7 +25,7 @@ class EditTips extends React.Component {
     getTipDataDetails = () => {
         Axios.get(`${API_URL}/tips/${this.props.match.params.tipsId}`)
             .then(res => {
-                // console.log(res.data)
+                console.log(res.data)
                 this.setState({ editTipsForm: res.data })
             })
             .catch(err => {
@@ -76,11 +76,13 @@ class EditTips extends React.Component {
     editTipsHandler = () => {
         let formData = new FormData();
 
-        formData.append(
-            "file",
-            this.state.selectedFile,
-            this.state.selectedFile.name
-        );
+        if (this.state.selectedFile) {
+            formData.append(
+                "file",
+                this.state.selectedFile,
+                this.state.selectedFile.name
+            )
+        }
 
         formData.append("userData", JSON.stringify(this.state.editTipsForm))
 
@@ -143,9 +145,12 @@ class EditTips extends React.Component {
                             </textarea>
                         </div>
                         <div className="d-flex justify-content-center">
-                            <Button type="contained" className="mt-4" onClick={this.editTipsHandler}>
-                                Simpan
-                            </Button>
+                            {this.state.editTipsForm.users.role === "admin" ? (
+                                <Button type="contained" className="mt-4" onClick={this.editTipsHandler}>
+                                    Simpan
+                                </Button>
+                            ) : null}
+
                         </div>
                     </div>
                 </div>

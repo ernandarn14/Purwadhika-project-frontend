@@ -29,7 +29,6 @@ class MyHistory extends React.Component {
                 ...this.state.pendingStatus[idx],
             },
             modalPayment: true,
-            transactionId: this.state.failedStatus[idx].id
         });
     };
 
@@ -43,6 +42,7 @@ class MyHistory extends React.Component {
                 ...this.state.failedStatus[idx],
             },
             modalReupload: true,
+            transactionId: this.state.failedStatus[idx].id
         });
         //console.log(this.state.failedStatus[idx])
     };
@@ -132,12 +132,13 @@ class MyHistory extends React.Component {
         return pendingStatus.map((val, idx) => {
             const { plans, checkoutDate, totalPayment, paymentMethod } = val
             const { planName } = plans
+            const date = new Date(checkoutDate)
             return (
                 <div className="d-flex flex-column justify-content-start mt-4 align-items-center planlist" key={val.id.toString()}>
                     <h5 className="header-plan">{planName}</h5>
                     <h6>{priceFormatter(totalPayment)}</h6>
                     <div className="d-flex flex-column mt-2">
-                        <p>Waktu Transaksi: {checkoutDate.slice(0, 10)}</p>
+                        <p>Waktu Transaksi: {date.toLocaleString('en-GB')}</p>
                         <p>Metode Pembayaran: {paymentMethod}</p>
                     </div>
                     <Buttons type="contained" className="mt-3" onClick={(_) => this.payNowHandler(idx)}>Bayar Sekarang</Buttons>
@@ -152,13 +153,17 @@ class MyHistory extends React.Component {
         return waitingStatus.map((val, idx) => {
             const { plans, checkoutDate, totalPayment, paymentMethod, paymentDate } = val
             const { planName } = plans
+            const datePayment = new Date(paymentDate)
+            const date = new Date(checkoutDate)
             return (
                 <div className="d-flex flex-column justify-content-start mt-4 align-items-center planlist" key={val.id.toString()}>
                     <h5 className="header-plan">{planName}</h5>
                     <h6>{priceFormatter(totalPayment)}</h6>
                     <div className="d-flex flex-column mt-2">
-                        <p>Waktu Transaksi: {checkoutDate.slice(0, 10)}</p>
-                        <p>Waktu Pembayaran: {paymentDate.slice(0, 10)}</p>
+                        <p>Waktu Transaksi: {date.toLocaleString('en-GB')}</p>
+                        {paymentDate != null ? (
+                             <p>Waktu Pembayaran: {datePayment.toLocaleString('en-GB')}</p>
+                        ) : null}
                         <p>Metode Pembayaran: {paymentMethod}</p>
                     </div>
                 </div>
@@ -172,14 +177,17 @@ class MyHistory extends React.Component {
         return successStatus.map((val, idx) => {
             const { plans, checkoutDate, totalPayment, paymentMethod, confirmDate, paymentDate } = val
             const { planName } = plans
+            const datePayment = new Date(paymentDate)
+            const date = new Date(checkoutDate)
+            const dateConfirm = new Date(confirmDate)
             return (
                 <div className="d-flex flex-column justify-content-start mt-4 align-items-center planlist" key={val.id.toString()}>
                     <h5 className="header-plan">{planName}</h5>
                     <h6>{priceFormatter(totalPayment)}</h6>
                     <div className="d-flex flex-column mt-2">
-                        <p>Tanggal Transaksi: {checkoutDate.slice(0, 10)}</p>
-                        <p>Tanggal Pembayaran: {paymentDate.slice(0, 10)}</p>
-                        <p>Tanggal Konfrimasi: {confirmDate.slice(0, 10)}</p>
+                        <p>Tanggal Transaksi: {date.toLocaleString('en-GB')}</p>
+                        <p>Tanggal Pembayaran: {datePayment.toLocaleString('en-GB')}</p>
+                        <p>Tanggal Konfrimasi: {dateConfirm.toLocaleString('en-GB')}</p>
                         <p>Metode Pembayaran: {paymentMethod}</p>
                     </div>
                 </div>
@@ -210,52 +218,6 @@ class MyHistory extends React.Component {
                         <p>Catatan: {failedNote}</p>
                     </div>
                     <Buttons type="contained" className="mt-3" onClick={(_) => this.reUploadHandler(idx)}>Unggah Bukti Bayar</Buttons>
-                    {/* <Modal
-                        toggle={this.toggleModalReUpload}
-                        isOpen={this.state.reUploadForm}
-                        className="repayment-modal"
-                    >
-                        <ModalHeader toggle={this.toggleModalReUpload}>
-                            <caption>
-                                Unggah Ulang Bukti Pembayaran Transaksi
-                                </caption>
-                        </ModalHeader>
-                        <ModalBody>
-                            <h6>Berikut Info Pembayaran Anda: </h6>
-                            <form className="ml-2 mt-3">
-                                <div className="form-group row">
-                                    <label className="col-sm-4 col-form-label">Total Bayar</label>
-                                    <div className="col-sm-8">
-                                        <input type="text" className="form-control"
-                                            value={priceFormatter(this.state.reUploadForm.totalPayment)} readOnly
-                                        />
-                                    </div>
-                                </div>
-                                <div className="form-group row d-flex justify-content-start align-items-center">
-                                    <label className="col-sm-4 col-form-label">Metode Pembayaran</label>
-                                    <div className="col-sm-8 d-flex justify-content-start align-items-center">
-                                        <input type="text" className="form-control"
-                                            value={this.state.reUploadForm.paymentMethod} readOnly
-                                        />
-                                    </div>
-                                </div>
-                                <div className="form-group row d-flex justify-content-start align-items-center">
-                                    <label className="col-sm-4 col-form-label">Unggah Bukti Pembayaran</label>
-                                    <div className="col-sm-8 d-flex justify-content-start align-items-center">
-                                        <input type="file" className="" onChange={this.fileChangeHandler}
-                                        //value={this.state.pendingStatus.paymentMethod} readOnly
-                                        />
-                                    </div>
-                                </div>
-                            </form>
-                        </ModalBody>
-                        <ModalFooter>
-                            <div className="d-flex align-items-center justify-content-center mt-4">
-                                <Buttons type="outlined" onClick={this.toggleModalReUpload}>Kembali</Buttons>
-                                <Buttons type="contained" onClick={this.reUploadPaymentReceipt} className="ml-3">Bayar</Buttons>
-                            </div>
-                        </ModalFooter>
-                    </Modal> */}
                 </div>
             )
 
@@ -287,7 +249,7 @@ class MyHistory extends React.Component {
     }
 
     reUploadPaymentReceipt = () => {
-        alert('masuk')
+        // alert('masuk')
         let formData = new FormData();
         formData.append(
             "file",
@@ -304,6 +266,7 @@ class MyHistory extends React.Component {
                 this.setState({ modalReupload: false, selectedFile: null })
                 this.getFailedTransaction()
                 this.getPendingTransaction()
+                this.getWaitingTransaction()
             })
             .catch(err => {
                 console.log(err)
@@ -316,77 +279,71 @@ class MyHistory extends React.Component {
         const { activePage } = this.state
         if (activePage === "pending") {
             return (
-                <>
-                    <div className="d-flex flex-column align-items-center justify-content-center mt-5">
-                        <h6 className="">Transaksi Belum Dibayar</h6>
-                        {this.renderPendingStatus()}
-                        <Modal
-                            toggle={this.toggleModalPayment}
-                            isOpen={this.state.modalPayment}
-                            className="payment-modal"
-                        >
-                            <ModalHeader toggle={this.toggleModalPayment}>
-                                <caption>
-                                    Pembayaran Transaksi
+                <div className="d-flex flex-column align-items-center justify-content-center mt-5">
+                    <h6 className="">Transaksi Belum Dibayar</h6>
+                    {this.renderPendingStatus()}
+                    <Modal
+                        toggle={this.toggleModalPayment}
+                        isOpen={this.state.modalPayment}
+                        className="payment-modal"
+                    >
+                        <ModalHeader toggle={this.toggleModalPayment}>
+                            <caption>
+                                Pembayaran Transaksi
                                 </caption>
-                            </ModalHeader>
-                            <ModalBody>
-                                <h6>Berikut Info Pembayaran Anda: </h6>
-                                <form className="ml-2 mt-3">
-                                    <div className="form-group row">
-                                        <label className="col-sm-4 col-form-label">Total Bayar</label>
-                                        <div className="col-sm-8">
-                                            <input type="text" className="form-control"
-                                                value={priceFormatter(this.state.paymentForm.totalPayment)} readOnly
-                                            />
-                                        </div>
+                        </ModalHeader>
+                        <ModalBody>
+                            <h6>Berikut Info Pembayaran Anda: </h6>
+                            <form className="ml-2 mt-3">
+                                <div className="form-group row">
+                                    <label className="col-sm-4 col-form-label">Total Bayar</label>
+                                    <div className="col-sm-8">
+                                        <input type="text" className="form-control"
+                                            value={priceFormatter(this.state.paymentForm.totalPayment)} readOnly
+                                        />
                                     </div>
-                                    <div className="form-group row d-flex justify-content-start align-items-center">
-                                        <label className="col-sm-4 col-form-label">Metode Pembayaran</label>
-                                        <div className="col-sm-8 d-flex justify-content-start align-items-center">
-                                            <input type="text" className="form-control"
-                                                value={this.state.paymentForm.paymentMethod} readOnly
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="form-group row d-flex justify-content-start align-items-center">
-                                        <label className="col-sm-4 col-form-label">Unggah Bukti Pembayaran</label>
-                                        <div className="col-sm-8 d-flex justify-content-start align-items-center">
-                                            <input type="file" className="" onChange={this.fileChangeHandler}
-                                            //value={this.state.pendingStatus.paymentMethod} readOnly
-                                            />
-                                        </div>
-                                    </div>
-                                </form>
-                            </ModalBody>
-                            <ModalFooter>
-                                <div className="d-flex align-items-center justify-content-center mt-4">
-                                    <Buttons type="outlined" onClick={this.toggleModalPayment}>Kembali</Buttons>
-                                    <Buttons type="contained" onClick={this.uploadPaymentReceipt} className="ml-3">Bayar</Buttons>
                                 </div>
-                            </ModalFooter>
-                        </Modal>
-                    </div>
-                </>
+                                <div className="form-group row d-flex justify-content-start align-items-center">
+                                    <label className="col-sm-4 col-form-label">Metode Pembayaran</label>
+                                    <div className="col-sm-8 d-flex justify-content-start align-items-center">
+                                        <input type="text" className="form-control"
+                                            value={this.state.paymentForm.paymentMethod} readOnly
+                                        />
+                                    </div>
+                                </div>
+                                <div className="form-group row d-flex justify-content-start align-items-center">
+                                    <label className="col-sm-4 col-form-label">Unggah Bukti Pembayaran</label>
+                                    <div className="col-sm-8 d-flex justify-content-start align-items-center">
+                                        <input type="file" className="" onChange={this.fileChangeHandler}
+                                        //value={this.state.pendingStatus.paymentMethod} readOnly
+                                        />
+                                    </div>
+                                </div>
+                            </form>
+                        </ModalBody>
+                        <ModalFooter>
+                            <div className="d-flex align-items-center justify-content-center mt-4">
+                                <Buttons type="outlined" onClick={this.toggleModalPayment}>Kembali</Buttons>
+                                <Buttons type="contained" onClick={this.uploadPaymentReceipt} className="ml-3">Bayar</Buttons>
+                            </div>
+                        </ModalFooter>
+                    </Modal>
+                </div>
             )
         } else if (activePage === "waiting") {
             return (
-                <>
-                    <div className="d-flex flex-column align-items-center justify-content-center mt-5">
-                        <h6 className="">Transaksi Menunggu Konfirmasi</h6>
-                        {this.renderWaitingStatus()}
-                    </div>
-                </>
+                <div className="d-flex flex-column align-items-center justify-content-center mt-5">
+                    <h6 className="">Transaksi Menunggu Konfirmasi</h6>
+                    {this.renderWaitingStatus()}
+                </div>
             )
         }
         else if (activePage === "success") {
             return (
-                <>
-                    <div className="d-flex flex-column align-items-center justify-content-center mt-5">
-                        <h6 className="">Transaksi Selesai</h6>
-                        {this.renderSuccessStatus()}
-                    </div>
-                </>
+                <div className="d-flex flex-column align-items-center justify-content-center mt-5">
+                    <h6 className="">Transaksi Selesai</h6>
+                    {this.renderSuccessStatus()}
+                </div>
             )
         } else {
             return (
@@ -396,17 +353,17 @@ class MyHistory extends React.Component {
                         {this.renderFailedStatus()}
                     </div>
                     <Modal
-                            toggle={this.toggleModalReUpload}
-                            isOpen={this.state.modalReupload}
-                            className="repayment-modal"
-                        >
-                            <ModalHeader toggle={this.toggleModalReUpload}>
-                                <caption>
-                                    Unggah Ulang Pembayaran Transaksi
+                        toggle={this.toggleModalReUpload}
+                        isOpen={this.state.modalReupload}
+                        className="repayment-modal"
+                    >
+                        <ModalHeader toggle={this.toggleModalReUpload}>
+                            <caption>
+                                Unggah Ulang Pembayaran Transaksi
                                 </caption>
-                            </ModalHeader>
-                            <ModalBody>
-                                <form className="ml-2 mt-3">
+                        </ModalHeader>
+                        <ModalBody>
+                            <form className="ml-2 mt-3">
                                 <div className="form-group row">
                                     <label className="col-sm-4 col-form-label">Total Bayar</label>
                                     <div className="col-sm-8">
@@ -415,23 +372,23 @@ class MyHistory extends React.Component {
                                         />
                                     </div>
                                 </div>
-                                    <div className="form-group row d-flex justify-content-start align-items-center">
-                                        <label className="col-sm-4 col-form-label">Unggah Bukti Pembayaran</label>
-                                        <div className="col-sm-8 d-flex justify-content-start align-items-center">
-                                            <input type="file" className="" onChange={this.fileChangeHandler}
-                                            //value={this.state.pendingStatus.paymentMethod} readOnly
-                                            />
-                                        </div>
+                                <div className="form-group row d-flex justify-content-start align-items-center">
+                                    <label className="col-sm-4 col-form-label">Unggah Bukti Pembayaran</label>
+                                    <div className="col-sm-8 d-flex justify-content-start align-items-center">
+                                        <input type="file" className="" onChange={this.fileChangeHandler}
+                                        //value={this.state.pendingStatus.paymentMethod} readOnly
+                                        />
                                     </div>
-                                </form>
-                            </ModalBody>
-                            <ModalFooter>
-                                <div className="d-flex align-items-center justify-content-center mt-4">
-                                    <Buttons type="outlined" onClick={this.toggleModalReUpload}>Kembali</Buttons>
-                                    <Buttons type="contained" onClick={this.reUploadPaymentReceipt} className="ml-3">Unggah</Buttons>
                                 </div>
-                            </ModalFooter>
-                        </Modal>
+                            </form>
+                        </ModalBody>
+                        <ModalFooter>
+                            <div className="d-flex align-items-center justify-content-center mt-4">
+                                <Buttons type="outlined" onClick={this.toggleModalReUpload}>Kembali</Buttons>
+                                <Buttons type="contained" onClick={this.reUploadPaymentReceipt} className="ml-3">Unggah</Buttons>
+                            </div>
+                        </ModalFooter>
+                    </Modal>
                 </>
             )
         }

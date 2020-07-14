@@ -5,25 +5,30 @@ import Button from "../../../../component/Button/Buttons";
 import Axios from 'axios';
 import { API_URL } from '../../../../constants/API';
 import swal from "sweetalert";
+import { connect } from 'react-redux';
+import Buttons from '../../../../component/Button/Buttons';
 
 
 class DashboardTips extends React.Component {
     state = {
         tipsDataList: [],
-        // editTipsForm: {
-        //     image: "",
-        //     tipsName: "",
-        //     postedDate: "",
-        //     editDate: new Date(),
-        //     desc: "",
-        //     id: 0
-        // }
-        editTipsForm: []
+        editTipsForm: [],
+        selectedFile: null,
+        activePage: "admin",
     }
+
+    editBtnHandler = (idx) => {
+        this.setState({
+            editTipsForm: {
+                ...this.state.tipsDataList[idx],
+            },
+        });
+    };
 
     getTipsData = () => {
         Axios.get(`${API_URL}/tips`)
             .then(res => {
+                console.log(res.data)
                 this.setState({ tipsDataList: res.data })
             })
             .catch(err => {
@@ -36,31 +41,53 @@ class DashboardTips extends React.Component {
     }
 
     renderTipsData = () => {
-        const { tipsDataList } = this.state
+        const { tipsDataList, activePage } = this.state
         return tipsDataList.map((val, idx) => {
             const { tipsName, postedDate, users } = val
-            const { username } = users
-            return (
-                <tr key={val.id.toString()}>
-                    <td>{idx+=1}</td>
-                    {/* <td>
-                        <div className="d-flex align-items-center justify-content-center">
-                            <img src={image} alt="" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
-                        </div>
-                    </td> */}
-                    <td>{tipsName}</td>
-                    <td>{username}</td>
-                    <td>{postedDate}</td>
-                    <td>
-                        <div className="d-flex align-items-center justify-content-center">
-                            <Link to={`/admin/tips/edit/${val.id}`} style={{ color: "inherit" }}>
-                            <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
-                            </Link>
-                            <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
-                        </div>
-                    </td>
-                </tr>
-            )
+            const { username, role } = users
+            const date = new Date(postedDate)
+            if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
+                if (activePage === "admin") {
+                    if (role === "admin") {
+                        return (
+                            <tr key={val.id.toString()}>
+                                <td>{idx += 1}</td>
+                                <td>{tipsName}</td>
+                                <td>{username}</td>
+                                <td>{date.toLocaleString('en-GB')}</td>
+                                <td>
+                                    <div className="d-flex align-items-center justify-content-center">
+                                        <Link to={`/admin/tips/edit/${val.id}`} style={{ color: "inherit" }}>
+                                            <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
+                                        </Link>
+                                        <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
+                                    </div>
+                                </td>
+                            </tr>
+                        )
+                    }
+                }
+                else {
+                    if (role === "pengguna") {
+                        return (
+                            <tr key={val.id.toString()}>
+                                <td>{idx += 1}</td>
+                                <td>{tipsName}</td>
+                                <td>{username}</td>
+                                <td>{date.toLocaleString('en-GB')}</td>
+                                <td>
+                                    <div className="d-flex align-items-center justify-content-center">
+                                        <Link to={`/admin/tips/edit/${val.id}`} style={{ color: "inherit" }}>
+                                            <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
+                                        </Link>
+                                        <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
+                                    </div>
+                                </td>
+                            </tr>
+                        )
+                    }
+                }
+            }
         })
     }
 
@@ -104,7 +131,19 @@ class DashboardTips extends React.Component {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-12">
-                        <h3 className="text-center my-5">Dashboard Tips dan Trik</h3>
+                        <h3 className="text-center mt-5">Dashboard Tips dan Trik</h3>
+                        <div className="d-flex justify-content-start my-5">
+                            <Buttons type="textual" className={`mt-3 ${
+                                this.state.activePage === "admin" ? "active" : null
+                                }`} onClick={() => this.setState({ activePage: "admin" })}>
+                                Admin
+                            </Buttons>
+                            <Buttons type="textual" className={`mt-3 ml-5 ${
+                                this.state.activePage === "pengguna" ? "active" : null
+                                }`} onClick={() => this.setState({ activePage: "pengguna" })}>
+                                Pengguna
+                            </Buttons>
+                        </div>
                         <Link to="/admin/tips/tambah" style={{ textDecoration: "none" }}>
                             <Button type="outlined">
                                 Tambah Artikel Tips dan Trik
@@ -114,7 +153,6 @@ class DashboardTips extends React.Component {
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    {/* <th>Gambar</th> */}
                                     <th>Judul</th>
                                     <th>Username</th>
                                     <th>Tanggal Posting</th>
@@ -132,4 +170,10 @@ class DashboardTips extends React.Component {
     }
 }
 
-export default DashboardTips
+const mapStateToProps = (state) => {
+    return {
+        search: state.search,
+    };
+};
+
+export default connect(mapStateToProps)(DashboardTips) 

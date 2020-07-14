@@ -38,6 +38,7 @@ import EditRecipe from "./view/screen/UserMenu/MyResep/EditRecipe";
 import Profile from "./view/screen/Profile";
 import MyHistory from "./view/screen/UserMenu/MyHistory/MyHistory";
 import Resetpassword from "./view/screen/ForgotPassword/ResetPassword";
+import AdminEditRecipe from "./view/screen/AdminMenu/DashboardRecipe/AdminEditRecipe";
 
 const cookieObj = new Cookie();
 
@@ -63,6 +64,7 @@ class App extends React.Component {
           <Route exact path="/admin/pembayaran" component={DashboardPayment} />
           <Route exact path="/admin/laporan" component={DashboardReport} />
           <Route exact path="/admin/tambah-resep" component={AddNewRecipe} />
+          <Route exact path="/admin/resep/edit/:resepId" component={AdminEditRecipe} />
         </>
       );
     }
@@ -82,6 +84,7 @@ class App extends React.Component {
           {/* <Route exact path="/keranjang" component={Profile} /> */}
           <Route exact path="/pengaturan" component={UserProfile} />
           <Route exact path="/riwayat" component={MyHistory} />
+          <Route exact path="/tips/:tipsId" component={TipsDetails} />
           {/* <Route exact path="/pengaturan" conponent={Profile} /> */}
         </>
       );
@@ -101,10 +104,10 @@ class App extends React.Component {
         {/* <Route exact path="/produk" component={Product} />
         <Route exact path="/produk/:produkId" component={ProductDetails} /> */}
         <Route exact path="/tips" component={Tips} />
-        <Route exact path="/tips/:tipsId" component={TipsDetails} />
+        {/* <Route exact path="/tips/:tipsId" component={TipsDetails} /> */}
         <Route exact path="/lupa-password" component={ForgotPassword} />
         <Route exact path="/pengguna/lupa-password/:username" component={Resetpassword} />
-        <Route exact path="/pengguna" component={Resetpassword} />
+        {/* <Route exact path="/pengguna" component={Resetpassword} /> */}
         <Route exact path="/pengguna/verifikasi/:username" component={Profile} />
         {this.renderAdminRoutes()}
         {this.renderProtectedRoutes()}

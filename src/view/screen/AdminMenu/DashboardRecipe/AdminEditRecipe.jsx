@@ -1,5 +1,5 @@
 import React from "react"
-import "./MyResep.css"
+// import "./MyResep.css"
 import Buttons from "../../../../component/Button/Buttons"
 import { Link } from "react-router-dom"
 import Axios from "axios"
@@ -7,7 +7,7 @@ import { API_URL } from "../../../../constants/API"
 import swal from "sweetalert"
 import { connect } from "react-redux"
 
-class EditRecipe extends React.Component {
+class AdminEditRecipe extends React.Component {
     state = {
         selectedFile: null,
         editRecipeForm: {
@@ -204,9 +204,9 @@ class EditRecipe extends React.Component {
             <div className="container">
                 <div className="row">
                     <div className="d-flex justify-content-start mt-4">
-                        <Link to="/resepku" style={{ textDecoration: "none" }}>
+                        <Link to="/admin/resep" style={{ textDecoration: "none" }}>
                             <Buttons type="textual">
-                                Kembali ke Halaman Resep Saya
+                                Kembali ke Dashboard Resep
                             </Buttons>
                         </Link>
                     </div>
@@ -216,9 +216,9 @@ class EditRecipe extends React.Component {
                             <input type="text" className="form-control w-75 form-control-lg"
                                 placeholder="Judul Resep"
                                 value={recipeName}
-                            onChange={(e) =>
-                                this.inputHandler(e, "recipeName", "editRecipeForm")
-                            }
+                                onChange={(e) =>
+                                    this.inputHandler(e, "recipeName", "editRecipeForm")
+                                }
                             />
                         </div>
                         <div className="d-flex justify-content-center align-items-center mt-4 category-recipe">
@@ -226,8 +226,8 @@ class EditRecipe extends React.Component {
                                 <label>Kategori</label>
                                 <select id="kategori" className="form-control w-100 form-control-lg"
                                     value={recipeCategoryId}
-                                onChange={(e) => this.setState({ recipeCategoryId: parseInt(e.target.value) })
-                                }
+                                    onChange={(e) => this.setState({ recipeCategoryId: parseInt(e.target.value) })
+                                    }
                                 >
                                     {this.renderCategoryRecipe()}
                                 </select>
@@ -237,9 +237,9 @@ class EditRecipe extends React.Component {
                                 <input type="number" className="form-control w-75 form-control-lg"
                                     placeholder="Waktu Membuat"
                                     value={cookTime}
-                                onChange={(e) =>
-                                    this.inputHandler(e, "cookTime", "editRecipeForm")
-                                }
+                                    onChange={(e) =>
+                                        this.inputHandler(e, "cookTime", "editRecipeForm")
+                                    }
                                 />
                             </div>
                             <div className="d-flex flex-column align-items-center">
@@ -247,23 +247,23 @@ class EditRecipe extends React.Component {
                                 <input type="text" className="form-control w-75 form-control-lg"
                                     placeholder="3 - 4 Porsi"
                                     value={numbServings}
-                                onChange={(e) =>
-                                    this.inputHandler(e, "numbServings", "editRecipeForm")
-                                }
+                                    onChange={(e) =>
+                                        this.inputHandler(e, "numbServings", "editRecipeForm")
+                                    }
                                 />
                             </div>
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-5">
                             <input type="file" className="form-control-lg"
-                            onChange={this.fileChangeHandler}
+                                onChange={this.fileChangeHandler}
                             />
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-5">
                             <textarea className="form-control w-75 form-control-lg" placeholder="Deskripsi Resep"
                                 value={shortDesc}
-                             onChange={(e) =>
-                                this.inputHandler(e, "shortDesc", "editRecipeForm")
-                            }
+                                onChange={(e) =>
+                                    this.inputHandler(e, "shortDesc", "editRecipeForm")
+                                }
                             >
 
                             </textarea>
@@ -273,8 +273,8 @@ class EditRecipe extends React.Component {
                             {
                                 Object.keys(this.state.inputIngredient).map(input => {
                                     return <input type="text" className="form-control w-75 mt-2 form-control-lg"
-                                        value={this.state.inputIngredient[input]}
-                                    onChange={(e) => this.setState({ inputIngredient: { ...this.state.inputIngredient, [input]: e.target.value } })}
+                                        value={{ ...this.state.inputIngredient }, this.state.inputIngredient[input]}
+                                        onChange={(e) => this.setState({ inputIngredient: { ...this.state.inputIngredient, [input]: e.target.value } })}
                                     />
                                 })
                             }
@@ -286,7 +286,7 @@ class EditRecipe extends React.Component {
                                 Object.keys(this.state.inputStep).map(input => {
                                     return <input type="text" className="form-control w-75 mt-2 form-control-lg"
                                         value={this.state.inputStep[input]}
-                                    onChange={(e) => this.setState({ inputStep: { ...this.state.inputStep, [input]: e.target.value } })}
+                                        onChange={(e) => this.setState({ inputStep: { ...this.state.inputStep, [input]: e.target.value } })}
                                     />
                                 })
                             }
@@ -311,4 +311,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps)(EditRecipe) 
+export default connect(mapStateToProps)(AdminEditRecipe) 

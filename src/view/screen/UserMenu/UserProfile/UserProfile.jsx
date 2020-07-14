@@ -243,20 +243,20 @@ class UserProfile extends React.Component {
         return planList.map((val, idx) => {
             const { planName, planDesc, price } = val
             return (
-                <div className="d-flex justify-content-center mt-4 align-items-center planlist" key={val.id.toString()}>
+                <div className="d-flex flex-column justify-content-center mt-4 align-items-center planlist" key={val.id.toString()}>
                     <h5>{planName}</h5>
                     <p>{planDesc}</p>
-                    <div className="d-flex flex-column ml-4">
-                        <h6>{priceFormatter(price)}</h6>
+                    {/* <div className="d-flex"> */}
+                        <h6 className="mt-3">{priceFormatter(price)}</h6>
                         <Buttons type="outlined" onClick={(_) => this.paymentBtnHandler(idx)}>Beli</Buttons>
-                    </div>
+                    {/* </div> */}
                 </div>
             )
         })
     }
 
     renderViewPage = () => {
-        const { username, fullname, noHp, email, profilePicture } = this.state.userData
+        const { username, fullname, noHp, email, profilePicture, membership } = this.state.userData
         const { activePage } = this.state
         if (activePage === "profile") {
             return (
@@ -266,6 +266,9 @@ class UserProfile extends React.Component {
                         {profilePicture == null ? <FontAwesomeIcon icon={faUser} style={{ fontSize: 50 }} /> :
                             <img src={profilePicture} alt="" className="profil-img" />
                         }
+                        {membership === "premium" ? (
+                            <h6 className="mt-2">Pengguna Premium</h6>
+                        ) : null}
                         <Buttons type="outlined" className="mt-4" onClick={this.editBtnProfileHandler}>Ubah Sekarang</Buttons>
                     </div>
                     <div className="row">
@@ -380,15 +383,6 @@ class UserProfile extends React.Component {
                                 <input type="text" className="form-control w-75 form-control-lg"
                                     value={this.state.editUserForm.username} readOnly />
                             </div>
-                            {/* <div className="d-flex flex-column align-items-center justify-content-center mt-4">
-                                <label>Nama Lengkap</label>
-                                <input type="text" className="fform-control w-75 form-control-lg"
-                                    value={this.state.userData.fullname}
-                                    onChange={(e) =>
-                                        this.inputHandler(e, "fullname", "editUserForm")
-                                    }
-                                />
-                            </div> */}
                             <div className="d-flex flex-column align-items-center justify-content-center mt-4">
                                 <label>Nama Lengkap</label>
                                 <input type="text" className="form-control w-75 form-control-lg"

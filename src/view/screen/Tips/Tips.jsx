@@ -8,6 +8,7 @@ import Buttons from '../../../component/Button/Buttons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStepBackward, faFastBackward, faStepForward, faFastForward } from "@fortawesome/free-solid-svg-icons/";
 import { FormControl } from "react-bootstrap";
+import swal from 'sweetalert';
 
 class Tips extends React.Component {
     state = {
@@ -32,50 +33,32 @@ class Tips extends React.Component {
             })
     }
 
-    // getTipsDataPage = (currentPage) => {
-    //     currentPage -= 1
-    //     Axios.get(`${API_URL}/tips/pagination?page=${currentPage}&size=${this.state.itemsPerPage}`)
-    //         .then(res => {
-    //             this.setState({
-    //                 tipsDataList: res.data.content,
-    //                 totalPages: res.data.totalPages,
-    //                 totalElements: res.data.totalElements,
-    //                 currentPage: res.data.number + 1
-    //             })
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //         })
-    // }
-
     componentDidMount() {
         this.getTipsData()
-        // this.getTipsDataPage(this.state.currentPage)
         this.getTipsPerPage(this.state.currentPage)
     }
 
     renderTipsData = () => {
         const { tipsDataPage } = this.state
         return tipsDataPage.map(val => {
-            const { tipsImage, tipsName } = val
+            const { tipsImage, tipsName, users } = val
+            const { username } = users
             if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
                 return (
-                    // <>
                     <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()}>
+                        {/* {this.props.user.membership === "premium" ? ( */}
                         <Link
                             to={`/tips/${val.id}`}
                             style={{ textDecoration: "none", color: "inherit" }}
                         >
                             <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                            <p className="my-2">Oleh: {username}</p>
                             <h5 className="mt-2">{tipsName}</h5>
-                            {/* <Button type="contained" className="mt-2">
-                                    Baca Selengkapnya
-                                </Button> */}
                         </Link>
+                          {/* ) : null} */}
                     </div>
-                    // </>
                 )
-            }
+            } 
         })
     }
 
@@ -185,6 +168,7 @@ class Tips extends React.Component {
 const mapStateToProps = (state) => {
     return {
         search: state.search,
+        user: state.user
     };
 };
 

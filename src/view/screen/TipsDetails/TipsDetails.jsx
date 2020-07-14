@@ -4,6 +4,8 @@ import Axios from "axios"
 import { API_URL } from "../../../constants/API"
 import { Link } from "react-router-dom";
 import Button from "../../../component/Button/Buttons";
+import swal from "sweetalert";
+import { connect } from "react-redux";
 
 class TipsDetails extends React.Component {
     state = {
@@ -19,7 +21,6 @@ class TipsDetails extends React.Component {
 
     componentDidMount() {
         this.getTipDataDetails()
-        this.getAllTipsData()
     }
 
     getTipDataDetails = () => {
@@ -32,46 +33,6 @@ class TipsDetails extends React.Component {
                 console.log(err)
                 alert("Data Kosong")
             })
-    }
-
-    getAllTipsData = () => {
-        Axios.get(`${API_URL}/tips`,
-            {
-                params: {
-                    _limit: 3
-                }
-            })
-            .then(res => {
-                this.setState({ tipsDataList: res.data })
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
-
-    renderTipsData = () => {
-        const { tipsDataList } = this.state
-        return tipsDataList.map(val => {
-            const { tipsImage, tipsName } = val
-            return (
-                // <>
-                    <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()}>
-                        <Link
-                            to={`/tips/${val.id}`}
-                            style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                            <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
-                            <h5 className="mt-2">{tipsName}</h5>
-                            {/* <Button type="contained" className="mt-2">
-                                Baca Selengkapnya
-                                </Button> */}
-                        </Link>
-                        {/* {this.getAllTipsData}
-                        {this.getTipDataDetails()} */}
-                    </div>
-                // </>
-            )
-        })
     }
 
     render() {
@@ -88,6 +49,8 @@ class TipsDetails extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-12">
+                        {console.log(this.props.user.noHp)}
+                        {this.props.user === "premium" ? (
                         <div className="tips-details">
                             <div className="d-flex flex-column text-center align-items-center">
                                 <h3 className="mt-4">{tipsName}</h3>
@@ -98,6 +61,7 @@ class TipsDetails extends React.Component {
                                 <p>{tipsContent}</p>
                             </div>
                         </div>
+                        ) : null}
                     </div>
                 </div>
             </div>
@@ -105,4 +69,10 @@ class TipsDetails extends React.Component {
     }
 }
 
-export default TipsDetails
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+    };
+};
+
+export default connect(mapStateToProps)(TipsDetails) 
