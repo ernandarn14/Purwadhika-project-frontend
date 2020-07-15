@@ -17,4 +17,10 @@
     width: 300px;
 }
 
+.option{
+    color: var(--accent-dark);
+    font-style: italic;
+    font-weight: bold;
+}
+
 

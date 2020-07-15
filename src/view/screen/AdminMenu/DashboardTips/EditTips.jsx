@@ -18,6 +18,7 @@ class EditTips extends React.Component {
             postedDate: "",
             editDate: new Date(),
             tipsContent: "",
+            postOption: "public",
             id: 0
         }
     }
@@ -48,26 +49,6 @@ class EditTips extends React.Component {
         });
     };
 
-    // editTipsHandler = () => {
-    //     Axios.put(`${API_URL}/tips/${this.props.match.params.tipsId}`, this.state.editTipsForm)
-    //         .then(res => {
-    //             swal("Sukses", "Artikel Berhasil Diubah!", "success")
-    //             this.setState({
-    //                 editTipsForm: {
-    //                     image: "",
-    //                     tipsName: "",
-    //                     uploadDate: "",
-    //                     editDate: "",
-    //                     desc: "",
-    //                     id: 0
-    //                 }
-    //             })
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //             swal("Gagal", "Artikel Gagal Diubah!", "error")
-    //         })
-    // }
 
     fileChangeHandler = (e) => {
         this.setState({ selectedFile: e.target.files[0] });
@@ -86,6 +67,7 @@ class EditTips extends React.Component {
 
         formData.append("userData", JSON.stringify(this.state.editTipsForm))
 
+        if(this.state.editTipsForm.users.role === "admin"){
         Axios.put(`${API_URL}/tips/edit/${this.props.match.params.tipsId}/pengguna/${this.props.user.id}`, formData)
             .then(res => {
                 console.log(res.data)
@@ -105,11 +87,14 @@ class EditTips extends React.Component {
                 console.log(err)
                 swal("Gagal", "Artikel Gagal Diubah!", "error")
             })
+        } else {
+            swal("Gagal", "Admin Tidak Dapat Mengubah Artikel Pengguna!", "error")
+        }
         console.log(JSON.stringify(this.state.editTipsForm));
     };
 
     render() {
-        const { image, tipsName, tipsContent } = this.state.editTipsForm
+        const { tipsName, tipsContent } = this.state.editTipsForm
         return (
             <div className="container">
                 <div className="row">
@@ -145,12 +130,9 @@ class EditTips extends React.Component {
                             </textarea>
                         </div>
                         <div className="d-flex justify-content-center">
-                            {this.state.editTipsForm.users.role === "admin" ? (
                                 <Button type="contained" className="mt-4" onClick={this.editTipsHandler}>
                                     Simpan
                                 </Button>
-                            ) : null}
-
                         </div>
                     </div>
                 </div>

@@ -47,12 +47,6 @@ class Navbar extends React.Component {
           >
             <h5 className="mx-2 font-weight-bold">Resep</h5>
           </Link>
-          {/* <Link
-            to="/produk"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <h5 className="mx-2 font-weight-bold">Produk</h5>
-          </Link> */}
           <Link to="/tips" style={{ textDecoration: "none", color: "inherit" }}>
             <h5 className="mx-2 font-weight-bold">Tips dan Trik</h5>
           </Link>
@@ -87,12 +81,12 @@ class Navbar extends React.Component {
                           Dashboard Resep
                       </Link>
                       </DropdownItem>
-                      {/* <DropdownItem>
+                      <DropdownItem>
                         <Link style={{ color: "inherit", textDecoration: "none" }}
                           to="/admin/produk">
                           Dashboard Produk
                       </Link>
-                      </DropdownItem> */}
+                      </DropdownItem>
                       <DropdownItem>
                         <Link style={{ color: "inherit", textDecoration: "none" }}
                           to="/admin/tips">

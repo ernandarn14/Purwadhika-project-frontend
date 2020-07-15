@@ -4,7 +4,6 @@ import Axios from "axios"
 import { API_URL } from "../../../constants/API"
 import { Link } from "react-router-dom";
 import Button from "../../../component/Button/Buttons";
-import swal from "sweetalert";
 import { connect } from "react-redux";
 
 class TipsDetails extends React.Component {
@@ -49,9 +48,7 @@ class TipsDetails extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-12">
-                        {console.log(this.props.user.noHp)}
-                        {this.props.user === "premium" ? (
-                        <div className="tips-details">
+                            <div className="tips-details">
                             <div className="d-flex flex-column text-center align-items-center">
                                 <h3 className="mt-4">{tipsName}</h3>
                                 <h6>Oleh: {users.username}</h6>
@@ -61,7 +58,6 @@ class TipsDetails extends React.Component {
                                 <p>{tipsContent}</p>
                             </div>
                         </div>
-                        ) : null}
                     </div>
                 </div>
             </div>

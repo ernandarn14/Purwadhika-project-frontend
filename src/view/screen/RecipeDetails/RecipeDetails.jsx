@@ -73,30 +73,30 @@ class RecipeDetails extends React.Component {
             })
     }
 
-    renderRecipeDetails = () => {
-        const { recipeDetail } = this.state
-        return recipeDetail.map(val => {
-            const { recipeName, category, cookTime, numbServings, recipeImage, desc, user } = val
-            const { username } = user
-            return (
-                <>
-                    <h3 className="text-center my-5">{recipeName}</h3>
-                    <div className="row">
-                        <div className="col-6">
-                            <img src={recipeImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
-                        </div>
-                        <div className="col-6">
-                            <h6>category</h6>
-                            <h6>Oleh: {username}</h6>
-                            <h6>{cookTime}</h6>
-                            <h6>{numbServings} porsi</h6>
-                            <h6>{desc}</h6>
-                        </div>
-                    </div>
-                </>
-            )
-        })
-    }
+    // renderRecipeDetails = () => {
+    //     const { recipeDetail } = this.state
+    //     return recipeDetail.map(val => {
+    //         const { recipeName, category, cookTime, numbServings, recipeImage, desc, user } = val
+    //         const { username } = user
+    //         return (
+    //             <>
+    //                 <h3 className="text-center my-5">{recipeName}</h3>
+    //                 <div className="row">
+    //                     <div className="col-6">
+    //                         <img src={recipeImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+    //                     </div>
+    //                     <div className="col-6">
+    //                         <h6>category</h6>
+    //                         <h6>Oleh: {username}</h6>
+    //                         <h6>{cookTime}</h6>
+    //                         <h6>{numbServings} porsi</h6>
+    //                         <h6>{desc}</h6>
+    //                     </div>
+    //                 </div>
+    //             </>
+    //         )
+    //     })
+    // }
 
     renderInstructionDetails = () => {
         const { instructionLists } = this.state

@@ -22,6 +22,7 @@ class AddRecipe extends React.Component {
             numbServings: "",
             recipeImage: "",
             shortDesc: "",
+            postOption: "public",
             id: 0
         },
         recipeCategoryId: 0,
@@ -52,7 +53,7 @@ class AddRecipe extends React.Component {
                 [field]: value,
             },
         });
-        //console.log(typeof(e.target.value))
+        console.log(e.target.value)
     };
 
 
@@ -110,6 +111,7 @@ class AddRecipe extends React.Component {
                     )
                         .then((res) => {
                             console.log(res.data);
+                            console.log(this.state.instructionLists)
                         })
                         .catch((err) => {
                             console.log(err);
@@ -136,6 +138,7 @@ class AddRecipe extends React.Component {
                         cookTime: 0,
                         numbServings: "",
                         recipeImage: "",
+                        postOption: "public",
                         shortDesc: "",
                     }, inputIngredient: {
                         input0: ""
@@ -167,7 +170,7 @@ class AddRecipe extends React.Component {
     }
 
     render() {
-        const { recipeName, recipeCategoryId, cookTime, numbServings, shortDesc } = this.state.addRecipeForm
+        const { recipeName, recipeCategoryId, cookTime, numbServings, shortDesc, postOption } = this.state.addRecipeForm
         return (
             <div className="container">
                 <div className="row">
@@ -258,6 +261,18 @@ class AddRecipe extends React.Component {
                             }
                             <Buttons type="outlined" className="mt-4" onClick={this.addNewInputStep}>Tambah Langkah</Buttons>
                         </div>
+                        <div className="d-flex align-items-center justify-content-center mt-5">
+                                <label>Pilihan Unggah</label>
+                                <select id="kategori" className="form-control w-25 form-control-lg ml-3"
+                                    value={postOption}
+                                    onChange={(e) =>
+                                        this.inputHandler(e, "postOption", "addRecipeForm")
+                                    }
+                                    >
+                                   <option value="public">Semua Pengguna</option>
+                                   <option value="premium">Hanya Pengguna Premium</option>
+                                </select>
+                            </div>
                         <div className="d-flex justify-content-center mt-5">
                             <Buttons type="contained" onClick={this.addRecipeHandler}>Simpan</Buttons>
                         </div>

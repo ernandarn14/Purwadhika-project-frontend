@@ -38,26 +38,71 @@ class Tips extends React.Component {
         this.getTipsPerPage(this.state.currentPage)
     }
 
+    renderWarning = () => {
+        this.props.user.id ? swal("Gagal", "Tips Ini Hanya Bisa Diakses Pengguna Premium", "error") : swal("Gagal", "Anda Harus Login Untuk Membaca Resep Ini", "error")
+    }
+
     renderTipsData = () => {
         const { tipsDataPage } = this.state
         return tipsDataPage.map(val => {
-            const { tipsImage, tipsName, users } = val
+            const { tipsImage, tipsName, users, postOption } = val
             const { username } = users
             if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
-                return (
-                    <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()}>
-                        {/* {this.props.user.membership === "premium" ? ( */}
-                        <Link
-                            to={`/tips/${val.id}`}
-                            style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                            <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
-                            <p className="my-2">Oleh: {username}</p>
-                            <h5 className="mt-2">{tipsName}</h5>
-                        </Link>
-                          {/* ) : null} */}
-                    </div>
-                )
+                if( postOption === "premium"){ 
+                    if ( this.props.user.membership === "premium" ){
+                        return (
+                            <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()}>
+                                <Link
+                                    to={`/tips/${val.id}`}
+                                    style={{ textDecoration: "none", color: "inherit" }}
+                                >
+                                    <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                                    <p className="my-2">Oleh: {username}</p>
+                                    <h5 className="mt-2">{tipsName}</h5>
+                                    {postOption === "premium" ?   <p className="mt-2 option">{postOption}</p> : null}
+                                </Link>
+                            </div>
+                        )
+                    } 
+                    else {
+                        return (
+                            <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()} onClick={this.renderWarning}>
+                                    <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                                    <p className="my-2">Oleh: {username}</p>
+                                    <h5 className="mt-2">{tipsName}</h5>
+                                    {postOption === "premium" ?   <p className="mt-2 option">{postOption}</p> : null}
+                            </div>  
+                        )
+                    }
+                } else {
+                    return (
+                        <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()}>
+                            <Link
+                                to={`/tips/${val.id}`}
+                                style={{ textDecoration: "none", color: "inherit" }}
+                            >
+                                <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                                <p className="my-2">Oleh: {username}</p>
+                                <h5 className="mt-2">{tipsName}</h5>
+                                {postOption === "premium" ?   <p className="mt-2 option">{postOption}</p> : null}
+                            </Link>
+                        </div>
+                    )
+                }
+                // return (
+                //     <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()}>
+                //         {/* {this.props.user.membership === "premium" ? ( */}
+                //         <Link
+                //             to={`/tips/${val.id}`}
+                //             style={{ textDecoration: "none", color: "inherit" }}
+                //         >
+                //             <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                //             <p className="my-2">Oleh: {username}</p>
+                //             <h5 className="mt-2">{tipsName}</h5>
+                //         </Link>
+                //           {/* ) : null} */}
+                //     </div>
+                // )
             } 
         })
     }

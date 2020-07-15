@@ -12,6 +12,7 @@ const init_state = {
     username: "",
     fullName: "",
     role: "",
+    membership: "",
     errMsg: "",
     cookieChecked: false,
     // cartItems: 0
@@ -20,13 +21,14 @@ const init_state = {
 export default (state = init_state, action) => {
     switch (action.type) {
         case ON_LOGIN_SUCCESS:
-            const { username, fullName, role, id } = action.payload;
+            const { username, fullName, role, id, membership } = action.payload;
             return {
                 ...state,
                 username,
                 fullName,
                 role,
                 id,
+                membership,
                 cookieChecked: true
             };
         case ON_LOGIN_FAIL:

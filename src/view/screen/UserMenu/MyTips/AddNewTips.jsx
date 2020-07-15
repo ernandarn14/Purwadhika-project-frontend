@@ -20,6 +20,7 @@ class AddNewTips extends React.Component {
             postedDate: new Date(),
             editDate: "",
             tipsContent: "",
+            postOption: "public",
             id: 0
         },
     }
@@ -32,6 +33,7 @@ class AddNewTips extends React.Component {
                 [field]: value,
             },
         });
+        // console.log(e.target.value)
     };
 
     fileChangeHandler = (e) => {
@@ -59,6 +61,7 @@ class AddNewTips extends React.Component {
                         tipsName: "",
                         postedDate: "",
                         tipsContent: "",
+                        postOption: "public",
                         id: 0
                     }
                 })
@@ -70,29 +73,8 @@ class AddNewTips extends React.Component {
         console.log(JSON.stringify(this.state.addTipsForm));
     };
 
-    // addTipsHandler = () => {
-    //     Axios.post(`${API_URL}/tips/tambah/pengguna/${this.props.user.id}`, this.state.addTipsForm)
-    //         .then(res => {
-    //             console.log(res.data)
-    //             swal("Sukses", "Artikel Berhasil Ditambah!", "success")
-    //             this.setState({
-    //                 addTipsForm: {
-    //                     tipsImage: "",
-    //                     tipsName: "",
-    //                     postedDate: "",
-    //                     tipsContent: "",
-    //                     id: 0
-    //                 }
-    //             })
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //             swal("Gagal", "Artikel Gagal Ditambah!", "error")
-    //         })
-    // }
-
     render() {
-        const { tipsImage, tipsName, tipsContent } = this.state.addTipsForm
+        const { tipsName, tipsContent, postOption } = this.state.addTipsForm
         return (
             <div className="container">
                 <div className="row">
@@ -116,24 +98,31 @@ class AddNewTips extends React.Component {
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-4">
                             <input type="file" className="form-control-lg"
-                                //value={tipsImage}
-                              onChange={this.fileChangeHandler}
+                                onChange={this.fileChangeHandler}
                                 placeholder="Url Gambar"
-                                // onChange={(e) =>
-                                //     this.inputHandler(e, "tipsImage", "addTipsForm")
-                                // }
                             />
-                            {/* <Button type="outlined" className="ml-3">Simpan Gambar</Button> */}
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-4">
-                            <textarea className="form-control w-75 form-control-lg" rows="25" placeholder="Mulai Menulis Artikel"
+                            <textarea className="form-control w-75 form-control-lg" rows="20" placeholder="Mulai Menulis Artikel"
                                 value={tipsContent} onChange={(e) =>
                                     this.inputHandler(e, "tipsContent", "addTipsForm")
                                 }
                             ></textarea>
                         </div>
-                        <div className="d-flex justify-content-center">
-                            <Button type="contained" className="mt-4" onClick={this.addTipsHandler}>
+                        <div className="d-flex align-items-center justify-content-center mt-5">
+                            <label>Pilihan Unggah</label>
+                            <select id="kategori" className="form-control w-25 form-control-lg ml-3"
+                                value={postOption}
+                                onChange={(e) =>
+                                    this.inputHandler(e, "postOption", "addTipsForm")
+                                }
+                            >
+                                <option value="public">Semua Pengguna</option>
+                                <option value="premium">Hanya Pengguna Premium</option>
+                            </select>
+                        </div>
+                        <div className="d-flex justify-content-center mt-5">
+                            <Button type="contained" onClick={this.addTipsHandler}>
                                 Simpan
                             </Button>
                         </div>

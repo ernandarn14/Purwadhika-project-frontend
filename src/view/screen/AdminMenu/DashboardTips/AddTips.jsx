@@ -18,6 +18,7 @@ class AddTips extends React.Component {
             postedDate: new Date(),
             editDate: "",
             tipsContent: "",
+            postOption: "public",
             id: 0
         }
     }
@@ -68,28 +69,8 @@ class AddTips extends React.Component {
         console.log(JSON.stringify(this.state.addTipsForm));
     };
 
-    // addTipsHandler = () => {
-    //     Axios.post(`${API_URL}/tips`, this.state.addTipsForm)
-    //         .then(res => {
-    //             console.log(res.data)
-    //             swal("Sukses", "Artikel Berhasil Ditambah!", "success")
-    //             this.setState({
-    //                 addTipsForm: {
-    //                     image: "",
-    //                     tipsName: "",
-    //                     uploadDate: "",
-    //                     desc: "",
-    //                     id: 0
-    //                 }
-    //             })
-    //         })
-    //         .catch(err => {
-    //             swal("Gagal", "Artikel Gagal Ditambah!", "error")
-    //         })
-    // }
-
     render() {
-        const { image, tipsName, tipsContent } = this.state.addTipsForm
+        const { tipsName, tipsContent } = this.state.addTipsForm
         return (
             <div className="container">
                 <div className="row">
@@ -114,11 +95,6 @@ class AddTips extends React.Component {
                         <div className="d-flex align-items-center justify-content-center mt-3">
                             <input type="file" className="form-control-lg"
                             onChange={this.fileChangeHandler}
-                                // value={image}
-                                // placeholder="Url Gambar"
-                                // onChange={(e) =>
-                                //     this.inputHandler(e, "image", "addTipsForm")
-                                // }
                             />
                         </div>
                         <div className="d-flex align-items-center justify-content-center mt-3">

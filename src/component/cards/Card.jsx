@@ -1,12 +1,12 @@
 import React from 'react'
 import './Card.css'
-import Buttons from '../Button/Buttons'
-import { Link } from "react-router-dom";
+// import Buttons from '../Button/Buttons'
+// import { Link } from "react-router-dom";
 
 export default class Card extends React.Component {
     render() {
         const { recipe } = this.props
-        const { recipeName, numbServings, cookTime, recipeImage, users } = recipe
+        const { recipeName, numbServings, cookTime, recipeImage, users, postOption } = recipe
         const { username } = users
         const renderList = () => {
             return (
@@ -15,6 +15,7 @@ export default class Card extends React.Component {
                     <br />
                     <h6 style={{ color: "inherit" }} className="mt-2">{recipeName}</h6>
                     <p>Oleh: {username}</p>
+                    {postOption === "premium" ?   <p className="mt-2 option">{postOption}</p> : <br />}
                     <div className="d-flex justify-content-around mt-3 details">
                         <div className="d-flex details">
                             <i className="material-icons mr-2">&#xe192;</i>

@@ -194,12 +194,6 @@ class MyHistory extends React.Component {
             )
 
         })
-
-        // return (
-        //     <>
-        //         <h5>halo</h5>
-        //     </>
-        // )
     }
 
     renderFailedStatus = () => {
@@ -376,7 +370,6 @@ class MyHistory extends React.Component {
                                     <label className="col-sm-4 col-form-label">Unggah Bukti Pembayaran</label>
                                     <div className="col-sm-8 d-flex justify-content-start align-items-center">
                                         <input type="file" className="" onChange={this.fileChangeHandler}
-                                        //value={this.state.pendingStatus.paymentMethod} readOnly
                                         />
                                     </div>
                                 </div>

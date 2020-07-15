@@ -84,7 +84,6 @@ class App extends React.Component {
           {/* <Route exact path="/keranjang" component={Profile} /> */}
           <Route exact path="/pengaturan" component={UserProfile} />
           <Route exact path="/riwayat" component={MyHistory} />
-          <Route exact path="/tips/:tipsId" component={TipsDetails} />
           {/* <Route exact path="/pengaturan" conponent={Profile} /> */}
         </>
       );
@@ -104,7 +103,7 @@ class App extends React.Component {
         {/* <Route exact path="/produk" component={Product} />
         <Route exact path="/produk/:produkId" component={ProductDetails} /> */}
         <Route exact path="/tips" component={Tips} />
-        {/* <Route exact path="/tips/:tipsId" component={TipsDetails} /> */}
+        <Route exact path="/tips/:tipsId" component={TipsDetails} />
         <Route exact path="/lupa-password" component={ForgotPassword} />
         <Route exact path="/pengguna/lupa-password/:username" component={Resetpassword} />
         {/* <Route exact path="/pengguna" component={Resetpassword} /> */}

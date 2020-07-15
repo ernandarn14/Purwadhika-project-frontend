@@ -17,7 +17,7 @@ class Resep extends React.Component {
   state = {
     recipeList: {
       recipeName: "",
-      rating: "",
+      rating: 0,
       cookTime: "",
       numbServings: "",
       recipeImage: "",
@@ -27,6 +27,7 @@ class Resep extends React.Component {
       id: 0
     },
     recipe: [],
+    scores: 0,
     categoryFilter: 0,
     categoryList: [],
     category: "Semua",
@@ -42,7 +43,6 @@ class Resep extends React.Component {
       .then(res => {
         console.log(res.data)
         this.setState({ recipeList: res.data, recipe: res.data })
-        // console.log(this.state.recipeList[0].id)
       })
       .catch(err => {
         console.log(err)
@@ -63,7 +63,7 @@ class Resep extends React.Component {
 
   getRecipePagination = (val, currentPage) => {
     currentPage -= 1
-    if (val == "Semua") {
+    if (val === "Semua") {
       Axios.get(`${API_URL}/resep/sort/${this.state.sortList}?page=${currentPage}&size=${this.state.itemsPerPage}`)
         .then(res => {
           console.log(res.data.content)
@@ -101,23 +101,96 @@ class Resep extends React.Component {
     this.getRecipePagination(this.state.category, this.state.currentPage)
   }
 
+  renderWarning = () => {
+    this.props.user.id ? swal("Gagal", "Resep Ini Hanya Bisa Diakses Pengguna Premium", "error") : swal("Gagal", "Anda Harus Login Untuk Membaca Resep Ini", "error")
+  }
+
+  addScoreHandler = (idx) => {
+    {
+      this.props.user.id ? (
+        Axios.get(`${API_URL}/resep/${idx}`)
+          .then(res => {
+            //console.log(res.data)
+            Axios.put(`${API_URL}/resep/tambah/nilai/${res.data.id}`, {
+              rating: res.data.rating + 1
+            })
+              .then(res => {
+                // console.log(res.data)
+                this.getRecipePagination(this.state.category, this.state.currentPage)
+              })
+              .catch(e => {
+                console.log(e)
+              })
+          })
+          .catch(e => {
+            console.log(e)
+          })
+      ) : swal("Gagal", "Anda Harus Login Terlebih Dahulu", "error")
+    }
+  }
+
   renderRecipeList = () => {
     const { recipe } = this.state
     return recipe.map((val, idx) => {
       if (val.recipeName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
-        return (
-          <div className="d-flex flex-column justify-content-center my-4" key={val.id.toString()}>
-            <Link
-              to={`/resep/${val.id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <Card recipe={val} />
-            </Link>
-            <div className="d-flex justify-content-center">
-              <Buttons type="outlined" onClick={() => this.addWishlistHandler(val.id)}>Simpan Resep</Buttons>
+        if (val.postOption === "premium") {
+          if (this.props.user.membership === "premium") {
+            return (
+              <div className="d-flex flex-column justify-content-center my-4" key={val.id.toString()}>
+                <Link
+                  to={`/resep/${val.id}`}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <Card recipe={val} />
+                </Link>
+                <div className="d-flex justify-content-around align-items-center">
+                  <div className="row">
+                    <i className="material-icons" onClick={() => this.addScoreHandler(val.id)}>&#xe87e;</i>
+                    <p className="ml-2">{val.rating}</p>
+                  </div>
+                  {this.props.user.id ? (
+                    <Buttons type="outlined" onClick={() => this.addWishlistHandler(val.id)}>Simpan Resep</Buttons>
+                  ) : null}
+                </div>
+              </div>
+            )
+          } else {
+            return (
+              <div className="d-flex flex-column justify-content-center my-4" key={val.id.toString()} onClick={this.renderWarning}>
+                <Card recipe={val} />
+                <div className="d-flex justify-content-around align-items-center">
+                  <div className="row">
+                    <i className="material-icons" onClick={() => this.addScoreHandler(val.id)}>&#xe87e;</i>
+                    <p className="ml-2">{val.rating}</p>
+                  </div>
+                  {this.props.user.id ? (
+                    <Buttons type="outlined" onClick={() => this.addWishlistHandler(val.id)}>Simpan Resep</Buttons>
+                  ) : null}
+                </div>
+              </div>
+            )
+          }
+        } else {
+          return (
+            <div className="d-flex flex-column justify-content-center my-4" key={val.id.toString()}>
+              <Link
+                to={`/resep/${val.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <Card recipe={val} />
+              </Link>
+              <div className="d-flex justify-content-around align-items-center">
+                <div className="row">
+                  <i className="material-icons" onClick={() => this.addScoreHandler(val.id)}>&#xe87e;</i>
+                  <p className="ml-2">{val.rating}</p>
+                </div>
+                {this.props.user.id ? (
+                  <Buttons type="outlined" onClick={() => this.addWishlistHandler(val.id)}>Simpan Resep</Buttons>
+                ) : null}
+              </div>
             </div>
-          </div>
-        )
+          )
+        }
       }
     })
   }
@@ -127,51 +200,34 @@ class Resep extends React.Component {
     return categoryList.map((val, idx) => {
       const { id, recipeCategoryName } = val
       return (
-        // <div className="mr-3 kategori" key={id.toString()}>
-        //   <h6 className="text-center" onClick={() => this.getRecipePagination(this.state.category, this.state.currentPage)}
-        // onChange={(e) => this.setState({ category: e.target.value })}>{recipeCategoryName}</h6>
-        // </div>
-        // <>
-        <option value={recipeCategoryName}>{recipeCategoryName}</option>
-        // </>
+        <option value={recipeCategoryName} key={id.toString()}>{recipeCategoryName}</option>
       )
     })
 
   }
 
   addWishlistHandler = (idx) => {
-    Axios.get(`${API_URL}/rencana/${this.props.user.id}/${this.state.recipeList[idx - 1].id}`)
-      // Axios.get(`${API_URL}/rencana/cek-rencana`, {
-      //   params: {
-      //     userId: this.props.user.id,
-      //     recipeId: 1
-      //   }
-      // })
+    Axios.get(`${API_URL}/rencana/${this.props.user.id}/${idx}`)
       .then(res => {
-        alert("masuk")
         console.log(res.data)
-        // console.log(this.state.recipeList[idx-1].id)
-        if (Object.keys(res.data).length === 0) {
-          Axios.post(`${API_URL}/rencana/tambah/pengguna/${this.props.user.id}/resep/${this.state.recipeList[idx - 1].id}`, {
+        if (res.data.length === 0) {
+          Axios.post(`${API_URL}/rencana/tambah/pengguna/${this.props.user.id}/resep/${idx}`, {
             userId: this.props.user.id,
-            recipeId: this.state.recipeList[idx - 1].id
-          }
-          )
+            recipeId: idx
+          })
             .then(res => {
-              alert("masuk")
               console.log(res.data);
               swal('Sukses', 'Resep Berhasil Tersimpan di Rencana Saya', 'success')
             })
             .catch(err => {
               console.log(err);
             });
-        }
-        else {
+        } else {
           swal('Gagal', 'Resep Sudah Tersimpan di Rencana Saya', 'error')
         }
       })
-      .catch(err => {
-        console.log(err)
+      .catch(e => {
+        console.log(e)
       })
   }
 
@@ -256,7 +312,7 @@ class Resep extends React.Component {
                   <option value="semua">Semua</option>
                   {this.renderCategory()}
                 </select>
-          </div>
+              </div>
               <div>
                 <select className="form-control ml-4" style={{ width: "100px" }} name="sortList"
                   onClick={() => this.getRecipePagination(this.state.category, this.state.currentPage)}
