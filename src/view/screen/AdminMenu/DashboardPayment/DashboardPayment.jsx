@@ -21,7 +21,7 @@ class DashboardPayment extends React.Component {
         transactionSuccess: [],
         transactionFailed: [],
         modalFailed: false,
-        transactionId: 0
+        transactionId: 0,
     }
 
     getAllPendingData = () => {
@@ -127,7 +127,7 @@ class DashboardPayment extends React.Component {
                 [field]: value,
             },
         });
-        //console.log(e.target.value)
+        // console.log(typeof(e.target.value))
     };
 
     confirmPayment = (id) => {
@@ -154,15 +154,18 @@ class DashboardPayment extends React.Component {
     }
 
     rejectPayment = () => {
-        const { transactionFailed } = this.state
-        const { failedNote } = this.state.activeFailedData
-        let newData = { ...transactionFailed, failedNote }
         console.log(this.state.activeFailedData.failedNote)
-        Axios.put(`${API_URL}/transaksi/tolak/${this.state.transactionId}`, newData)
+    Axios.put(`${API_URL}/transaksi/tolak/${this.state.transactionId}?failedNote=${this.state.activeFailedData.failedNote}`, {
+        status: "gagal"
+    })
             .then(res => {
                 console.log(res.data)
                 swal("Sukses", "Penolakan Transaksi Berhasil", "success")
+                this.setState({activeFailedData: {
+                    failedNote: ""
+                }, modalFailed: false})
                 this.getAllFailedData()
+                this.getAllPendingData()
             })
             .catch(err => {
                 console.log(err)
@@ -241,12 +244,12 @@ class DashboardPayment extends React.Component {
                         <ModalBody>
                             <div className="row">
                                 <div className="col-sm-12 d-flex justify-content-center">
-                                    <input type="text" className="form-control-lg w-75"
-                                        value={this.state.activeFailedData.failedNote}
-                                        onChange={(e) =>
-                                            this.inputHandler(e, "failedNote", "activeFailedData")
-                                        }
-                                    />
+                                    <textarea className="form-control-lg w-75" 
+                                    value={this.state.activeFailedData.failedNote} 
+                                    onChange={(e) =>
+                                        this.inputHandler(e, "failedNote", "activeFailedData")
+                                    }>
+                                    </textarea>
                                 </div>
                             </div>
                         </ModalBody>

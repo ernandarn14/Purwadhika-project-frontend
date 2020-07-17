@@ -166,7 +166,7 @@ class AddRecipe extends React.Component {
     addNewInputStep = () => {
         let newStep = `input${Object.keys(this.state.inputStep).length}`
         this.setState({ inputStep: { ...this.state.inputStep, [newStep]: "" } })
-        // console.log(newStep, this.state.inputStep)
+        console.log(newStep, this.state.inputStep)
     }
 
     render() {

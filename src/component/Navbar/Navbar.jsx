@@ -101,8 +101,8 @@ class Navbar extends React.Component {
                       </DropdownItem>
                       <DropdownItem>
                         <Link style={{ color: "inherit", textDecoration: "none" }}
-                          to="/admin/laporan">
-                          Laporan
+                          to="/admin/laporan-resep">
+                          Dashboard Laporan
                       </Link>
                       </DropdownItem>
                     </>

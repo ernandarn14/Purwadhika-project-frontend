@@ -30,7 +30,7 @@ class Resep extends React.Component {
     scores: 0,
     categoryFilter: 0,
     categoryList: [],
-    category: "Semua",
+    category: "semua",
     sortList: "asc",
     currentPage: 0,
     itemsPerPage: 6,
@@ -63,7 +63,7 @@ class Resep extends React.Component {
 
   getRecipePagination = (val, currentPage) => {
     currentPage -= 1
-    if (val === "Semua") {
+    if (val === "semua") {
       Axios.get(`${API_URL}/resep/sort/${this.state.sortList}?page=${currentPage}&size=${this.state.itemsPerPage}`)
         .then(res => {
           console.log(res.data.content)

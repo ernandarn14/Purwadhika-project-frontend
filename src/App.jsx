@@ -15,7 +15,7 @@ import Cookie from "universal-cookie";
 import {cookieChecker, userKeepLogin} from "./redux/actions"
 import DashboardRecipe from "./view/screen/AdminMenu/DashboardRecipe/DashboardRecipe";
 import DashboardTips from "./view/screen/AdminMenu/DashboardTips/DashboardTips";
-import DashboardReport from "./view/screen/AdminMenu/DashboardReport";
+import DashboardReport from "./view/screen/AdminMenu/DashboardReport/DashboardReport";
 import DashboardPayment from "./view/screen/AdminMenu/DashboardPayment/DashboardPayment";
 import MyTips from "./view/screen/UserMenu/MyTips/MyTips";
 import MyResep from "./view/screen/UserMenu/MyResep/MyResep";
@@ -39,6 +39,8 @@ import Profile from "./view/screen/Profile";
 import MyHistory from "./view/screen/UserMenu/MyHistory/MyHistory";
 import Resetpassword from "./view/screen/ForgotPassword/ResetPassword";
 import AdminEditRecipe from "./view/screen/AdminMenu/DashboardRecipe/AdminEditRecipe";
+import RecipeReport from "./view/screen/AdminMenu/DashboardReport/RecipeReport";
+import PlanReport from "./view/screen/AdminMenu/DashboardReport/PlanReport";
 
 const cookieObj = new Cookie();
 
@@ -63,6 +65,8 @@ class App extends React.Component {
           <Route exact path="/admin/tips/edit/:tipsId" component={EditTips} />
           <Route exact path="/admin/pembayaran" component={DashboardPayment} />
           <Route exact path="/admin/laporan" component={DashboardReport} />
+          <Route exact path="/admin/laporan-resep" component={RecipeReport} />
+          <Route exact path="/admin/laporan-langganan" component={PlanReport} />
           <Route exact path="/admin/tambah-resep" component={AddNewRecipe} />
           <Route exact path="/admin/resep/edit/:resepId" component={AdminEditRecipe} />
         </>
