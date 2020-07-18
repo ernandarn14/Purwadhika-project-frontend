@@ -4,6 +4,8 @@ import Axios from "axios"
 import { API_URL } from "../../../constants/API"
 import { Link } from "react-router-dom"
 import Buttons from "../../../component/Button/Buttons"
+import { connect } from "react-redux"
+import swal from "sweetalert"
 
 class RecipeDetails extends React.Component {
     state = {
@@ -18,17 +20,13 @@ class RecipeDetails extends React.Component {
         },
         ingredientDetails: [],
         instructionLists: [],
-        categoryList: []
+        categoryList: [],
+        like: 0,
+        likeActive: false,
     }
 
     getRecipeDetails = () => {
-        Axios.get(`${API_URL}/resep/${this.props.match.params.resepId}`
-            // , {
-            //     params: {
-            //         _expand: "user"
-            //     }
-            // }
-        )
+        Axios.get(`${API_URL}/resep/${this.props.match.params.resepId}`)
             .then(res => {
                 console.log(res.data)
                 this.setState({ recipeDetailList: res.data })
@@ -40,13 +38,7 @@ class RecipeDetails extends React.Component {
     }
 
     getIngredientDetails = () => {
-        Axios.get(`${API_URL}/bahan/resep/${this.props.match.params.resepId}`
-            // , {
-            //     params: {
-            //         recipeId: this.props.match.params.resepId,
-            //     }
-            // }
-        )
+        Axios.get(`${API_URL}/bahan/resep/${this.props.match.params.resepId}`)
             .then(res => {
                 console.log(res.data)
                 this.setState({ ingredientDetails: res.data })
@@ -57,13 +49,7 @@ class RecipeDetails extends React.Component {
     }
 
     getInstructionDetails = () => {
-        Axios.get(`${API_URL}/langkah-membuat/resep/${this.props.match.params.resepId}`
-            // , {
-            //     params: {
-            //         recipeId: this.props.match.params.resepId,
-            //     }
-            // }
-        )
+        Axios.get(`${API_URL}/langkah-membuat/resep/${this.props.match.params.resepId}`)
             .then(res => {
                 console.log(res.data)
                 this.setState({ instructionLists: res.data })
@@ -72,31 +58,6 @@ class RecipeDetails extends React.Component {
                 console.log(err)
             })
     }
-
-    // renderRecipeDetails = () => {
-    //     const { recipeDetail } = this.state
-    //     return recipeDetail.map(val => {
-    //         const { recipeName, category, cookTime, numbServings, recipeImage, desc, user } = val
-    //         const { username } = user
-    //         return (
-    //             <>
-    //                 <h3 className="text-center my-5">{recipeName}</h3>
-    //                 <div className="row">
-    //                     <div className="col-6">
-    //                         <img src={recipeImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
-    //                     </div>
-    //                     <div className="col-6">
-    //                         <h6>category</h6>
-    //                         <h6>Oleh: {username}</h6>
-    //                         <h6>{cookTime}</h6>
-    //                         <h6>{numbServings} porsi</h6>
-    //                         <h6>{desc}</h6>
-    //                     </div>
-    //                 </div>
-    //             </>
-    //         )
-    //     })
-    // }
 
     renderInstructionDetails = () => {
         const { instructionLists } = this.state
@@ -114,14 +75,10 @@ class RecipeDetails extends React.Component {
     renderIngredientDetails = () => {
         const { ingredientDetails } = this.state
         return ingredientDetails.map(val => {
-            // const { quantity, measurementUnit, ingredientList } = val
             const { ingredientName } = val
-            // const { measurementName } = measurementUnit
             return (
                 <div className="d-flex mt-2 align-items-center" key={val.id.toString()}>
                     <h6>{ingredientName}</h6>
-                    {/* <h6 className="ml-2">{measurementName}</h6>
-                    <h6 className="ml-2">{ingredientName}</h6> */}
                 </div>
             )
         })
@@ -133,12 +90,84 @@ class RecipeDetails extends React.Component {
         this.getInstructionDetails();
     }
 
+    addWishlistHandler = () => {
+        const { id } = this.state.recipeDetailList
+        //console.log(id)
+        Axios.get(`${API_URL}/rencana/${this.props.user.id}/${id}`)
+            .then(res => {
+                console.log(res.data)
+                if (res.data.length === 0) {
+                    Axios.post(`${API_URL}/rencana/tambah/pengguna/${this.props.user.id}/resep/${id}`, {
+                        userId: this.props.user.id,
+                        recipeId: id
+                    })
+                        .then(res => {
+                            console.log(res.data);
+                            swal('Sukses', 'Resep Berhasil Tersimpan di Rencana Saya', 'success')
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                } else {
+                    swal('Gagal', 'Resep Sudah Tersimpan di Rencana Saya', 'error')
+                }
+            })
+            .catch(e => {
+                console.log(e)
+            })
+    }
+
+    addScoreHandler = () => {
+        const { id } = this.state.recipeDetailList
+        if (this.props.user.id) {
+            if (!this.state.likeActive) {
+                this.setState(prevState => {
+                    return {
+                        like: prevState.like + 1,
+                        likeActive: true
+                    }
+                })
+                //console.log(this.state.like)
+                Axios.put(`${API_URL}/resep/tambah/nilai/${id}`, {
+                    rating: this.state.like
+                })
+                    .then(res => {
+                        // console.log(res.data)
+                        this.getRecipeDetails()
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+            } else {
+                this.setState(prevState => {
+                    return {
+                        like: prevState.like - 1,
+                        likeActive: false
+                    }
+                })
+                console.log(this.state.like)
+                Axios.put(`${API_URL}/resep/tambah/nilai/${id}`, {
+                    rating: this.state.like
+                })
+                    .then(res => {
+                        // console.log(res.data)
+                        this.getRecipeDetails()
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+            }
+        } else {
+            swal("Gagal", "Anda Harus Login Terlebih Dahulu", "error")
+        }
+    }
+
 
 
     render() {
-        const { recipeName, cookTime, numbServings, recipeImage, shortDesc, users, recipeCategory } = this.state.recipeDetailList
+        const { recipeName, cookTime, numbServings, recipeImage, shortDesc, users, rating } = this.state.recipeDetailList
         const { fullname } = users
-        const { recipeCategoryName } = recipeCategory
+        // const { recipeCategoryName } = recipeCategory
         return (
             <div className="container">
                 <div className="d-flex justify-content-start mt-4">
@@ -150,20 +179,26 @@ class RecipeDetails extends React.Component {
                 </div>
                 <div className="row">
                     <div className="col-12">
-                        {/* <h3 className="text-center my-5">Resep Detail</h3> */}
-                        {/* {this.renderRecipeDetails()} */}
                         <div className="recipe-data">
                             <div className="text-center my-5">
                                 <h3 className="text-header">{recipeName}</h3>
                                 {/* <p>{recipeCategoryName}</p> */}
                                 <h6>Oleh: {fullname}</h6>
                             </div>
-                            <div className="row">
+                            <div className="d-flex justify-content-center align-items-center">
+                                <div className="row">
+                                    <i className="material-icons" onClick={this.addScoreHandler}>&#xe87e;</i>
+                                    <p className="ml-2">{rating}</p>
+                                </div>
+                                {this.props.user.id ? (
+                                    <Buttons type="outlined" className="ml-5" onClick={this.addWishlistHandler}>Simpan Resep</Buttons>
+                                ) : null}
+                            </div>
+                            <div className="row mt-5">
                                 <div className="col-6 text-right">
                                     <img src={recipeImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                                 </div>
                                 <div className="col-6">
-                                    {/* <h6>{category}</h6> */}
                                     <div className="cookTime my-1 d-flex justify-content-between">
                                         <h6>{cookTime} menit</h6>
                                         <i className="material-icons">&#xe192;</i>
@@ -191,21 +226,15 @@ class RecipeDetails extends React.Component {
                     </div>
                     {/* </div> */}
                 </div>
-                {/* <div className="row mt-5 review-recipe">
-                    <div className="col-12">
-                        <h4 className="review-header">Ulasan</h4>
-                        <textarea placeholder="Silahkan Tulis Ulasan Disini" className="my-3 review-text">
-
-                        </textarea>
-                        <div className="d-flex justify-content-end">
-                            <Buttons type="contained">Simpan</Buttons>
-                        </div>
-
-                    </div>
-                </div> */}
             </div>
         )
     }
 }
 
-export default RecipeDetails
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    };
+};
+
+export default connect(mapStateToProps)(RecipeDetails) 

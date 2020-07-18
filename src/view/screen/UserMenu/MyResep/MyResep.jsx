@@ -11,15 +11,6 @@ class MyResep extends React.Component {
     state = {
         selectedFile: null,
         recipeList: [],
-        // editRecipeForm: {
-        //     recipeName: "",
-        //     category: "Kue Kering",
-        //     cookTime: 0,
-        //     numbServings: "",
-        //     recipeImage: "",
-        //     desc: "",
-        //     id: 0
-        // },
         ingredientLists: {
             ingredientName: [],
             id: 0
@@ -39,7 +30,7 @@ class MyResep extends React.Component {
         recipeCategoryId: 0,
         ingredientEditName: [],
         instructionEditName: [],
-
+        
     }
 
     getRecipeData = () => {

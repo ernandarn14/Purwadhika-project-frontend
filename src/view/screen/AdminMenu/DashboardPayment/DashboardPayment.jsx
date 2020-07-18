@@ -6,6 +6,7 @@ import Buttons from '../../../../component/Button/Buttons'
 import { priceFormatter } from '../../../../supports/helpers/PriceFormatter'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import swal from 'sweetalert'
+import { connect } from 'react-redux'
 
 
 class DashboardPayment extends React.Component {
@@ -155,15 +156,17 @@ class DashboardPayment extends React.Component {
 
     rejectPayment = () => {
         console.log(this.state.activeFailedData.failedNote)
-    Axios.put(`${API_URL}/transaksi/tolak/${this.state.transactionId}?failedNote=${this.state.activeFailedData.failedNote}`, {
-        status: "gagal"
-    })
+        Axios.put(`${API_URL}/transaksi/tolak/${this.state.transactionId}?failedNote=${this.state.activeFailedData.failedNote}`, {
+            status: "gagal"
+        })
             .then(res => {
                 console.log(res.data)
                 swal("Sukses", "Penolakan Transaksi Berhasil", "success")
-                this.setState({activeFailedData: {
-                    failedNote: ""
-                }, modalFailed: false})
+                this.setState({
+                    activeFailedData: {
+                        failedNote: ""
+                    }, modalFailed: false
+                })
                 this.getAllFailedData()
                 this.getAllPendingData()
             })
@@ -180,88 +183,90 @@ class DashboardPayment extends React.Component {
             const { username } = user
             const { planName } = plans
             const date = new Date(paymentDate)
-            return (
-                <>
-                    <tr onClick={(_) => { this.collapseHandler(idx) }}>
-                        <td> {username} </td>
-                        <td> {planName} </td>
-                        <td>{priceFormatter(totalPayment)}</td>
-                        <td>{status}</td>
-                    </tr>
-                    <tr
-                        className={`collapse-item ${
-                            this.state.activeData.includes(idx) ? "active" : null
-                            }`}
-                    >
-                        <td className="" colSpan={4}>
-                            <div className="d-flex justify-content-center align-items-center">
-                                <img src={paymentReciept} alt="" onClick={(_) => this.paymentRecieptHandler(idx)} />
-                                <div className="d-flex flex-column ml-4 justify-content-start text-left">
-                                    <h6>Tanggal Pembayaran: {date.toLocaleString('en-GB')}</h6>
-                                    <h6>Metode Pembayaran: {paymentMethod}</h6>
+            if (username.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
+                return (
+                    <>
+                        <tr onClick={(_) => { this.collapseHandler(idx) }}>
+                            <td> {username} </td>
+                            <td> {planName} </td>
+                            <td>{priceFormatter(totalPayment)}</td>
+                            <td>{status}</td>
+                        </tr>
+                        <tr
+                            className={`collapse-item ${
+                                this.state.activeData.includes(idx) ? "active" : null
+                                }`}
+                        >
+                            <td className="" colSpan={4}>
+                                <div className="d-flex justify-content-center align-items-center">
+                                    <img src={paymentReciept} alt="" onClick={(_) => this.paymentRecieptHandler(idx)} />
+                                    <div className="d-flex flex-column ml-4 justify-content-start text-left">
+                                        <h6>Tanggal Pembayaran: {date.toLocaleString('en-GB')}</h6>
+                                        <h6>Metode Pembayaran: {paymentMethod}</h6>
+                                    </div>
+                                    <div className="d-flex align-items-center ml-5">
+                                        <Buttons type="outlined" onClick={() => this.confirmPayment(val.id)}>Konfirmasi</Buttons>
+                                        <Buttons type="contained" className="ml-3" onClick={() => this.failedNoteHandler(val.id)}>Tolak</Buttons>
+                                    </div>
                                 </div>
-                                <div className="d-flex align-items-center ml-5">
-                                    <Buttons type="outlined" onClick={() => this.confirmPayment(val.id)}>Konfirmasi</Buttons>
-                                    <Buttons type="contained" className="ml-3" onClick={() => this.failedNoteHandler(val.id)}>Tolak</Buttons>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <Modal
-                        toggle={this.toggleModalPaymentReciept}
-                        isOpen={this.state.modalPaymentReciept}
-                        className="paymentReciept-modal"
-                    >
-                        <ModalHeader toggle={this.toggleModalPaymentReciept}>
-                            <caption>
-                                Bukti Pembayaran Transaksi
+                            </td>
+                        </tr>
+                        <Modal
+                            toggle={this.toggleModalPaymentReciept}
+                            isOpen={this.state.modalPaymentReciept}
+                            className="paymentReciept-modal"
+                        >
+                            <ModalHeader toggle={this.toggleModalPaymentReciept}>
+                                <caption>
+                                    Bukti Pembayaran Transaksi
                                 </caption>
-                        </ModalHeader>
-                        <ModalBody>
-                            <div className="row">
-                                <div className="col-sm-12 d-flex justify-content-center">
-                                    <img src={this.state.activeImage.paymentReciept} alt="" style={{ width: "350px", height: "350px", objectFit: "contain" }} />
+                            </ModalHeader>
+                            <ModalBody>
+                                <div className="row">
+                                    <div className="col-sm-12 d-flex justify-content-center">
+                                        <img src={this.state.activeImage.paymentReciept} alt="" style={{ width: "350px", height: "350px", objectFit: "contain" }} />
+                                    </div>
                                 </div>
-                            </div>
-                        </ModalBody>
-                        <ModalFooter>
-                            <div className="d-flex align-items-center justify-content-center mt-4">
-                                <Buttons type="outlined" onClick={this.toggleModalPaymentReciept}>Kembali</Buttons>
-                            </div>
-                        </ModalFooter>
-                    </Modal>
+                            </ModalBody>
+                            <ModalFooter>
+                                <div className="d-flex align-items-center justify-content-center mt-4">
+                                    <Buttons type="outlined" onClick={this.toggleModalPaymentReciept}>Kembali</Buttons>
+                                </div>
+                            </ModalFooter>
+                        </Modal>
 
-                    <Modal
-                        toggle={this.toggleModalFailed}
-                        isOpen={this.state.modalFailed}
-                        className="paymentReciept-modal"
-                    >
-                        <ModalHeader toggle={this.modalFailed}>
-                            <caption>
-                                Catatan Penolakan Transaksi
+                        <Modal
+                            toggle={this.toggleModalFailed}
+                            isOpen={this.state.modalFailed}
+                            className="paymentReciept-modal"
+                        >
+                            <ModalHeader toggle={this.modalFailed}>
+                                <caption>
+                                    Catatan Penolakan Transaksi
                                 </caption>
-                        </ModalHeader>
-                        <ModalBody>
-                            <div className="row">
-                                <div className="col-sm-12 d-flex justify-content-center">
-                                    <textarea className="form-control-lg w-75" 
-                                    value={this.state.activeFailedData.failedNote} 
-                                    onChange={(e) =>
-                                        this.inputHandler(e, "failedNote", "activeFailedData")
-                                    }>
-                                    </textarea>
+                            </ModalHeader>
+                            <ModalBody>
+                                <div className="row">
+                                    <div className="col-sm-12 d-flex justify-content-center">
+                                        <textarea className="form-control-lg w-75"
+                                            value={this.state.activeFailedData.failedNote}
+                                            onChange={(e) =>
+                                                this.inputHandler(e, "failedNote", "activeFailedData")
+                                            }>
+                                        </textarea>
+                                    </div>
                                 </div>
-                            </div>
-                        </ModalBody>
-                        <ModalFooter>
-                            <div className="d-flex align-items-center ml-5">
-                                <Buttons type="outlined" onClick={this.toggleModalFailed}>Kembali</Buttons>
-                                <Buttons type="contained" className="ml-3" onClick={this.rejectPayment}>Kirim</Buttons>
-                            </div>
-                        </ModalFooter>
-                    </Modal>
-                </>
-            )
+                            </ModalBody>
+                            <ModalFooter>
+                                <div className="d-flex align-items-center ml-5">
+                                    <Buttons type="outlined" onClick={this.toggleModalFailed}>Kembali</Buttons>
+                                    <Buttons type="contained" className="ml-3" onClick={this.rejectPayment}>Kirim</Buttons>
+                                </div>
+                            </ModalFooter>
+                        </Modal>
+                    </>
+                )
+            }
         })
     }
 
@@ -273,55 +278,57 @@ class DashboardPayment extends React.Component {
             const { planName } = plans
             const datePayment = new Date(paymentDate)
             const date = new Date(confirmDate)
-            return (
-                <>
-                    <tr onClick={(_) => { this.collapseHandler(idx) }}>
-                        <td> {username} </td>
-                        <td> {planName} </td>
-                        <td>{priceFormatter(totalPayment)}</td>
-                        <td>{status}</td>
-                    </tr>
-                    <tr
-                        className={`collapse-item ${
-                            this.state.activeData.includes(idx) ? "active" : null
-                            }`}
-                    >
-                        <td className="" colSpan={4}>
-                            <div className="d-flex justify-content-center align-items-center">
-                                <img src={paymentReciept} alt="" onClick={(_) => this.paymentRecieptHandler(idx)} />
-                                <div className="d-flex flex-column ml-4 justify-content-start text-left">
-                                    <h6>Tanggal Pembayaran: {datePayment.toLocaleString('en-GB')}</h6>
-                                    <h6>Tanggal Konfirmasi: {date.toLocaleString('en-GB')}</h6>
-                                    <h6>Metode Pembayaran: {paymentMethod}</h6>
+            if (username.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
+                return (
+                    <>
+                        <tr onClick={(_) => { this.collapseHandler(idx) }}>
+                            <td> {username} </td>
+                            <td> {planName} </td>
+                            <td>{priceFormatter(totalPayment)}</td>
+                            <td>{status}</td>
+                        </tr>
+                        <tr
+                            className={`collapse-item ${
+                                this.state.activeData.includes(idx) ? "active" : null
+                                }`}
+                        >
+                            <td className="" colSpan={4}>
+                                <div className="d-flex justify-content-center align-items-center">
+                                    <img src={paymentReciept} alt="" onClick={(_) => this.paymentRecieptHandler(idx)} />
+                                    <div className="d-flex flex-column ml-4 justify-content-start text-left">
+                                        <h6>Tanggal Pembayaran: {datePayment.toLocaleString('en-GB')}</h6>
+                                        <h6>Tanggal Konfirmasi: {date.toLocaleString('en-GB')}</h6>
+                                        <h6>Metode Pembayaran: {paymentMethod}</h6>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <Modal
-                        toggle={this.toggleModalPaymentReciept}
-                        isOpen={this.state.modalPaymentReciept}
-                        className="paymentReciept-modal"
-                    >
-                        <ModalHeader toggle={this.toggleModalPaymentReciept}>
-                            <caption>
-                                Bukti Pembayaran Transaksi
+                            </td>
+                        </tr>
+                        <Modal
+                            toggle={this.toggleModalPaymentReciept}
+                            isOpen={this.state.modalPaymentReciept}
+                            className="paymentReciept-modal"
+                        >
+                            <ModalHeader toggle={this.toggleModalPaymentReciept}>
+                                <caption>
+                                    Bukti Pembayaran Transaksi
                                 </caption>
-                        </ModalHeader>
-                        <ModalBody>
-                            <div className="row">
-                                <div className="col-sm-12 d-flex justify-content-center">
-                                    <img src={this.state.activeImage.paymentReciept} alt="" style={{ width: "350px", height: "350px", objectFit: "contain" }} />
+                            </ModalHeader>
+                            <ModalBody>
+                                <div className="row">
+                                    <div className="col-sm-12 d-flex justify-content-center">
+                                        <img src={this.state.activeImage.paymentReciept} alt="" style={{ width: "350px", height: "350px", objectFit: "contain" }} />
+                                    </div>
                                 </div>
-                            </div>
-                        </ModalBody>
-                        <ModalFooter>
-                            <div className="d-flex align-items-center justify-content-center mt-4">
-                                <Buttons type="outlined" onClick={this.toggleModalPaymentReciept}>Kembali</Buttons>
-                            </div>
-                        </ModalFooter>
-                    </Modal>
-                </>
-            )
+                            </ModalBody>
+                            <ModalFooter>
+                                <div className="d-flex align-items-center justify-content-center mt-4">
+                                    <Buttons type="outlined" onClick={this.toggleModalPaymentReciept}>Kembali</Buttons>
+                                </div>
+                            </ModalFooter>
+                        </Modal>
+                    </>
+                )
+            }
         })
     }
 
@@ -333,56 +340,58 @@ class DashboardPayment extends React.Component {
             const { planName } = plans
             const datePayment = new Date(paymentDate)
             const date = new Date(confirmDate)
-            return (
-                <>
-                    <tr onClick={(_) => { this.collapseHandler(idx) }}>
-                        <td> {username} </td>
-                        <td> {planName} </td>
-                        <td>{priceFormatter(totalPayment)}</td>
-                        <td>{status}</td>
-                    </tr>
-                    <tr
-                        className={`collapse-item ${
-                            this.state.activeData.includes(idx) ? "active" : null
-                            }`}
-                    >
-                        <td className="" colSpan={4}>
-                            <div className="d-flex justify-content-center align-items-center">
-                                <img src={paymentReciept} alt="" onClick={(_) => this.paymentRecieptHandler(idx)} />
-                                <div className="d-flex flex-column ml-4 justify-content-start text-left">
-                                    <h6>Tanggal Pembayaran: {datePayment.toLocaleString('en-GB')}</h6>
-                                    <h6>Tanggal Konfirmasi: {date.toLocaleString('en-GB')}</h6>
-                                    <h6>Metode Pembayaran: {paymentMethod}</h6>
-                                    <h6>Catatan: {failedNote}</h6>
+            if (username.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
+                return (
+                    <>
+                        <tr onClick={(_) => { this.collapseHandler(idx) }}>
+                            <td> {username} </td>
+                            <td> {planName} </td>
+                            <td>{priceFormatter(totalPayment)}</td>
+                            <td>{status}</td>
+                        </tr>
+                        <tr
+                            className={`collapse-item ${
+                                this.state.activeData.includes(idx) ? "active" : null
+                                }`}
+                        >
+                            <td className="" colSpan={4}>
+                                <div className="d-flex justify-content-center align-items-center">
+                                    <img src={paymentReciept} alt="" onClick={(_) => this.paymentRecieptHandler(idx)} />
+                                    <div className="d-flex flex-column ml-4 justify-content-start text-left">
+                                        <h6>Tanggal Pembayaran: {datePayment.toLocaleString('en-GB')}</h6>
+                                        <h6>Tanggal Konfirmasi: {date.toLocaleString('en-GB')}</h6>
+                                        <h6>Metode Pembayaran: {paymentMethod}</h6>
+                                        <h6>Catatan: {failedNote}</h6>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <Modal
-                        toggle={this.toggleModalPaymentReciept}
-                        isOpen={this.state.modalPaymentReciept}
-                        className="paymentReciept-modal"
-                    >
-                        <ModalHeader toggle={this.toggleModalPaymentReciept}>
-                            <caption>
-                                Bukti Pembayaran Transaksi
+                            </td>
+                        </tr>
+                        <Modal
+                            toggle={this.toggleModalPaymentReciept}
+                            isOpen={this.state.modalPaymentReciept}
+                            className="paymentReciept-modal"
+                        >
+                            <ModalHeader toggle={this.toggleModalPaymentReciept}>
+                                <caption>
+                                    Bukti Pembayaran Transaksi
                                 </caption>
-                        </ModalHeader>
-                        <ModalBody>
-                            <div className="row">
-                                <div className="col-sm-12 d-flex justify-content-center">
-                                    <img src={this.state.activeImage.paymentReciept} alt="" style={{ width: "350px", height: "350px", objectFit: "contain" }} />
+                            </ModalHeader>
+                            <ModalBody>
+                                <div className="row">
+                                    <div className="col-sm-12 d-flex justify-content-center">
+                                        <img src={this.state.activeImage.paymentReciept} alt="" style={{ width: "350px", height: "350px", objectFit: "contain" }} />
+                                    </div>
                                 </div>
-                            </div>
-                        </ModalBody>
-                        <ModalFooter>
-                            <div className="d-flex align-items-center justify-content-center mt-4">
-                                <Buttons type="outlined" onClick={this.toggleModalPaymentReciept}>Kembali</Buttons>
-                            </div>
-                        </ModalFooter>
-                    </Modal>
-                </>
-            )
+                            </ModalBody>
+                            <ModalFooter>
+                                <div className="d-flex align-items-center justify-content-center mt-4">
+                                    <Buttons type="outlined" onClick={this.toggleModalPaymentReciept}>Kembali</Buttons>
+                                </div>
+                            </ModalFooter>
+                        </Modal>
+                    </>
+                )
+            }
         })
     }
 
@@ -442,4 +451,10 @@ class DashboardPayment extends React.Component {
     }
 }
 
-export default DashboardPayment;
+const mapStateToProps = (state) => {
+    return {
+        search: state.search,
+    };
+};
+
+export default connect(mapStateToProps)(DashboardPayment)

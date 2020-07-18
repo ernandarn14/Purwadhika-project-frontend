@@ -16,16 +16,29 @@ class PlanReport extends React.Component {
                 }
             ]
         },
-        bestPlans: []
+        bestPlans: [],
+        periode: "semua",
+        sort: "asc"
     }
 
     getBestSellerPlans = () => {
-        Axios.get(`${API_URL}/transaksi/terlaris`)
+        this.setState({
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        data: []
+                    }
+                ]
+            }
+        })
+        if(this.state.periode === "semua"){
+            Axios.get(`${API_URL}/transaksi/terlaris/${this.state.sort}`)
             .then(res => {
                 console.log(res.data)
                 this.setState({ bestPlans: res.data })
                 res.data.map((val) => {
-                    this.setState({
+                    return this.setState({
                         data: {
                             labels: [...this.state.data.labels, val.plans.planName],
                             datasets: [
@@ -44,6 +57,33 @@ class PlanReport extends React.Component {
             .catch(e => {
                 console.log(e)
             })
+        } else {
+            Axios.get(`${API_URL}/transaksi/periode/terlaris/${this.state.sort}?planPeriod=${this.state.periode}`)
+            .then(res => {
+                console.log(res.data)
+                this.setState({ bestPlans: res.data })
+                res.data.map((val) => {
+                    return this.setState({
+                        data: {
+                            labels: [...this.state.data.labels, val.plans.planName],
+                            datasets: [
+                                {
+                                    label: 'Terjual',
+                                    backgroundColor: `#ac7339`,
+                                    borderColor: '#86592d',
+                                    borderWidth: 4,
+                                    data: [...this.state.data.datasets[0].data, val.total]
+                                }
+                            ]
+                        }
+                    })
+                })
+            })
+            .catch(e => {
+                console.log(e)
+            })
+        }
+      
     }
 
     renderBarPlans = () => {
@@ -94,6 +134,30 @@ class PlanReport extends React.Component {
                                     Pengguna
                             </Buttons>
                             </Link>
+                        </div>
+                        <div className="d-flex mt-5 justify-content-around">
+                            <div className="d-flex align-items-center">
+                                <label>Periode:</label>
+                                <select className="form-control ml-4"
+                                    onClick={() => this.getBestSellerPlans()}
+                                    onChange={(e) => this.setState({ periode: e.target.value })}
+                                >
+                                    <option value="semua">Semua</option>
+                                    <option value="tahun">Tahun</option>
+                                    <option value="bulan">Bulan</option>
+                                    <option value="minggu">Minggu</option>
+                                </select>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <label>Urutkan:</label>
+                                <select className="form-control ml-4"
+                                    onClick={() => this.getBestSellerPlans()}
+                                    onChange={(e) => this.setState({ sort: e.target.value })}
+                                >
+                                    <option value="asc">A - Z</option>
+                                    <option value="desc">Z - A</option>
+                                </select>
+                            </div>
                         </div>
                         <center>
                             <div className="mt-5 w-75">

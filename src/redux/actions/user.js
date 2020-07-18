@@ -2,7 +2,7 @@ import Axios from "axios";
 import Cookie from 'universal-cookie';
 import { API_URL } from "../../constants/API";
 import types from "../types/index";
-import user from "../reducers/user";
+// import user from "../reducers/user";
 import swal from "sweetalert"
 
 const { ON_LOGIN_FAIL, ON_LOGIN_SUCCESS, ON_LOGOUT_SUCCESS, ON_SIGNUP_SUCCESS, ON_SIGNUP_FAIL } = types;

@@ -6,7 +6,7 @@ import './Card.css'
 export default class Card extends React.Component {
     render() {
         const { recipe } = this.props
-        const { recipeName, numbServings, cookTime, recipeImage, users, postOption } = recipe
+        const { recipeName, numbServings, cookTime, recipeImage, users, postOption, rating } = recipe
         const { username } = users
         const renderList = () => {
             return (
@@ -15,9 +15,17 @@ export default class Card extends React.Component {
                     <br />
                     <h6 style={{ color: "inherit" }} className="mt-2">{recipeName}</h6>
                     <p>Oleh: {username}</p>
-                    {postOption === "premium" ?   <p className="mt-2 option">{postOption}</p> : <br />}
-                    <div className="d-flex justify-content-around mt-3 details">
+                    <div className="d-flex justify-content-center align-items-center mt-2">
                         <div className="d-flex details">
+                            <i className="material-icons">&#xe87e;</i>
+                            <p className="ml-2">{rating}</p>
+                        </div>
+                        <div className="d-flex ml-4">
+                            {postOption === "premium" ? <p className="option">resep {postOption}</p> : null}
+                        </div>
+                    </div>
+                    <div className="d-flex justify-content-center mt-3 details">
+                        <div className="d-flex details mx-3">
                             <i className="material-icons mr-2">&#xe192;</i>
                             <p style={{ color: "inherit" }}>{cookTime} menit</p>
                         </div>

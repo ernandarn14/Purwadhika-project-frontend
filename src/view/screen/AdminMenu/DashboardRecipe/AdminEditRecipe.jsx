@@ -1,5 +1,4 @@
 import React from "react"
-// import "./MyResep.css"
 import Buttons from "../../../../component/Button/Buttons"
 import { Link } from "react-router-dom"
 import Axios from "axios"
@@ -41,7 +40,7 @@ class AdminEditRecipe extends React.Component {
         Axios.get(`${API_URL}/resep/${this.props.match.params.resepId}`)
             .then(res => {
                 console.log(res.data)
-                this.setState({ editRecipeForm: res.data })
+                this.setState({ editRecipeForm: res.data, recipeCategoryId: res.data.recipeCategory.id })
             })
             .catch(err => {
                 console.log(err)
@@ -63,9 +62,18 @@ class AdminEditRecipe extends React.Component {
     getStepRecipe = () => {
         Axios.get(`${API_URL}/langkah-membuat/resep/${this.props.match.params.resepId}`)
             .then(res => {
-                console.log(res.data)
-                this.setState({ ingredientLists: res.data, inputIngredient: res.data })
-                //console.log(this.state.ingredientLists)
+                // console.log(res.data)
+                let objSteps = {}
+                res.data.forEach((val, idx) => {
+                    objSteps[`input${idx}`] = { stepName: val.stepName, id: val.id, recipes: val.recipes.id }
+                })
+
+                this.setState({
+                    instructionLists: res.data,
+                    inputStep: objSteps
+                })
+                console.log(this.state.inputStep)
+                //    console.log(this.state.inputStep.recipeId)
             })
             .catch(err => {
                 console.log(err)
@@ -76,8 +84,13 @@ class AdminEditRecipe extends React.Component {
     getIngredientRecipe = () => {
         Axios.get(`${API_URL}/bahan/resep/${this.props.match.params.resepId}`)
             .then(res => {
-                console.log(res.data)
-                this.setState({ instructionLists: res.data, inputStep: res.data })
+                // console.log(res.data)
+                let objIng = {}
+                res.data.forEach((val, idx) => {
+                    objIng[`input${idx}`] = { ingredientName: val.ingredientName, id: val.id }
+                })
+                this.setState({ ingredientLists: res.data, inputIngredient: objIng })
+                console.log(this.state.inputIngredient)
             })
             .catch(err => {
                 console.log(err)
@@ -138,60 +151,66 @@ class AdminEditRecipe extends React.Component {
 
         formData.append("userData", JSON.stringify(this.state.editRecipeForm))
 
-        Axios.put(`${API_URL}/resep/edit/${this.props.match.params.resepId}/pengguna/${this.props.user.id}/kategori/${this.state.recipeCategoryId}`, formData)
-            .then((res) => {
-                console.log(res.data);
-                Object.keys(this.state.inputIngredient).forEach(input => {
-                    //console.log(this.state.inputIngredient, input, this.state.inputIngredient[input])
-                    Axios.put(`${API_URL}/bahan/edit/${this.state.ingredientLists.id}/${this.props.match.params.resepId}`,
-                        {
-                            recipeId: this.props.match.params.resepId,
-                            ingredientName: this.state.inputIngredient[input],
-                            id: this.state.instructionLists.id
-                        }
-                    )
-                        .then((res) => {
-                            console.log(res.data);
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
+        if (this.state.editRecipeForm.users.role === "admin") {
+            Axios.put(`${API_URL}/resep/edit/${this.props.match.params.resepId}/pengguna/${this.props.user.id}/kategori/${this.state.recipeCategoryId}`, formData)
+                .then((res) => {
+                    console.log(res.data);
+                    Object.keys(this.state.inputIngredient).forEach(input => {
+                        // console.log(this.state.inputIngredient, input, this.state.inputIngredient[input])
+                        Axios.put(`${API_URL}/bahan/edit/${res.data.id}`,
+                            {
+                                recipeId: res.data.id,
+                                ingredientName: this.state.inputIngredient[input].ingredientName,
+                                id: this.state.inputIngredient[input].id
+                            }
+                        )
+                            .then((res) => {
+                                console.log(res.data);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    })
+                    Object.keys(this.state.inputStep).forEach(input => {
+                        console.log(this.state.inputStep[input])
+                        Axios.put(`${API_URL}/langkah-membuat/edit/${res.data.id}`,
+                            {
+                                recipeId: res.data.id,
+                                stepName: this.state.inputStep[input].stepName,
+                                id: this.state.inputStep[input].id
+                            }
+                        )
+                            .then((res) => {
+                                console.log(res.data);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    })
+                    this.setState({
+                        editRecipeForm: {
+                            recipeName: "",
+                            cookTime: 0,
+                            numbServings: "",
+                            recipeImage: "",
+                            shortDesc: "",
+                            id: 0
+                        }, inputIngredient: {
+                            input0: ""
+                        },
+                        inputStep: {
+                            input0: ""
+                        },
+                    })
+                    swal("Sukses", "Resep Berhasil Diubah!", "success")
                 })
-                Object.keys(this.state.inputStep).forEach(input => {
-                    Axios.put(`${API_URL}/langkah-membuat/edit/${this.state.instructionLists.id}/${this.props.match.params.resepId}`,
-                        {
-                            recipeId: this.props.match.params.resepId,
-                            stepName: this.state.inputStep[input],
-                            id: this.state.instructionLists.id
-                        }
-                    )
-                        .then((res) => {
-                            console.log(res.data);
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                })
-                this.setState({
-                    addRecipeForm: {
-                        recipeName: "",
-                        cookTime: 0,
-                        numbServings: "",
-                        recipeImage: "",
-                        shortDesc: "",
-                    }, inputIngredient: {
-                        input0: ""
-                    },
-                    inputStep: {
-                        input0: ""
-                    },
-                })
-                swal("Sukses", "Resep Berhasil Ditambah!", "success")
-            })
-            .catch((err) => {
-                console.log(err);
-                swal("Gagal", "Resep Gagal Ditambah!", "error")
-            });
+                .catch((err) => {
+                    console.log(err);
+                    swal("Gagal", "Resep Gagal Diubah!", "error")
+                });
+        } else {
+            swal("Gagal", "Admin Tidak Dapat Mengubah Resep Pengguna!", "error")
+        }
         //console.log(JSON.stringify(this.state.addRecipeForm));
     }
 
@@ -273,27 +292,25 @@ class AdminEditRecipe extends React.Component {
                             {
                                 Object.keys(this.state.inputIngredient).map(input => {
                                     return <input type="text" className="form-control w-75 mt-2 form-control-lg"
-                                        value={{ ...this.state.inputIngredient }, this.state.inputIngredient[input]}
-                                        onChange={(e) => this.setState({ inputIngredient: { ...this.state.inputIngredient, [input]: e.target.value } })}
+                                        value={this.state.inputIngredient[input].ingredientName}
+                                        onChange={(e) => this.setState({ inputIngredient: { ...this.state.inputIngredient, [input]: { ingredientName: e.target.value, id: this.state.inputIngredient[input].id } } })}
                                     />
                                 })
                             }
-                            <Buttons type="outlined" className="mt-4" onClick={this.addNewInputIngredient}>Tambah Bahan</Buttons>
                         </div>
                         <div className="d-flex flex-column align-items-center justify-content-center mt-5">
                             <h4 className="text-left">Langkah Membuat</h4>
                             {
                                 Object.keys(this.state.inputStep).map(input => {
                                     return <input type="text" className="form-control w-75 mt-2 form-control-lg"
-                                        value={this.state.inputStep[input]}
-                                        onChange={(e) => this.setState({ inputStep: { ...this.state.inputStep, [input]: e.target.value } })}
+                                        value={this.state.inputStep[input].stepName}
+                                        onChange={(e) => this.setState({ inputStep: { ...this.state.inputStep, [input]: { stepName: e.target.value, id: this.state.inputStep[input].id } } })}
                                     />
                                 })
                             }
-                            <Buttons type="outlined" className="mt-4" onClick={this.addNewInputStep}>Tambah Langkah</Buttons>
                         </div>
                         <div className="d-flex justify-content-center">
-                            <Link to="/resepku">
+                            <Link to="/admin/resep">
                                 <Buttons type="contained" className="mt-4" onClick={this.editRecipeHandler}>Simpan</Buttons>
                             </Link>
                         </div>

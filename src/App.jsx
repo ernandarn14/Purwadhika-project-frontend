@@ -1,12 +1,10 @@
 import React from "react";
-// import logo from "./logo.svg";
 import "./App.css";
 import { Switch, Route } from "react-router-dom";
 import Navbar from "./component/Navbar/Navbar";
 import PageNotFound from "./view/screen/PageNotFound";
 import Home from "./view/screen/Home/Home";
 import Recipe from "./view/screen/Recipe/Recipe";
-// import Product from "./view/screen/Product/Product";
 import Tips from "./view/screen/Tips/Tips";
 import LoginAkun from "./view/screen/Auth/LoginUser";
 import SignupAkun from "./view/screen/Auth/SignupUser";
@@ -25,8 +23,6 @@ import DashboardProduk from "./view/screen/AdminMenu/DashboardProduk/DashboardPr
 import AddTips from "./view/screen/AdminMenu/DashboardTips/AddTips";
 import EditTips from "./view/screen/AdminMenu/DashboardTips/EditTips";
 import RecipeDetails from "./view/screen/RecipeDetails/RecipeDetails";
-// import ProductDetails from "./view/screen/ProductDetails/ProductDetails";
-import Cart from "./view/screen/Cart/Cart";
 import AddResep from "./view/screen/UserMenu/MyResep/AddRecipe";
 import Footer from "./component/Footer/Footer";
 import ForgotPassword from "./view/screen/ForgotPassword/ForgotPassword";
@@ -85,10 +81,8 @@ class App extends React.Component {
           <Route exact path="/tipsku/tambah" component={AddNewTips} />
           <Route exact path="/tipsku/edit/:tipsId" component={EditMyTips} />
           <Route exact path="/rencana" component={Wishlist} />
-          {/* <Route exact path="/keranjang" component={Profile} /> */}
           <Route exact path="/pengaturan" component={UserProfile} />
           <Route exact path="/riwayat" component={MyHistory} />
-          {/* <Route exact path="/pengaturan" conponent={Profile} /> */}
         </>
       );
     }
@@ -104,13 +98,10 @@ class App extends React.Component {
         <Route exact path="/signup" component={SignupAkun} />
         <Route exact path="/resep" component={Recipe} />
         <Route exact path="/resep/:resepId" component={RecipeDetails} />
-        {/* <Route exact path="/produk" component={Product} />
-        <Route exact path="/produk/:produkId" component={ProductDetails} /> */}
         <Route exact path="/tips" component={Tips} />
         <Route exact path="/tips/:tipsId" component={TipsDetails} />
         <Route exact path="/lupa-password" component={ForgotPassword} />
         <Route exact path="/pengguna/lupa-password/:username" component={Resetpassword} />
-        {/* <Route exact path="/pengguna" component={Resetpassword} /> */}
         <Route exact path="/pengguna/verifikasi/:username" component={Profile} />
         {this.renderAdminRoutes()}
         {this.renderProtectedRoutes()}

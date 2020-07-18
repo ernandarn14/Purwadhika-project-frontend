@@ -48,8 +48,8 @@ class Tips extends React.Component {
             const { tipsImage, tipsName, users, postOption } = val
             const { username } = users
             if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
-                if( postOption === "premium"){ 
-                    if ( this.props.user.membership === "premium" ){
+                if (postOption === "premium") {
+                    if (this.props.user.membership === "premium") {
                         return (
                             <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()}>
                                 <Link
@@ -59,19 +59,19 @@ class Tips extends React.Component {
                                     <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                                     <p className="my-2">Oleh: {username}</p>
                                     <h5 className="mt-2">{tipsName}</h5>
-                                    {postOption === "premium" ?   <p className="mt-2 option">{postOption}</p> : null}
+                                    {postOption === "premium" ? <p className="mt-2 option">artikel {postOption}</p> : null}
                                 </Link>
                             </div>
                         )
-                    } 
+                    }
                     else {
                         return (
                             <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()} onClick={this.renderWarning}>
-                                    <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
-                                    <p className="my-2">Oleh: {username}</p>
-                                    <h5 className="mt-2">{tipsName}</h5>
-                                    {postOption === "premium" ?   <p className="mt-2 option">{postOption}</p> : null}
-                            </div>  
+                                <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                                <p className="my-2">Oleh: {username}</p>
+                                <h5 className="mt-2">{tipsName}</h5>
+                                {postOption === "premium" ? <p className="mt-2 option">artikel {postOption}</p> : null}
+                            </div>
                         )
                     }
                 } else {
@@ -84,26 +84,12 @@ class Tips extends React.Component {
                                 <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
                                 <p className="my-2">Oleh: {username}</p>
                                 <h5 className="mt-2">{tipsName}</h5>
-                                {postOption === "premium" ?   <p className="mt-2 option">{postOption}</p> : null}
+                                {postOption === "premium" ? <p className="mt-2 option">artikel {postOption}</p> : null}
                             </Link>
                         </div>
                     )
                 }
-                // return (
-                //     <div className="tips-card d-inline-block mt-4 mx-2 d-flex flex-column align-items-center text-center" key={val.id.toString()}>
-                //         {/* {this.props.user.membership === "premium" ? ( */}
-                //         <Link
-                //             to={`/tips/${val.id}`}
-                //             style={{ textDecoration: "none", color: "inherit" }}
-                //         >
-                //             <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
-                //             <p className="my-2">Oleh: {username}</p>
-                //             <h5 className="mt-2">{tipsName}</h5>
-                //         </Link>
-                //           {/* ) : null} */}
-                //     </div>
-                // )
-            } 
+            }
         })
     }
 
@@ -165,7 +151,7 @@ class Tips extends React.Component {
         const { currentPage, totalPages } = this.state;
         return (
             <>
-                 <div className="row d-flex flex-wrap justify-content-center">
+                <div className="row d-flex flex-wrap justify-content-center">
                     {this.renderTipsData()}
                 </div>
                 <div className="row justify-content-center mt-3 pt-2">
@@ -183,7 +169,7 @@ class Tips extends React.Component {
                 <div className="d-flex justify-content-center mt-2">
                     Halaman {this.state.currentPage} dari {this.state.totalPages}
                 </div>
-               
+
             </>
         )
     }
@@ -192,8 +178,9 @@ class Tips extends React.Component {
         return (
             <div className="container">
                 <h3 className="text-center my-5">Tips dan Trik</h3>
-                <div className="d-flex align-items-center">
-                    <select className="form-control ml-4" style={{ width: "100px" }} name="sortList"
+                <div className="d-flex align-items-center justify-content-center">
+                    <label>Urutan:</label>
+                    <select className="form-control ml-4"
                         onClick={() => this.getTipsPerPage()}
                         onChange={(e) => this.setState({ sortList: e.target.value })}
                     >

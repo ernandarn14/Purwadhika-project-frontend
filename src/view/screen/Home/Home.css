@@ -7,3 +7,6 @@
     background-repeat: no-repeat;
     color: white;
 }
+.material-icons{
+    cursor: pointer;
+}

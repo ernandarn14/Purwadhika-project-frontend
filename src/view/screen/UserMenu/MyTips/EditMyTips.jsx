@@ -111,7 +111,7 @@ class EditMyTips extends React.Component {
 
 
     render() {
-        const { tipsImage, tipsName, tipsContent } = this.state.editTipsForm
+        const { tipsName, tipsContent } = this.state.editTipsForm
         return (
             <div className="container">
                 <div className="row">

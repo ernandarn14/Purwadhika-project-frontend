@@ -15,6 +15,7 @@ class DashboardTips extends React.Component {
         editTipsForm: [],
         selectedFile: null,
         activePage: "admin",
+        sort: "asc"
     }
 
     editBtnHandler = (idx) => {
@@ -26,7 +27,7 @@ class DashboardTips extends React.Component {
     };
 
     getTipsData = () => {
-        Axios.get(`${API_URL}/tips`)
+        Axios.get(`${API_URL}/tips/admin/${this.state.sort}`)
             .then(res => {
                 console.log(res.data)
                 this.setState({ tipsDataList: res.data })
@@ -51,7 +52,6 @@ class DashboardTips extends React.Component {
                     if (role === "admin") {
                         return (
                             <tr key={val.id.toString()}>
-                                <td>{idx += 1}</td>
                                 <td>{tipsName}</td>
                                 <td>{username}</td>
                                 <td>{date.toLocaleString('en-GB')}</td>
@@ -71,7 +71,6 @@ class DashboardTips extends React.Component {
                     if (role === "pengguna") {
                         return (
                             <tr key={val.id.toString()}>
-                                <td>{idx += 1}</td>
                                 <td>{tipsName}</td>
                                 <td>{username}</td>
                                 <td>{date.toLocaleString('en-GB')}</td>
@@ -144,18 +143,27 @@ class DashboardTips extends React.Component {
                                 Pengguna
                             </Buttons>
                         </div>
+                        <div className="d-flex align-items-center justify-content-center">
+                            <label>Urutkan:</label>
+                            <select className="form-control ml-4"
+                                onClick={() => this.getTipsData()}
+                                onChange={(e) => this.setState({ sort: e.target.value })}
+                            >
+                                <option value="asc">A - Z</option>
+                                <option value="desc">Z - A</option>
+                            </select>
+                        </div>
                         <Link to="/admin/tips/tambah" style={{ textDecoration: "none" }}>
-                            <Button type="outlined">
+                            <Button type="outlined" className="mt-5">
                                 Tambah Artikel Tips dan Trik
                             </Button>
                         </Link>
                         <table className="tips-table mt-4 table table-bordered w-auto">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
                                     <th>Judul</th>
                                     <th>Username</th>
-                                    <th>Tanggal Posting</th>
+                                    <th>Tanggal Unggah</th>
                                     <th></th>
                                 </tr>
                             </thead>

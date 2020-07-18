@@ -22,6 +22,7 @@ class AddNewRecipe extends React.Component {
             numbServings: "",
             recipeImage: "",
             shortDesc: "",
+            postOption: "public",
             id: 0
         },
         recipeCategoryId: 0,
@@ -69,7 +70,7 @@ class AddNewRecipe extends React.Component {
                 console.log(err)
             })
     }
-    
+
     renderCategoryRecipe = () => {
         const { categoryRecipeList } = this.state
         return categoryRecipeList.map((val) => {
@@ -169,7 +170,7 @@ class AddNewRecipe extends React.Component {
                     <div className="d-flex justify-content-start mt-4">
                         <Link to="/admin/resep" style={{ textDecoration: "none" }}>
                             <Buttons type="textual">
-                                Kembali ke Dashboard Resep 
+                                Kembali ke Dashboard Resep
                             </Buttons>
                         </Link>
                     </div>
@@ -254,7 +255,9 @@ class AddNewRecipe extends React.Component {
                             <Buttons type="outlined" className="mt-4" onClick={this.addNewInputStep}>Tambah Langkah</Buttons>
                         </div>
                         <div className="d-flex justify-content-center mt-5">
-                            <Buttons type="contained" onClick={this.addRecipeHandler}>Simpan</Buttons>
+                            <Link to="/admin/resep">
+                                <Buttons type="contained" onClick={this.addRecipeHandler}>Simpan</Buttons>
+                            </Link>
                         </div>
                     </div>
                 </div>

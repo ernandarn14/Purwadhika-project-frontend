@@ -114,7 +114,6 @@ class RecipeReport extends React.Component {
     renderBarRecipe = () => {
         return (
             <Bar
-                style={{ justifyContent: "center", alignItems: "center" }}
                 data={this.state.data}
                 options={{
                     title: {
@@ -165,7 +164,7 @@ class RecipeReport extends React.Component {
                         <div className="d-flex mt-5 justify-content-around">
                             <div className="d-flex align-items-center">
                                 <label>Kategori:</label>
-                                <select className="form-control ml-4" style={{ width: "100px" }}
+                                <select className="form-control ml-4"
                                     onClick={() => this.getRecipeData(this.state.category)}
                                     onChange={(e) => this.setState({ category: e.target.value })}
                                 >
@@ -175,7 +174,7 @@ class RecipeReport extends React.Component {
                             </div>
                             <div className="d-flex align-items-center">
                                 <label>Urutkan:</label>
-                                <select className="form-control ml-4" style={{ width: "100px" }}
+                                <select className="form-control ml-4"
                                     onClick={() => this.getRecipeData(this.state.category)}
                                     onChange={(e) => this.setState({ sort: e.target.value })}
                                 >

@@ -5,8 +5,8 @@ import { API_URL } from "../../../../constants/API"
 import Button from "../../../../component/Button/Buttons";
 import swal from "sweetalert";
 import { priceFormatter } from "../../../../supports/helpers/PriceFormatter"
-import { Link } from "react-router-dom";
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
+import { connect } from "react-redux";
 
 class DashboardProduk extends React.Component {
     state = {
@@ -27,17 +27,31 @@ class DashboardProduk extends React.Component {
             planDesc: "",
             id: 0
         },
-        modalOpen: false
+        modalOpen: false,
+        periode: "semua",
+        sort: "asc"
     }
 
     getProductData = () => {
-        Axios.get(`${API_URL}/langganan`)
-            .then(res => {
-                this.setState({ productList: res.data })
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        if (this.state.periode === "semua") {
+            Axios.get(`${API_URL}/langganan/admin/${this.state.sort}`)
+                .then(res => {
+                    this.setState({ productList: res.data })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } else {
+            Axios.get(`${API_URL}/langganan/admin/periode/${this.state.sort}?planPeriod=${this.state.periode}`)
+                .then(res => {
+                    console.log(res.data)
+                    this.setState({ productList: res.data })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+
     }
 
     componentDidMount() {
@@ -48,6 +62,7 @@ class DashboardProduk extends React.Component {
         const { productList } = this.state
         return productList.map((val, idx) => {
             const { planName, price, planDuration, planPeriod } = val
+            if (planName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
             return (
                 <tr key={val.id.toString()}>
                     <td>{planName}</td>
@@ -61,7 +76,7 @@ class DashboardProduk extends React.Component {
                         </div>
                     </td>
                 </tr>
-            )
+            )}
         })
     }
 
@@ -157,7 +172,31 @@ class DashboardProduk extends React.Component {
                 <div className="row justify-content-center">
                     <div className="col-12">
                         <h3 className="text-center my-5">Dashboard Produk Langganan</h3>
-                        <table className="tips-table table table-bordered">
+                        <div className="d-flex mt-5 justify-content-around">
+                            <div className="d-flex align-items-center">
+                                <label>Periode:</label>
+                                <select className="form-control ml-4"
+                                    onClick={() => this.getProductData()}
+                                    onChange={(e) => this.setState({ periode: e.target.value })}
+                                >
+                                    <option value="semua">Semua</option>
+                                    <option value="tahun">Tahun</option>
+                                    <option value="bulan">Bulan</option>
+                                    <option value="minggu">Minggu</option>
+                                </select>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <label>Urutkan:</label>
+                                <select className="form-control ml-4"
+                                    onClick={() => this.getProductData()}
+                                    onChange={(e) => this.setState({ sort: e.target.value })}
+                                >
+                                    <option value="asc">A - Z</option>
+                                    <option value="desc">Z - A</option>
+                                </select>
+                            </div>
+                        </div>
+                        <table className="tips-table table table-bordered mt-5">
                             <thead>
                                 <tr>
                                     <th>Nama Langganan</th>
@@ -210,7 +249,6 @@ class DashboardProduk extends React.Component {
                                         <option value="tahun">Tahun</option>
                                         <option value="bulan">Bulan</option>
                                         <option value="minggu">Minggu</option>
-                                        <option value="hari">Hari</option>
                                     </select>
                                 </div>
                                 <div className="col-12 mt-3">
@@ -250,7 +288,7 @@ class DashboardProduk extends React.Component {
                                             />
                                         </div>
                                         <div className="d-flex align-items-center mt-3">
-                                        <label>Harga Produk</label>
+                                            <label>Harga Produk</label>
                                             <input type="number" className="form-control ml-3"
                                                 value={this.state.editForm.price} placeholder="0"
                                                 onChange={(e) => this.inputHandler(e, "price", "editForm")}
@@ -259,14 +297,14 @@ class DashboardProduk extends React.Component {
                                     </div>
                                     <div className="col-12">
                                         <div className="d-flex align-items-center mt-3">
-                                        <label>Durasi Produk</label>
+                                            <label>Durasi Produk</label>
                                             <input type="number" className="form-control ml-3"
                                                 value={this.state.editForm.planDuration} placeholder="0"
                                                 onChange={(e) => this.inputHandler(e, "planDuration", "editForm")}
                                             />
                                         </div>
                                         <div className="d-flex align-items-center mt-3">
-                                        <label>Periode Durasi</label>
+                                            <label>Periode Durasi</label>
                                             <select
                                                 value={this.state.editForm.planPeriod}
                                                 className="custom-text-input pl-1 form-control ml-3"
@@ -317,4 +355,10 @@ class DashboardProduk extends React.Component {
     }
 }
 
-export default DashboardProduk
+const mapStateToProps = (state) => {
+    return {
+        search: state.search,
+    };
+};
+
+export default connect(mapStateToProps)(DashboardProduk) 

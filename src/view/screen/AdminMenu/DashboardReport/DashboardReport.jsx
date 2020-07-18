@@ -16,46 +16,74 @@ class DashboardReport extends React.Component {
             ]
         },
         premiumUsers: [],
-        // membershipList: []
+        membership: "semua",
+        sortList: "asc",
     }
 
     getPremiumuser = () => {
-        Axios.get(`${API_URL}/pengguna/premium`)
-            .then(res => {
-                console.log(res.data)
-                this.setState({ premiumUsers: res.data })
-                res.data.map((val) => {
-                    this.setState({
-                        data: {
-                            labels: [...this.state.data.labels, val.membership],
-                            datasets: [
-                                {
-                                    label: 'Total',
-                                    backgroundColor: `#ac7339`,
-                                    borderColor: '#86592d',
-                                    borderWidth: 2,
-                                    data: [...this.state.data.datasets[0].data, val.total]
-                                }
-                            ]
-                        }
+        this.setState({
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        data: []
+                    }
+                ]
+            }
+        })
+        if (this.state.membership === "semua") {
+            Axios.get(`${API_URL}/pengguna/premium/${this.state.sortList}`)
+                .then(res => {
+                    console.log(res.data)
+                    this.setState({ premiumUsers: res.data })
+                    res.data.map((val) => {
+                        return this.setState({
+                            data: {
+                                labels: [...this.state.data.labels, val.membership],
+                                datasets: [
+                                    {
+                                        label: 'Total',
+                                        backgroundColor: `#ac7339`,
+                                        borderColor: '#86592d',
+                                        borderWidth: 2,
+                                        data: [...this.state.data.datasets[0].data, val.total]
+                                    }
+                                ]
+                            }
+                        })
                     })
                 })
-            })
-            .catch(e => {
-                console.log(e)
-            })
-    }
+                .catch(e => {
+                    console.log(e)
+                })
+        } else {
+            Axios.get(`${API_URL}/pengguna/membership/${this.state.sortList}?membership=${this.state.membership}`)
+                .then(res => {
+                    console.log(res.data)
+                    this.setState({ premiumUsers: res.data })
+                    res.data.map((val) => {
+                        return this.setState({
+                            data: {
+                                labels: [...this.state.data.labels, val.membership],
+                                datasets: [
+                                    {
+                                        label: 'Total',
+                                        backgroundColor: `#ac7339`,
+                                        borderColor: '#86592d',
+                                        borderWidth: 2,
+                                        data: [...this.state.data.datasets[0].data, val.total]
+                                    }
+                                ]
+                            }
+                        })
+                    })
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        }
 
-    // getMembershipList = () => {
-    //     Axios.get(`${API_URL}/pengguna/membership`)
-    //     .then(res => {
-    //         console.log(res.data)
-    //         this.setState({membershipList: res.data})
-    //     })
-    //     .catch(e => {
-    //         console.log(e)
-    //     })
-    // }
+    }
 
     renderBarMembership = () => {
         return (
@@ -78,7 +106,6 @@ class DashboardReport extends React.Component {
 
     componentDidMount() {
         this.getPremiumuser()
-        // this.getMembershipList()
     }
 
     render() {
@@ -106,6 +133,29 @@ class DashboardReport extends React.Component {
                                     Pengguna
                             </Buttons>
                             </Link>
+                        </div>
+                        <div className="d-flex mt-5 justify-content-around">
+                            <div className="d-flex align-items-center">
+                                <label>Periode:</label>
+                                <select className="form-control ml-4"
+                                    onClick={() => this.getPremiumuser()}
+                                    onChange={(e) => this.setState({ membership: e.target.value })}
+                                >
+                                    <option value="semua">Semua</option>
+                                    <option value="premium">Premium</option>
+                                    <option value="non premium">Non Premium</option>
+                                </select>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <label>Urutkan:</label>
+                                <select className="form-control ml-4"
+                                    onClick={() => this.getPremiumuser()}
+                                    onChange={(e) => this.setState({ sortList: e.target.value })}
+                                >
+                                    <option value="asc">A - Z</option>
+                                    <option value="desc">Z - A</option>
+                                </select>
+                            </div>
                         </div>
                         <center>
                             <div className="mt-5 w-75">

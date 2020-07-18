@@ -7,7 +7,6 @@ import { API_URL } from '../../../../constants/API';
 import Buttons from '../../../../component/Button/Buttons';
 import { connect } from 'react-redux';
 import swal from 'sweetalert';
-import { timingSafeEqual } from 'crypto';
 
 
 class DashboardRecipe extends React.Component {
@@ -16,7 +15,6 @@ class DashboardRecipe extends React.Component {
         activePage: "admin",
         categoryList: [],
         recipeCategoryId: 0,
-        category: "semua",
         ingredientLists: {
             ingredientName: [],
             id: 0
@@ -33,24 +31,35 @@ class DashboardRecipe extends React.Component {
             input0: ""
         },
         editRecipe: [],
-        currentPage: 0,
-        itemsPerPage: 6,
-        totalPages: 0,
-        totalElements: 0,
+        category: "semua",
+        sortList: "asc",
     }
 
-    getRecipeData = () => {
-        Axios.get(`${API_URL}/resep`)
-            .then(res => {
-                this.setState({ recipeList: res.data })
-            })
-            .catch(err => {
-                console.log(err)
-                alert('Data Kosong')
-            })
+    getRecipeData = (val) => {
+        if (val === "semua") {
+            Axios.get(`${API_URL}/resep/admin/${this.state.sortList}`)
+                .then(res => {
+                    this.setState({ recipeList: res.data })
+                })
+                .catch(err => {
+                    console.log(err)
+                    alert('Data Kosong')
+                })
+        } else {
+            Axios.get(`${API_URL}/resep/admin/kategori/${this.state.sortList}?categoryName=${val}`)
+                .then(res => {
+                    this.setState({ recipeList: res.data })
+                })
+                .catch(err => {
+                    console.log(err)
+                    alert('Data Kosong')
+                })
+        }
+
+
     }
 
-    getCategoryList = () => {
+    getCategoryList = (val) => {
         Axios.get(`${API_URL}/kategori-resep`)
             .then(res => {
                 console.log(res.data)
@@ -63,7 +72,7 @@ class DashboardRecipe extends React.Component {
     }
 
     componentDidMount() {
-        this.getRecipeData();
+        this.getRecipeData(this.state.category);
         this.getCategoryList()
     }
 
@@ -76,20 +85,23 @@ class DashboardRecipe extends React.Component {
         });
     };
 
-    renderCategoryRecipe = () => {
+    renderCategory = () => {
         const { categoryList } = this.state
-        return categoryList.map((val) => {
-            const { recipeCategoryName } = val
-            return <option value={recipeCategoryName} key={val.id.toString()}>{recipeCategoryName}</option>
+        return categoryList.map((val, idx) => {
+            const { id, recipeCategoryName } = val
+            return (
+                <option value={recipeCategoryName} key={id.toString()}>{recipeCategoryName}</option>
+            )
         })
     }
 
     renderRecipeList = () => {
         const { recipeList, activePage } = this.state
         return recipeList.map((val, idx) => {
-            const { recipeName, recipeCategory, users } = val
+            const { recipeName, recipeCategory, users, uploadDate } = val
             const { username, role } = users
             const { recipeCategoryName } = recipeCategory
+            const date = new Date(uploadDate)
             if (recipeName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
                 if (activePage === "admin") {
                     if (role === "admin") {
@@ -98,6 +110,7 @@ class DashboardRecipe extends React.Component {
                                 <td>{recipeName}</td>
                                 <td>{username}</td>
                                 <td>{recipeCategoryName}</td>
+                                <td>{date.toLocaleString('en-GB')}</td>
                                 <td>
                                     <div className="d-flex align-items-center justify-content-center">
                                         <Link to={`/admin/resep/edit/${val.id}`} style={{ color: "inherit" }}>
@@ -112,10 +125,11 @@ class DashboardRecipe extends React.Component {
                 } else {
                     if (role === "pengguna") {
                         return (
-                            <tr>
+                            <tr key={val.id.toString()}>
                                 <td>{recipeName}</td>
                                 <td>{username}</td>
                                 <td>{recipeCategoryName}</td>
+                                <td>{date.toLocaleString('en-GB')}</td>
                                 <td>
                                     <div className="d-flex align-items-center justify-content-center">
                                         <Link to={`/admin/resep/edit/${val.id}`} style={{ color: "inherit" }}>
@@ -157,6 +171,8 @@ class DashboardRecipe extends React.Component {
             });
     }
 
+
+
     render() {
         return (
             <div className="container">
@@ -175,19 +191,30 @@ class DashboardRecipe extends React.Component {
                                 Pengguna
                             </Buttons>
                         </div>
-                        {/* <div className="d-flex align-items-center">
-                            <label>Kategori:</label>
-                            <select className="form-control ml-4" style={{ width: "100px" }} name="category"
-                                value={this.state.category}
-                                onClick={() => this.getRecipeData(this.state.category)}
-                                onChange={(e) => this.setState({ category: e.target.value })}
-                            >
-                                <option value="semua">Semua</option>
-                                {this.renderCategoryRecipe()}
-                            </select>
-                        </div> */}
+                        <div className="d-flex mt-5 justify-content-around">
+                            <div className="d-flex align-items-center">
+                                <label>Kategori:</label>
+                                <select className="form-control ml-4"
+                                    onClick={() => this.getRecipeData(this.state.category)}
+                                    onChange={(e) => this.setState({ category: e.target.value })}
+                                >
+                                    <option value="semua">Semua</option>
+                                    {this.renderCategory()}
+                                </select>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <label>Urutkan:</label>
+                                <select className="form-control ml-4"
+                                    onClick={() => this.getRecipeData(this.state.category)}
+                                    onChange={(e) => this.setState({ sortList: e.target.value })}
+                                >
+                                    <option value="asc">A - Z</option>
+                                    <option value="desc">Z - A</option>
+                                </select>
+                            </div>
+                        </div>
                         <Link to="/admin/tambah-resep" style={{ textDecoration: "none" }}>
-                            <Button type="outlined">
+                            <Button type="outlined" className="mt-5">
                                 Tambah Resep
                             </Button>
                         </Link>
@@ -197,6 +224,7 @@ class DashboardRecipe extends React.Component {
                                     <th>Judul Resep</th>
                                     <th>Username</th>
                                     <th>Kategori</th>
+                                    <th>Tanggal Unggah</th>
                                     <th></th>
                                 </tr>
                             </thead>

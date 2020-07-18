@@ -117,13 +117,13 @@ class EditRecipe extends React.Component {
     addNewInputIngredient = () => {
         let newInput = `input${Object.keys(this.state.inputIngredient).length}`
         this.setState({ inputIngredient: { ...this.state.inputIngredient, [newInput]: "" } })
-        console.log(newInput, this.state.inputIngredient)
+        //console.log(newInput, this.state.inputIngredient)
     }
 
     addNewInputStep = () => {
         let newStep = `input${Object.keys(this.state.inputStep).length}`
         this.setState({ inputStep: { ...this.state.inputStep, [newStep]: "" } })
-        console.log(newStep, this.state.inputStep)
+        //console.log(newStep, this.state.inputStep)
     }
 
     fileChangeHandler = (e) => {
@@ -189,12 +189,13 @@ class EditRecipe extends React.Component {
                         });
                 })
                 this.setState({
-                    addRecipeForm: {
+                    editRecipeForm: {
                         recipeName: "",
                         cookTime: 0,
                         numbServings: "",
                         recipeImage: "",
                         shortDesc: "",
+                        id: 0
                     }, inputIngredient: {
                         input0: ""
                     },

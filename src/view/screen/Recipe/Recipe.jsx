@@ -105,33 +105,9 @@ class Resep extends React.Component {
     this.props.user.id ? swal("Gagal", "Resep Ini Hanya Bisa Diakses Pengguna Premium", "error") : swal("Gagal", "Anda Harus Login Untuk Membaca Resep Ini", "error")
   }
 
-  addScoreHandler = (idx) => {
-    {
-      this.props.user.id ? (
-        Axios.get(`${API_URL}/resep/${idx}`)
-          .then(res => {
-            //console.log(res.data)
-            Axios.put(`${API_URL}/resep/tambah/nilai/${res.data.id}`, {
-              rating: res.data.rating + 1
-            })
-              .then(res => {
-                // console.log(res.data)
-                this.getRecipePagination(this.state.category, this.state.currentPage)
-              })
-              .catch(e => {
-                console.log(e)
-              })
-          })
-          .catch(e => {
-            console.log(e)
-          })
-      ) : swal("Gagal", "Anda Harus Login Terlebih Dahulu", "error")
-    }
-  }
-
   renderRecipeList = () => {
     const { recipe } = this.state
-    return recipe.map((val, idx) => {
+    return recipe.map((val) => {
       if (val.recipeName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
         if (val.postOption === "premium") {
           if (this.props.user.membership === "premium") {
@@ -143,30 +119,12 @@ class Resep extends React.Component {
                 >
                   <Card recipe={val} />
                 </Link>
-                <div className="d-flex justify-content-around align-items-center">
-                  <div className="row">
-                    <i className="material-icons" onClick={() => this.addScoreHandler(val.id)}>&#xe87e;</i>
-                    <p className="ml-2">{val.rating}</p>
-                  </div>
-                  {this.props.user.id ? (
-                    <Buttons type="outlined" onClick={() => this.addWishlistHandler(val.id)}>Simpan Resep</Buttons>
-                  ) : null}
-                </div>
               </div>
             )
           } else {
             return (
               <div className="d-flex flex-column justify-content-center my-4" key={val.id.toString()} onClick={this.renderWarning}>
                 <Card recipe={val} />
-                <div className="d-flex justify-content-around align-items-center">
-                  <div className="row">
-                    <i className="material-icons" onClick={() => this.addScoreHandler(val.id)}>&#xe87e;</i>
-                    <p className="ml-2">{val.rating}</p>
-                  </div>
-                  {this.props.user.id ? (
-                    <Buttons type="outlined" onClick={() => this.addWishlistHandler(val.id)}>Simpan Resep</Buttons>
-                  ) : null}
-                </div>
               </div>
             )
           }
@@ -179,15 +137,6 @@ class Resep extends React.Component {
               >
                 <Card recipe={val} />
               </Link>
-              <div className="d-flex justify-content-around align-items-center">
-                <div className="row">
-                  <i className="material-icons" onClick={() => this.addScoreHandler(val.id)}>&#xe87e;</i>
-                  <p className="ml-2">{val.rating}</p>
-                </div>
-                {this.props.user.id ? (
-                  <Buttons type="outlined" onClick={() => this.addWishlistHandler(val.id)}>Simpan Resep</Buttons>
-                ) : null}
-              </div>
             </div>
           )
         }
@@ -203,33 +152,8 @@ class Resep extends React.Component {
         <option value={recipeCategoryName} key={id.toString()}>{recipeCategoryName}</option>
       )
     })
-
   }
 
-  addWishlistHandler = (idx) => {
-    Axios.get(`${API_URL}/rencana/${this.props.user.id}/${idx}`)
-      .then(res => {
-        console.log(res.data)
-        if (res.data.length === 0) {
-          Axios.post(`${API_URL}/rencana/tambah/pengguna/${this.props.user.id}/resep/${idx}`, {
-            userId: this.props.user.id,
-            recipeId: idx
-          })
-            .then(res => {
-              console.log(res.data);
-              swal('Sukses', 'Resep Berhasil Tersimpan di Rencana Saya', 'success')
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        } else {
-          swal('Gagal', 'Resep Sudah Tersimpan di Rencana Saya', 'error')
-        }
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }
 
   changePage = event => {
     let targetPage = parseInt(event.target.value)
@@ -299,13 +223,10 @@ class Resep extends React.Component {
         <div className="row">
           <div className="col-12">
             <h3 className="text-center my-5">Katalog Resep</h3>
-            {/* <div className="d-flex align-items-center justify-content-center text-center mx-4 kategori-filter">
-              {this.renderCategory()}
-            </div> */}
             <div className="d-flex mt-5 justify-content-around">
               <div className="d-flex align-items-center">
                 <label>Kategori:</label>
-                <select className="form-control ml-4" style={{ width: "100px" }} name="category"
+                <select className="form-control ml-4"
                   onClick={() => this.getRecipePagination(this.state.category, this.state.currentPage)}
                   onChange={(e) => this.setState({ category: e.target.value })}
                 >
@@ -313,8 +234,9 @@ class Resep extends React.Component {
                   {this.renderCategory()}
                 </select>
               </div>
-              <div>
-                <select className="form-control ml-4" style={{ width: "100px" }} name="sortList"
+              <div className="d-flex align-items-center">
+                <label>Urutan:</label>
+                <select className="form-control ml-4"
                   onClick={() => this.getRecipePagination(this.state.category, this.state.currentPage)}
                   onChange={(e) => this.setState({ sortList: e.target.value })}
                 >
@@ -330,45 +252,6 @@ class Resep extends React.Component {
 
           </div>
         </div>
-        {/* <h3 className="text-center my-5">Katalog Resep</h3>
-        <div className="d-flex align-items-center justify-content-center text-center mx-4 kategori-filter"> */}
-        {/* <div className="row">
-            <Link className="mx-4 kategori" to="/resep" style={{ textDecoration: "none" }} onClick={() => this.setState({ categoryFilter: 1 })}>
-              <img src="https://www.meals.com/imagesrecipes/145800lrg.jpg" alt="" className="img-kategori" />
-              <h6 className="text-center">Cakes</h6>
-            </Link>
-            <Link className="mx-4 kategori" to="/resep" style={{ textDecoration: "none" }} onClick={() => this.setState({ categoryFilter: 2 })}>
-              <img src="https://www.meals.com/imagesrecipes/147086lrg.jpg" alt="" className="img-kategori" />
-              <h6 className="text-center">Kue Kering</h6>
-            </Link>
-            <Link className="mx-4 kategori" to="/resep" style={{ textDecoration: "none" }} onClick={() => this.setState({ categoryFilter: 3 })}>
-              <img src="https://www.meals.com/imagesrecipes/145078lrg.jpg" alt="" className="img-kategori" />
-              <h6 className="text-center">Roti dan Muffin</h6>
-            </Link>
-            <Link className="mx-4 kategori" to="/resep" style={{ textDecoration: "none" }} onClick={() => this.setState({ categoryFilter: 4 })} >
-              <img src="https://www.meals.com/imagesrecipes/32090lrg.jpg" alt="" className="img-kategori" />
-              <h6 className="text-center">Pastry</h6>
-            </Link>
-          </div> */}
-        {/* <div className="d-flex justify-content-around"> */}
-        {/* <h6>Semua</h6> */}
-        {/* {this.renderCategory()}
-          </div>
-
-        </div>
-        <div className="d-flex mt-5 justify-content-start">
-          <select className="form-control ml-4" style={{ width: "100px" }} name="sortList"
-            onClick={() => this.getRecipePagination()}
-            onChange={(e) => this.setState({ sortList: e.target.value })}
-          >
-            <option value="asc">A - Z</option>
-            <option value="desc">Z - A</option>
-          </select>
-        </div>
-        <div className="mt-3"> */}
-        {/* {this.renderRecipeList()} */}
-        {/* {this.renderWithPagination()} */}
-        {/* </div> */}
       </div>
     );
   }
