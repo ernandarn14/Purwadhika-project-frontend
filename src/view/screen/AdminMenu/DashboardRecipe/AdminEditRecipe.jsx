@@ -310,9 +310,9 @@ class AdminEditRecipe extends React.Component {
                             }
                         </div>
                         <div className="d-flex justify-content-center">
-                            <Link to="/admin/resep">
+                            {/* <Link to="/admin/resep"> */}
                                 <Buttons type="contained" className="mt-4" onClick={this.editRecipeHandler}>Simpan</Buttons>
-                            </Link>
+                            {/* </Link> */}
                         </div>
                     </div>
                 </div>

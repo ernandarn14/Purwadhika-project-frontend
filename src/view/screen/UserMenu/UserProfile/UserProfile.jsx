@@ -181,7 +181,7 @@ class UserProfile extends React.Component {
     radioButtonHandler = (e) => {
         //  const { checked } = e.target
         this.setState({ method: e.target.value })
-        alert(e.target.value);
+        //alert(e.target.value);
     }
 
     editUserHandler = () => {
@@ -313,7 +313,7 @@ class UserProfile extends React.Component {
                         {membership === "premium" ? (
                             <h6 className="mt-2">Pengguna Premium</h6>
                         ) : null}
-                        <p>Tanggal Berakhir Langganan: {date.toLocaleString('en-GB')}</p>
+                        {expiry ? <p>Tanggal Berakhir Langganan: {date.toLocaleString('en-GB')}</p> : <p></p>}
                         <Buttons type="outlined" className="mt-4" onClick={this.editBtnProfileHandler}>Ubah Sekarang</Buttons>
                     </div>
                     <div className="row">

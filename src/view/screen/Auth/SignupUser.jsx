@@ -36,6 +36,14 @@ class SignupAkun extends React.Component {
     }
 
     this.props.onSignup(newUser)
+
+    this.setState({ signupForm: {
+      username: "",
+      fullname: "",
+      email: "",
+      password: "",
+      showPassword: false
+    }})
   }
 
   checkboxHandler = (e, form) => {

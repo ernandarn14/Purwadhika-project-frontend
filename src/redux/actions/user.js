@@ -33,12 +33,6 @@ export const loginHandler = (users) => {
                                     type: ON_LOGIN_SUCCESS,
                                     payload: res.data
                                 })
-                            // } else {
-                            //     dispatch({
-                            //         type: ON_LOGIN_FAIL,
-                            //         payload: "Password Salah"
-                            //     })
-                            // }
                         })
                         .catch(err => {
                             console.log(err)
@@ -57,35 +51,6 @@ export const loginHandler = (users) => {
             .catch(err => {
                 console.log(err)
             })
-
-        // Axios.get(`${API_URL}/pengguna/masuk`, {
-        //     params: {
-        //         username,
-        //         password
-        //     }
-        // })
-        //     .then(res => {
-        //         console.log(res.data)
-        //         if (res.data) {
-        //             //alert('masuk')
-        //             dispatch({
-        //                 type: ON_LOGIN_SUCCESS,
-        //                 payload: res.data
-        //             })
-        //         } else {
-        //             dispatch({
-        //                 type: ON_LOGIN_FAIL,
-        //                 payload: "Username atau Password Salah"
-        //             })
-        //         }
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //         dispatch({
-        //             type: ON_LOGIN_FAIL,
-        //             payload: "Username atau Password Salah"
-        //         })
-        //     })
     }
 }
 
@@ -154,39 +119,6 @@ export const signupHandler = (users) => {
                 payload: "Semua Kolom Harus Terisi, Mohon Lengkapi Data Anda!"
             })
         }
-
-
-
-        // Axios.get(`${API_URL}/pengguna/${users.username}/${users.email}`)
-        //     .then(res => {
-        //         console.log(res.data)
-        //         if (res.data) {
-        //             dispatch({
-        //                 type: ON_SIGNUP_FAIL,
-        //                 payload: "Username atau Email sudah digunakan"
-        //             })
-        //         } else {
-        //             Axios.post(`${API_URL}/pengguna/daftar`, { ...users, role: "pengguna" })
-        //                 .then(res => {
-        //                     console.log(res.data)
-        //                     dispatch({
-        //                         type: ON_SIGNUP_SUCCESS,
-        //                         payload: res.data
-        //                     })
-        //                     swal("Sukses", "Perdaftaran Berhasil! Silahkan Cek Email Untuk Verifikasi", "success")
-        //                 })
-        //                 .catch(err => {
-        //                     console.log(err)
-        //                     dispatch({
-        //                         type: ON_SIGNUP_FAIL,
-        //                         payload: "Username atau Email sudah digunakan"
-        //                     })
-        //                 })
-        //         }
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //     })
     }
 }
 

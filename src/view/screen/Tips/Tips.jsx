@@ -190,10 +190,7 @@ class Tips extends React.Component {
                         <option value="desc">Z - A</option>
                     </select>
                 </div>
-                {/* <div className="row d-flex flex-wrap justify-content-center"> */}
-                {/* {this.renderTipsData()} */}
                 {this.renderWithPagination()}
-                {/* </div> */}
             </div>
         )
     }

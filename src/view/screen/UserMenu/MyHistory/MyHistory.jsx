@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { priceFormatter } from '../../../../supports/helpers/PriceFormatter'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import swal from 'sweetalert'
+import { Alert } from 'reactstrap'
 
 class MyHistory extends React.Component {
     state = {
@@ -162,7 +163,7 @@ class MyHistory extends React.Component {
                     <div className="d-flex flex-column mt-2">
                         <p>Waktu Transaksi: {date.toLocaleString('en-GB')}</p>
                         {paymentDate != null ? (
-                             <p>Waktu Pembayaran: {datePayment.toLocaleString('en-GB')}</p>
+                            <p>Waktu Pembayaran: {datePayment.toLocaleString('en-GB')}</p>
                         ) : null}
                         <p>Metode Pembayaran: {paymentMethod}</p>
                     </div>
@@ -275,7 +276,8 @@ class MyHistory extends React.Component {
             return (
                 <div className="d-flex flex-column align-items-center justify-content-center mt-5">
                     <h6 className="">Transaksi Belum Dibayar</h6>
-                    {this.renderPendingStatus()}
+                    {this.state.pendingStatus.length > 0 ?
+                        <div> {this.renderPendingStatus()}</div> : <Alert className="mt-4 w-50">Data Kosong</Alert>}
                     <Modal
                         toggle={this.toggleModalPayment}
                         isOpen={this.state.modalPayment}
@@ -328,7 +330,10 @@ class MyHistory extends React.Component {
             return (
                 <div className="d-flex flex-column align-items-center justify-content-center mt-5">
                     <h6 className="">Transaksi Menunggu Konfirmasi</h6>
-                    {this.renderWaitingStatus()}
+                    {this.state.waitingStatus.length > 0 ?
+                        <div>
+                            {this.renderWaitingStatus()}
+                        </div> : <Alert className="mt-4 w-50">Data Kosong</Alert>}
                 </div>
             )
         }
@@ -336,16 +341,27 @@ class MyHistory extends React.Component {
             return (
                 <div className="d-flex flex-column align-items-center justify-content-center mt-5">
                     <h6 className="">Transaksi Selesai</h6>
-                    {this.renderSuccessStatus()}
+                    {this.state.successStatus.length > 0 ? (
+                        <div>
+                            {this.renderSuccessStatus()}
+                        </div>
+                    ) : <Alert className="mt-4 w-50">Data Kosong</Alert>}
                 </div>
             )
         } else {
             return (
                 <>
+
                     <div className="d-flex flex-column align-items-center justify-content-center mt-5">
-                        <h6 className="">Transaksi DIbatalkan</h6>
-                        {this.renderFailedStatus()}
+                        <h6 className="">Transaksi Dibatalkan</h6>
+                        {this.state.failedStatus.length > 0 ? (
+                            <div>
+                                {this.renderFailedStatus()}
+                            </div>
+                        ) :
+                            (<Alert className="mt-4 w-50">Data Kosong</Alert>)}
                     </div>
+
                     <Modal
                         toggle={this.toggleModalReUpload}
                         isOpen={this.state.modalReupload}

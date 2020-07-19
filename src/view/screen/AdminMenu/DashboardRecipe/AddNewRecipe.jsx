@@ -255,9 +255,7 @@ class AddNewRecipe extends React.Component {
                             <Buttons type="outlined" className="mt-4" onClick={this.addNewInputStep}>Tambah Langkah</Buttons>
                         </div>
                         <div className="d-flex justify-content-center mt-5">
-                            <Link to="/admin/resep">
-                                <Buttons type="contained" onClick={this.addRecipeHandler}>Simpan</Buttons>
-                            </Link>
+                            <Buttons type="contained" onClick={this.addRecipeHandler}>Simpan</Buttons>
                         </div>
                     </div>
                 </div>

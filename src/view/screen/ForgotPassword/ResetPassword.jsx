@@ -73,7 +73,7 @@ class Resetpassword extends React.Component {
                 .then(res => {
                     console.log(res.data)
                     swal("Sukses", "Atur Ulang Password Berhasil. Silahkan Login Kembali", "success")
-                    this.setState({ resetPassword: { newPassword: "" } });
+                    this.setState({ resetPassword: { newPassword: "", confirmPassword: "" } });
                 })
                 .catch(e => {
                     console.log(e)

@@ -143,24 +143,6 @@ class Navbar extends React.Component {
                 </DropdownMenu>
 
               </Dropdown>
-
-              {/* <Link
-                className="d-flex flex-row"
-                to="/keranjang"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <FontAwesomeIcon
-                  className="mr-2"
-                  icon={faShoppingCart}
-                  style={{ fontSize: 20 }}
-                />
-                <p className="small ml-1 mr-3" style={{ color: "#3C64B1", fontWeight: "bold" }}>{this.props.user.cartItems}</p> */}
-              {/* <CircleBg>
-                  <small style={{ color: "#3C64B1", fontWeight: "bold" }}>
-                    {this.props.user.cartItems}
-                  </small>
-                </CircleBg> */}
-              {/* </Link> */}
               <Link
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/"
@@ -208,7 +190,6 @@ const mapStateToProps = (state) => {
 const mapDispacthToProps = {
   onLogout: logoutHandler,
   onSearch: navbarSearchHandler,
-  // countCart
 };
 
 export default connect(mapStateToProps, mapDispacthToProps)(Navbar);
