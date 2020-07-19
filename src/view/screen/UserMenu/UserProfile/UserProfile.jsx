@@ -45,7 +45,8 @@ class UserProfile extends React.Component {
         sort: "asc",
         maxPrice: 99999999,
         minPrice: 0,
-        orderOption: "planName"
+        orderOption: "planName",
+        viewList: []
     }
 
     getUserData = () => {
@@ -57,6 +58,18 @@ class UserProfile extends React.Component {
             .then(res => {
                 console.log(res.data)
                 this.setState({ userData: res.data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    getExpirySubs = () => {
+        Axios.get(`${API_URL}/view-details/${this.props.user.username}`)
+            .then(res => {
+                //console.log(res.data)
+                this.setState({ viewList: {...res.data[0]} })
+                console.log(this.state.viewList)
             })
             .catch(err => {
                 console.log(err)
@@ -96,6 +109,7 @@ class UserProfile extends React.Component {
     componentDidMount() {
         this.getUserData()
         this.getPlanList()
+        this.getExpirySubs()
     }
 
     inputHandler = (e, field, form) => {
@@ -285,7 +299,9 @@ class UserProfile extends React.Component {
 
     renderViewPage = () => {
         const { username, fullname, noHp, email, profilePicture, membership } = this.state.userData
+        const { expiry } = this.state.viewList
         const { activePage } = this.state
+        const date = new Date(expiry)
         if (activePage === "profile") {
             return (
                 <>
@@ -297,6 +313,7 @@ class UserProfile extends React.Component {
                         {membership === "premium" ? (
                             <h6 className="mt-2">Pengguna Premium</h6>
                         ) : null}
+                        <p>Tanggal Berakhir Langganan: {date.toLocaleString('en-GB')}</p>
                         <Buttons type="outlined" className="mt-4" onClick={this.editBtnProfileHandler}>Ubah Sekarang</Buttons>
                     </div>
                     <div className="row">
