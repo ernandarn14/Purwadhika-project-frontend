@@ -12,11 +12,12 @@ class MyTips extends React.Component {
     state = {
         selectedFile: null,
         tipsDataList: [],
-        editTips: []
+        editTips: [],
+        sortList: "asc",
     }
 
     getTipsData = () => {
-        Axios.get(`${API_URL}/tips/pengguna/${this.props.user.id}`
+        Axios.get(`${API_URL}/tips/pengguna/${this.props.user.id}/${this.state.sortList}`
         )
             .then(res => {
                 console.log(res.data)
@@ -43,25 +44,29 @@ class MyTips extends React.Component {
         const { tipsDataList } = this.state
         return tipsDataList.map((val, idx) => {
             const { tipsImage, tipsName, tipsContent } = val
-            return (
-                <div className="row d-flex justify-content-start mt-4 align-items-center tipslist" key={val.id.toString()}>
-                    <div className="col-3">
-                        <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
-                    </div>
-                    <div className="col-9">
-                        <div className="d-flex flex-column ml-4 justify-content-center">
-                            <h5 className="mt-2">{tipsName}</h5>
-                            <p style={{ textAlign: "justify" }}>{tipsContent}</p>
-                            <div className="d-flex my-4">
-                                <Link to={`/tipsku/edit/${val.id}`} style={{ color: "inherit" }}>
-                                    <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
-                                </Link>
-                                <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
+            if (tipsName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
+                return (
+                    <div className="row d-flex justify-content-start mt-4 align-items-center tipslist" key={val.id.toString()}>
+                        <div className="col-3">
+                            <img src={tipsImage} alt="" style={{ width: "250px", height: "250px", objectFit: "contain" }} />
+                        </div>
+                        <div className="col-9">
+                            <div className="d-flex flex-column ml-4 justify-content-center">
+                                <h5 className="mt-2">{tipsName}</h5>
+                                <p style={{ textAlign: "justify" }}>{tipsContent}</p>
+                                <div className="d-flex my-4">
+                                    <Link to={`/tipsku/edit/${val.id}`} style={{ color: "inherit" }}>
+                                        <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
+                                    </Link>
+                                    <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )
+                )
+            } else {
+                return null
+            }
         })
     }
 
@@ -104,8 +109,18 @@ class MyTips extends React.Component {
                 <div className="row">
                     <div className="col-12">
                         <h3 className="text-center my-5">Tips dan Trik Saya</h3>
+                        <div className="d-flex align-items-center justify-content-center">
+                            <label>Urutan:</label>
+                            <select className="form-control ml-4"
+                                onClick={() => this.getTipsData()}
+                                onChange={(e) => this.setState({ sortList: e.target.value })}
+                            >
+                                <option value="asc">A - Z</option>
+                                <option value="desc">Z - A</option>
+                            </select>
+                        </div>
                         <Link to="/tipsku/tambah" style={{ textDecoration: "none" }}>
-                            <Buttons type="contained">
+                            <Buttons type="contained" className="mt-5">
                                 Tambah Artikel Tips dan Trik
                             </Buttons>
                         </Link>
@@ -126,7 +141,8 @@ class MyTips extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.user
+        user: state.user,
+        search: state.search,
     }
 }
 

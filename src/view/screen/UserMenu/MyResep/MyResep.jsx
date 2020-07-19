@@ -30,29 +30,67 @@ class MyResep extends React.Component {
         recipeCategoryId: 0,
         ingredientEditName: [],
         instructionEditName: [],
-        
+        categoryList: [],
+        category: "semua",
+        sortList: "asc",
     }
 
     getRecipeData = () => {
-        Axios.get(`${API_URL}/resep/pengguna/${this.props.user.id}`)
+        if (this.state.category === "semua") {
+            Axios.get(`${API_URL}/resep/pengguna/${this.props.user.id}/${this.state.sortList}`)
+                .then(res => {
+                    console.log(res.data)
+                    this.setState({ recipeList: res.data })
+                })
+                .catch(err => {
+                    console.log(err)
+                    // alert('Data Kosong')
+                })
+        } else {
+            Axios.get(`${API_URL}/resep/pengguna/${this.props.user.id}/kategori/${this.state.sortList}?categoryName=${this.state.category}`)
+                .then(res => {
+                    console.log(res.data)
+                    this.setState({ recipeList: res.data })
+                })
+                .catch(err => {
+                    console.log(err)
+                    // alert('Data Kosong')
+                })
+        }
+    }
+
+    getCategoryList = () => {
+        Axios.get(`${API_URL}/kategori-resep`)
             .then(res => {
                 console.log(res.data)
-                this.setState({ recipeList: res.data })
+                this.setState({ categoryList: res.data })
             })
             .catch(err => {
                 console.log(err)
-                alert('Data Kosong')
+                alert('Data kategori Kosong')
             })
     }
 
     componentDidMount() {
         this.getRecipeData();
+        this.getCategoryList()
+    }
+
+    renderCategory = () => {
+        const { categoryList } = this.state
+        return categoryList.map((val, idx) => {
+            const { id, recipeCategoryName } = val
+            return (
+                <option value={recipeCategoryName} key={id.toString()}>{recipeCategoryName}</option>
+            )
+        })
     }
 
     renderRecipeList = () => {
         const { recipeList } = this.state
         return recipeList.map((val, idx) => {
             const { recipeName, category, shortDesc, recipeImage } = val
+            if (recipeName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
             return (
                 <div className="row d-flex justify-content-start mt-4 align-items-center recipelist" key={val.id.toString()}>
                     <div className="col-4">
@@ -72,7 +110,9 @@ class MyResep extends React.Component {
                         </div>
                     </div>
                 </div>
-            )
+            )} else {
+                return null
+            }
         })
     }
 
@@ -123,18 +163,40 @@ class MyResep extends React.Component {
                 <div className="row">
                     <div className="col-12">
                         <h3 className="text-center my-5">Resep Saya</h3>
+                        <div className="d-flex mt-5 justify-content-around">
+                            <div className="d-flex align-items-center">
+                                <label>Kategori:</label>
+                                <select className="form-control ml-4"
+                                    onClick={() => this.getRecipeData()}
+                                    onChange={(e) => this.setState({ category: e.target.value })}
+                                >
+                                    <option value="semua">Semua</option>
+                                    {this.renderCategory()}
+                                </select>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <label>Urutkan:</label>
+                                <select className="form-control ml-4"
+                                    onClick={() => this.getRecipeData()}
+                                    onChange={(e) => this.setState({ sortList: e.target.value })}
+                                >
+                                    <option value="asc">A - Z</option>
+                                    <option value="desc">Z - A</option>
+                                </select>
+                            </div>
+                        </div>
                         <Link to="/resepku/tambah" style={{ textDecoration: "none" }}>
-                            <Buttons type="contained">
+                            <Buttons type="contained" className="mt-5">
                                 Tambah Resep Saya
                                 </Buttons>
                         </Link>
                         {this.state.recipeList.length > 0 ? (
                             <div className="mt-4 d-flex justify-content-center flex-column align-items-center">
-                            {this.renderRecipeList()}
-                        </div>
+                                {this.renderRecipeList()}
+                            </div>
                         ) : (
-                            <Alert className="mt-4">Resep Anda Kosong! Silahkan Menulis Resep Baru dan Bagikan Kepada Pengguna Yang Lain</Alert>
-                        )}
+                                <Alert className="mt-4">Resep Anda Kosong! Silahkan Menulis Resep Baru dan Bagikan Kepada Pengguna Yang Lain</Alert>
+                            )}
                     </div>
                 </div>
             </div>
@@ -144,7 +206,8 @@ class MyResep extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        user: state.user
+        user: state.user,
+        search: state.search,
     }
 }
 

@@ -142,6 +142,8 @@ class DashboardRecipe extends React.Component {
                         )
                     }
                 }
+            } else {
+                return null
             }
         })
     }

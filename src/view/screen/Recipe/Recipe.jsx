@@ -140,6 +140,8 @@ class Resep extends React.Component {
             </div>
           )
         }
+      } else {
+        return null
       }
     })
   }

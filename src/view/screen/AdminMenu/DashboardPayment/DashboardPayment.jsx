@@ -266,6 +266,8 @@ class DashboardPayment extends React.Component {
                         </Modal>
                     </>
                 )
+            } else {
+                return null
             }
         })
     }
@@ -328,6 +330,8 @@ class DashboardPayment extends React.Component {
                         </Modal>
                     </>
                 )
+            } else {
+                return null
             }
         })
     }
@@ -391,6 +395,8 @@ class DashboardPayment extends React.Component {
                         </Modal>
                     </>
                 )
+            } else {
+                return null
             }
         })
     }

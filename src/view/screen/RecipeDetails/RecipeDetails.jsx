@@ -118,39 +118,37 @@ class RecipeDetails extends React.Component {
     }
 
     addScoreHandler = () => {
-        const { id } = this.state.recipeDetailList
+        const { id, rating } = this.state.recipeDetailList
         if (this.props.user.id) {
             if (!this.state.likeActive) {
-                this.setState(prevState => {
-                    return {
-                        like: prevState.like + 1,
-                        likeActive: true
-                    }
+                this.setState({
+                    like: this.state.like + 1,
+                    likeActive: true
                 })
                 //console.log(this.state.like)
+                // console.log(rating + this.state.like + 1)
                 Axios.put(`${API_URL}/resep/tambah/nilai/${id}`, {
-                    rating: this.state.like
+                    rating: rating + this.state.like + 1
                 })
                     .then(res => {
-                        // console.log(res.data)
+                        //console.log(res.data)
                         this.getRecipeDetails()
                     })
                     .catch(e => {
                         console.log(e)
                     })
             } else {
-                this.setState(prevState => {
-                    return {
-                        like: prevState.like - 1,
-                        likeActive: false
-                    }
+                this.setState({
+                    like: this.state.like - 1,
+                    likeActive: false
                 })
-                console.log(this.state.like)
+                //console.log(this.state.like)
+                // console.log(rating + this.state.like - 1)
                 Axios.put(`${API_URL}/resep/tambah/nilai/${id}`, {
-                    rating: this.state.like
+                    rating: rating - this.state.like
                 })
                     .then(res => {
-                        // console.log(res.data)
+                        //console.log(res.data)
                         this.getRecipeDetails()
                     })
                     .catch(e => {

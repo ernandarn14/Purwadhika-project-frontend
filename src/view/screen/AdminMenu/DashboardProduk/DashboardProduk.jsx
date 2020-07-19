@@ -29,20 +29,24 @@ class DashboardProduk extends React.Component {
         },
         modalOpen: false,
         periode: "semua",
-        sort: "asc"
+        sort: "asc",
+        maxPrice: 99999999,
+        minPrice: 0,
+        orderOption: "planName"
     }
 
     getProductData = () => {
         if (this.state.periode === "semua") {
-            Axios.get(`${API_URL}/langganan/admin/${this.state.sort}`)
+            Axios.get(`${API_URL}/langganan/admin/${this.state.sort}/${this.state.orderOption}/${this.state.minPrice}/${this.state.maxPrice}`)
                 .then(res => {
                     this.setState({ productList: res.data })
+                    //console.log(this.state.orderOption)
                 })
                 .catch(err => {
                     console.log(err)
                 })
         } else {
-            Axios.get(`${API_URL}/langganan/admin/periode/${this.state.sort}?planPeriod=${this.state.periode}`)
+            Axios.get(`${API_URL}/langganan/admin/periode/${this.state.sort}/${this.state.orderOption}/${this.state.minPrice}/${this.state.maxPrice}?planPeriod=${this.state.periode}`)
                 .then(res => {
                     console.log(res.data)
                     this.setState({ productList: res.data })
@@ -63,20 +67,23 @@ class DashboardProduk extends React.Component {
         return productList.map((val, idx) => {
             const { planName, price, planDuration, planPeriod } = val
             if (planName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
-            return (
-                <tr key={val.id.toString()}>
-                    <td>{planName}</td>
-                    <td>{priceFormatter(price)}</td>
-                    <td>{planDuration}</td>
-                    <td>{planPeriod}</td>
-                    <td>
-                        <div className="d-flex align-items-center justify-content-center">
-                            <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
-                            <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
-                        </div>
-                    </td>
-                </tr>
-            )}
+                return (
+                    <tr key={val.id.toString()}>
+                        <td>{planName}</td>
+                        <td>{priceFormatter(price)}</td>
+                        <td>{planDuration}</td>
+                        <td>{planPeriod}</td>
+                        <td>
+                            <div className="d-flex align-items-center justify-content-center">
+                                <i className="fa fa-edit" style={{ fontSize: "22px" }} onClick={(_) => this.editBtnHandler(idx)}></i>
+                                <i className="material-icons ml-3" onClick={() => this.deleteDataHandler(val.id)}>&#xe872;</i>
+                            </div>
+                        </td>
+                    </tr>
+                )
+            } else {
+                return null
+            }
         })
     }
 
@@ -175,7 +182,7 @@ class DashboardProduk extends React.Component {
                         <div className="d-flex mt-5 justify-content-around">
                             <div className="d-flex align-items-center">
                                 <label>Periode:</label>
-                                <select className="form-control ml-4"
+                                <select className="form-control ml-4 w-75"
                                     onClick={() => this.getProductData()}
                                     onChange={(e) => this.setState({ periode: e.target.value })}
                                 >
@@ -186,8 +193,27 @@ class DashboardProduk extends React.Component {
                                 </select>
                             </div>
                             <div className="d-flex align-items-center">
+                                <label>Harga:</label>
+                                <input type="number" placeholder="Harga Terendah" className="form-control w-50 ml-3"
+                                    onClick={() => this.getProductData()}
+                                    onChange={(e) => this.setState({ minPrice: +e.target.value })}
+                                />
+                                <label className="mx-2">-</label>
+                                <input type="number" placeholder="Harga Tertinggi" className="form-control w-50"
+                                    onClick={() => this.getProductData()}
+                                    onChange={(e) => this.setState({ maxPrice: +e.target.value})}
+                                />
+                            </div>
+                            <div className="d-flex align-items-center">
                                 <label>Urutkan:</label>
-                                <select className="form-control ml-4"
+                                <select className="form-control ml-3 w-50"
+                                    onClick={() => this.getProductData()}
+                                    onChange={(e) => this.setState({ orderOption: e.target.value })}
+                                >
+                                    <option value="planName">Nama</option>
+                                    <option value="price">Harga</option>
+                                </select>
+                                <select className="form-control ml-2 w-50"
                                     onClick={() => this.getProductData()}
                                     onChange={(e) => this.setState({ sort: e.target.value })}
                                 >

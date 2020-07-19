@@ -40,7 +40,12 @@ class UserProfile extends React.Component {
         modalEditOpen: false,
         modalEditPwdOpen: false,
         modalPaymentOpen: false,
-        method: "gopay"
+        method: "gopay",
+        periode: "semua",
+        sort: "asc",
+        maxPrice: 99999999,
+        minPrice: 0,
+        orderOption: "planName"
     }
 
     getUserData = () => {
@@ -59,14 +64,33 @@ class UserProfile extends React.Component {
     }
 
     getPlanList = () => {
-        Axios.get(`${API_URL}/langganan`)
-            .then(res => {
-                console.log(res.data)
-                this.setState({ planList: res.data })
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        // Axios.get(`${API_URL}/langganan`)
+        //     .then(res => {
+        //         console.log(res.data)
+        //         this.setState({ planList: res.data })
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //     })
+        if (this.state.periode === "semua") {
+            Axios.get(`${API_URL}/langganan/admin/${this.state.sort}/${this.state.orderOption}/${this.state.minPrice}/${this.state.maxPrice}`)
+                .then(res => {
+                    this.setState({ planList: res.data })
+                    //console.log(this.state.orderOption)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } else {
+            Axios.get(`${API_URL}/langganan/admin/periode/${this.state.sort}/${this.state.orderOption}/${this.state.minPrice}/${this.state.maxPrice}?planPeriod=${this.state.periode}`)
+                .then(res => {
+                    console.log(res.data)
+                    this.setState({ planList: res.data })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
     }
 
     componentDidMount() {
@@ -242,16 +266,20 @@ class UserProfile extends React.Component {
         const { planList } = this.state
         return planList.map((val, idx) => {
             const { planName, planDesc, price } = val
-            return (
-                <div className="d-flex flex-column justify-content-center mt-4 align-items-center planlist" key={val.id.toString()}>
-                    <h5>{planName}</h5>
-                    <p>{planDesc}</p>
-                    {/* <div className="d-flex"> */}
+            if (planName.toLowerCase().includes(this.props.search.searchInput.toLowerCase())) {
+                return (
+                    <div className="d-flex flex-column justify-content-center mt-4 align-items-center planlist" key={val.id.toString()}>
+                        <h5>{planName}</h5>
+                        <p>{planDesc}</p>
+                        {/* <div className="d-flex"> */}
                         <h6 className="mt-3">{priceFormatter(price)}</h6>
                         <Buttons type="outlined" onClick={(_) => this.paymentBtnHandler(idx)}>Beli</Buttons>
-                    {/* </div> */}
-                </div>
-            )
+                        {/* </div> */}
+                    </div>
+                )
+            } else {
+                return null
+            }
         })
     }
 
@@ -422,6 +450,51 @@ class UserProfile extends React.Component {
                     <h6 className="header-profile">Paket Langganan</h6>
                     <div className="d-flex flex-column align-items-center justify-content-center text-center mt-5">
                         <h5>Beli Paket Langganan Untuk Membaca Resep dan Tips Tanpa Batas!</h5>
+                        <div className="d-flex mt-5 justify-content-around">
+                            <div className="d-flex align-items-center">
+                                <label>Periode:</label>
+                                <select className="form-control ml-4 w-75"
+                                    onClick={() => this.getPlanList()}
+                                    onChange={(e) => this.setState({ periode: e.target.value })}
+                                >
+                                    <option value="semua">Semua</option>
+                                    <option value="tahun">Tahun</option>
+                                    <option value="bulan">Bulan</option>
+                                    <option value="minggu">Minggu</option>
+                                </select>
+                            </div>
+                            <div className="d-flex align-items-center ml-3">
+                                <label>Urutkan:</label>
+                                <select className="form-control ml-3 w-50"
+                                    onClick={() => this.getPlanList()}
+                                    onChange={(e) => this.setState({ orderOption: e.target.value })}
+                                >
+                                    <option value="planName">Nama</option>
+                                    <option value="price">Harga</option>
+                                </select>
+                                <select className="form-control ml-2 w-50"
+                                    onClick={() => this.getPlanList()}
+                                    onChange={(e) => this.setState({ sort: e.target.value })}
+                                >
+                                    <option value="asc">A - Z</option>
+                                    <option value="desc">Z - A</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="d-flex mt-5 justify-content-around">
+                            <div className="d-flex align-items-center">
+                                <label>Harga:</label>
+                                <input type="number" placeholder="Harga Terendah" className="form-control w-50 ml-3"
+                                    onClick={() => this.getPlanList()}
+                                    onChange={(e) => this.setState({ minPrice: +e.target.value })}
+                                />
+                                <label className="mx-2">-</label>
+                                <input type="number" placeholder="Harga Tertinggi" className="form-control w-50"
+                                    onClick={() => this.getPlanList()}
+                                    onChange={(e) => this.setState({ maxPrice: +e.target.value })}
+                                />
+                            </div>
+                        </div>
                         <div className="mt-4">
                             {this.renderPlansList()}
                         </div>
@@ -555,6 +628,7 @@ class UserProfile extends React.Component {
 const mapStateToProps = (state) => {
     return {
         user: state.user,
+        search: state.search,
     };
 };
 
